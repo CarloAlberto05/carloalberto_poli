@@ -3,12 +3,12 @@
 Raccolta di materiale prodotto durante il percorso di studi in Ingegneria Fisica al Politecnico di Torino: dispense di corso, problemi olimpici e progetti di analisi dati. Ogni cartella contiene un proprio README con i dettagli.
 
 ## Struttura
-'''
+```
 .
 ├── appunti_di_fisica/ # Dispense di corso (Meccanica Quantistica, Fisica II)
 ├── problemi_di_fisica/ # Problemi per le Olimpiadi di Fisica (OliFis)
 └── progetti/ # Analisi dati: rete di trasporto torinese, campioni di semiconduttore
-'''
+```
 
 
 ## Contenuti
