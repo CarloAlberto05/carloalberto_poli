@@ -26,6 +26,5 @@ Ogni cartella contiene il sorgente `.tex` e il relativo PDF già compilato. Per 
 pdflatex nomefile.tex
 ```
 
-## Note
 
-Materiale nato come studio personale, poi rifinito anche in ottica di supporto alla didattica (tutoraggio). Segnalazioni di errori benvenute via issue.
+*Nota: Materiale nato come studio personale, poi rifinito anche in ottica di supporto alla didattica (tutoraggio). Segnalazioni di errori benvenute via issue.*
