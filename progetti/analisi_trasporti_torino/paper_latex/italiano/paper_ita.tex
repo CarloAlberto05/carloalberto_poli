@@ -1,0 +1,798 @@
+% ============================================================
+%  Ottimizzazione Data-Driven della Rete Bus Urbana di Torino:
+%  Caso Studio Linea Express GTT Linea 45
+% ============================================================
+\documentclass[conference]{IEEEtran}
+
+% ---- pacchetti ----------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{cite}
+\usepackage{siunitx}
+\DeclareSIUnit{\euro}{\text{\euro}}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{eurosym}   % fornisce \euro
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
+}
+
+% ---- macro --------------------------------------------------
+\newcommand{\co}{CO\textsubscript{2}}
+\newcommand{\nox}{NO\textsubscript{x}}
+\newcommand{\pmtwo}{PM\textsubscript{2.5}}
+\newcommand{\eg}{\textit{es.}}
+\newcommand{\ie}{\textit{ovvero}}
+
+% =============================================================
+\begin{document}
+
+\title{Ottimizzazione Data-Driven della Rete Bus Urbana di Torino:\\
+       Caso Studio Linea Express GTT Linea~45}
+
+\author{
+  \IEEEauthorblockN{Gruppo 9 - Trasporti}
+  \IEEEauthorblockA{
+    Politecnico di Torino\\
+    Torino, Italia\\
+    \texttt{[Corso: Crisi Climatica e Bias Cognitivi]}
+  }
+}
+
+\maketitle
+
+% =============================================================
+\begin{abstract}
+Le reti di trasporto pubblico urbano presentano frequentemente
+ridondanze strutturali che aumentano i costi operativi e riducono
+l'attrattività del servizio senza corrispondenti guadagni in
+copertura territoriale. Questo lavoro propone una metodologia
+riproducibile e data-driven applicata alla rete bus del Gruppo
+Torinese Trasporti (GTT). A partire dai dati General Transit
+Feed Specification (GTFS) liberamente disponibili, viene costruita
+una matrice di adiacenza tra fermate e condotta un'analisi spettrale,
+che rivela una topologia non centralizzata
+($\bm{\lambda_{200}/\lambda_1 \approx 0.33}$). Lo screening per
+similarità di Jaccard individua nella linea~45 e nella linea~99
+uno dei corridoi condivisi di maggiore entità (34~fermate). Si propone
+la conversione della linea~45 (48~fermate) in servizio express con
+17~fermate, risparmiando circa 13~minuti per percorrenza. Tramite
+l'indagine IMQ~2022 dell'Agenzia della Mobilità Piemontese (AMP),
+la variazione della domanda è stimata in $+\bm{1.77 \times 10^6}$~pass/anno. Nello scenario mediano di elasticità ($\bm{\varepsilon = -0.4}$), l'intervento riduce le
+emissioni di \co\ di circa $\bm{62.0 + 41.1 = 103.1\, \text{t/anno}}$,
+abbatte \nox\ di $\bm{\sim126\,} \text{kg/anno}$, risparmia
+$\bm{\sim15\,500}\, \text{L/anno}$ di gasolio e genera un beneficio economico
+annuo superiore a \euro{}300\,000, a fronte di un costo una-tantum
+stimato inferiore a \euro{}100\,000.
+\end{abstract}
+
+\begin{IEEEkeywords}
+ottimizzazione trasporto pubblico, GTFS, analisi spettrale di rete,
+similarità di Jaccard, elasticità della domanda, spostamento modale,
+riduzione \co, Torino.
+\end{IEEEkeywords}
+
+% =============================================================
+\section{Introduzione}
+\label{sec:intro}
+
+Le reti bus urbane nelle città italiane di medie dimensioni sono
+spesso il risultato di decenni di espansione incrementale piuttosto
+che di una progettazione sistemica. La conseguenza inevitabile è la
+ridondanza strutturale: più linee che condividono lunghi tratti dello
+stesso corridoio, con effetti negativi sia sull'efficienza del
+materiale rotabile sia sui tempi di percorrenza degli utenti.
+
+GTT gestisce oltre 80 linee bus urbane che servono oltre
+$\SI{220}{\times10^6}$~passeggeri l'anno \cite{gtt2022}. Nonostante
+i continui investimenti in mezzi elettrici e informazione
+all'utenza in tempo reale, la topologia di rete è rimasta
+sostanzialmente invariata dagli anni~'80.
+
+Il presente lavoro propone un approccio di ottimizzazione
+\emph{piccolo e replicabile}, la cui novità risiede nella
+combinazione sistematica di tre sorgenti open data:
+\begin{enumerate}
+  \item Feed GTFS GTT (posizione fermate, orari, geometrie percorsi);
+  \item Indagine campionaria sulla mobilità AMP-IMQ~2022
+        (41\,933 interviste, open-access in formato .accdb);
+  \item Inventari nazionali ISPRA e fattori di emissione EEA.
+\end{enumerate}
+
+Il caso studio — conversione della linea~45 da servizio omnibus a
+express — costituisce una prova di concetto sistematicamente
+applicabile a qualsiasi corridoio ridondante identificato dalla
+stessa pipeline.
+
+% =============================================================
+% =============================================================
+\section{Contesto e Lavori Correlati}
+\label{sec:background}
+
+L'approccio metodologico proposto in questo studio si colloca all'intersezione tra l'analisi delle reti complesse, l'ingegneria dei sistemi di trasporto e l'economia ambientale, attingendo a framework consolidati in ciascun dominio.
+
+\subsection{Topologia di Rete e Ridondanza}
+L'applicazione dei metodi spettrali alle reti di trasporto affonda le radici nella teoria delle reti complesse \cite{barabasi2002}. Le matrici di adiacenza a livello di fermata sono state ampiamente impiegate per quantificare la centralità e i limiti asintotici delle reti metropolitane \cite{roth2012}. Studi più recenti hanno evidenziato come l'analisi topologica sia fondamentale per valutare la robustezza e la complessità dei sistemi di trasporto pubblico (TPL) \cite{darrick2010}, permettendo di mappare l'evoluzione strutturale delle reti policentriche \cite{cats2016, cats2017}. Per quanto concerne la sovrapposizione spaziale, la similarità di Jaccard è stata applicata con successo come metrica di ridondanza nelle reti di superficie e successivamente formalizzata da Li et al. \cite{Li2019} per l'identificazione sistematica delle inefficienze operative.
+
+\subsection{Dinamiche della Domanda e Modelli Operativi}
+La risposta dell'utenza alle variazioni dell'offerta spaziotemporale è governata dall'elasticità della domanda. Il quadro teorico di riferimento è fornito da Ortúzar e Willumsen \cite{ortuzar2011}, i quali documentano come il tempo di viaggio a bordo costituisca una delle variabili più sensibili per le scelte modali. Tali assunzioni sono corroborate dalle ampie rassegne empiriche di Litman \cite{litman2023} e dai manuali del \textit{Transportation Research Board} \cite{tcrp95_cap9}. La quantificazione del ritardo cinematico indotto dalle fermate (decelerazione, sosta e accelerazione) si appoggia invece agli standard internazionali del \textit{Transit Capacity and Quality of Service Manual} (TCQSM) \cite{TRB2013}.
+
+\subsection{Valutazione Ambientale ed Economica}
+Per la contabilizzazione delle emissioni climalteranti derivanti dallo spostamento modale, lo studio adotta il framework ASIF (Attività–Struttura–Intensità–Fattore) \cite{IEA_schipper}, integrato con i fattori di emissione dell'inventario nazionale ISPRA \cite{ispra2023}. L'impatto dei transitori di \textit{stop-and-go} sui consumi dei mezzi pesanti, essenziale per valutare i benefici della linea Express, è modellato secondo i parametri HBEFA \cite{hbefa2022} e gli studi NREL \cite{nrel_transit_stops}. Infine, la monetizzazione dei co-benefici sulla qualità dell'aria (\nox\ e \pmtwo) fa riferimento ai prezzi ombra fissati dallo \textit{Handbook on the External Costs of Transport} della Commissione Europea \cite{ec_handbook2019}, mentre la parametrizzazione finanziaria dei costi aziendali si uniforma alla metodologia del Costo Standard definita dall'Autorità di Regolazione dei Trasporti \cite{art_costi_standard_2021}.
+
+% =============================================================
+\section{Analisi della Rete}
+\label{sec:network}
+
+\subsection{Matrice di Adiacenza tra Fermate}
+
+Dal feed GTFS GTT si estrae l'insieme $\mathcal{S}$ di tutte le
+fermate \emph{attive} e si costruisce una matrice di adiacenza
+simmetrica $\mathbf{M} \in \mathbb{Z}^{|\mathcal{S}|\times|\mathcal{S}|}$
+nel modo seguente: per ogni coppia di fermate consecutive $(A,B)$
+su qualunque corsa, $M_{AB} = M_{BA} \mathrel{+}= 1$. La direzione
+di percorrenza viene scartata poiché il target dell'ottimizzazione
+è la ridondanza di corridoio, invariante rispetto alla direzione.
+
+\subsection{Analisi Spettrale}
+
+Vengono calcolati tramite software \texttt{MATLAB} i primi 200 autovalori $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_{200}$
+di $\mathbf{M}$. Il rapporto
+
+\begin{equation}
+  \frac{\lambda_{200}}{\lambda_1} \approx 0.33
+  \label{eq:spectral_ratio}
+\end{equation}
+
+indica un decadimento spettrale piatto, anziché il crollo netto
+atteso per una topologia hub-and-spoke (centralizzata). Questo
+risultato conferma che la rete GTT è \emph{policentrica} e che
+nessun corridoio domina la connettività, rendendo lo screening
+per ridondanza tanto giustificato quanto non banale \cite{darrick2010} \cite{cats2016} \cite{cats2017}.
+
+\begin{figure}[H]
+    \centering
+    % Inserisci il nome del file senza estensione se è un PDF
+    \includegraphics[width=0.45\textwidth]{valori_singolari}
+    \caption{Spettro dei primi 200 autovalori della matrice di adiacenza della rete GTT di Torino. Si noti il lento rateo di decrescita dello spettro.}
+    \label{fig:valori_singolari}
+\end{figure}
+
+\subsection{Screening per Similarità di Jaccard}
+
+Per ogni coppia di linee $(i,j)$ con insiemi di fermate $S_i$,
+$S_j$, l'indice di Jaccard è
+
+\begin{equation}
+  J(i,j) = \frac{|S_i \cap S_j|}{|S_i \cup S_j|} \quad.
+  \label{eq:jaccard}
+\end{equation}
+
+L'ordinamento di tutte le coppie per $J$ rivela diverse coppie
+con $J > 0.3$, indicative di forte sovrapposizione di corridoio.
+La linea~45 e la linea~99 condividono \textbf{34~fermate},
+corrispondenti al 71\% del servizio totale della linea~45 — il
+punteggio Jaccard più elevato tra le linee di lunghezza comparabile ($J(45,99) \approx 0.33$).
+Questa coppia è dunque giustificatamente selezionata per l'intervento pilota \cite{Li2019}.
+
+% =============================================================
+\section{Intervento Proposto: Linea~45 Express}
+\label{sec:intervention}
+
+La linea~45 percorre attualmente 48~fermate disseminate su circa $\SI{21,5}{km}$ (senso unico), in un tempo totale tipico
+\[
+t_0 \approx \SI{52}{min}
+\]
+\cite{gtt_gtfs}. Le 34~fermate condivise con la linea~99 formano un sotto-corridoio
+contiguo; la linea~99 garantisce copertura completa su tali fermate,
+rendendole ridondanti per gli utenti della linea~45 disposti ad
+accettare una minima distanza a piedi aggiuntiva.
+
+\textbf{Proposta.} Mantenere 17~fermate strategicamente distribuite
+sulla linea~45 (principali interscambi, nodi terminali e fermate
+prive di equivalente sulla linea~99), eliminando 31~fermate
+intermedie. 
+
+Gli stop superstiti nella tratta Torino-Santena (simmetrici nel verso opposto) sono riportati nella seguenteb tabella.
+\begin{table}[htbp]
+\caption{Elenco delle fermate mantenute per l'istituzione del servizio Linea 45 Express}
+\label{tab:fermate_express}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}cl@{}}
+\toprule
+\textbf{N.} & \textbf{Nome Fermata (Ubicazione)} \\
+\midrule
+1  & Bramante Cap (Torino - M1) \\
+2  & Molinette (Torino - Ospedale Molinette) \\
+3  & Ospedale CTO (Torino) \\
+4  & Ponte Cavalieri Templari (Torino Sud) \\
+5  & Cattaneo (Moncalieri) \\
+6  & Villastellone (Moncalieri) \\
+7  & Boccardo (Moncalieri) \\
+8  & Marsè (Moncalieri) \\
+9  & I Maggio (Moncalieri - Municipio) \\
+10 & Rocchette (Trofarello) \\
+11 & Don Grassi (Trofarello) \\
+12 & Volta (Cambiano) \\
+13 & Einaudi Est (Cambiano) \\
+14 & Roma (Cambiano) \\
+15 & Stazione (Cambiano) \\
+16 & Amateis (Santena) \\
+17 & Carducci Cap (Santena) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In assenza di dati granulari sulla frequentazione delle singole fermate e di matrici Origine-Destinazione pubbliche disaggregate per linea, la selezione dei nodi da mantenere è stata fondata sul loro grado topologico calcolato tramite la matrice di adiacenza:
+\begin{equation}
+      \text{deg(fermata)}_i = \sum_j \mathbf{M}_{ij} \quad.
+\end{equation}
+Questa metrica permette di identificare e preservare le fermate caratterizzate da una maggiore connettività strutturale e rilevanza negli interscambi della rete
+
+\subsection{Riduzione del Tempo di Percorrenza}
+
+Ogni evento di fermata (decelerazione, sosta, accelerazione) aggiunge
+in media $\Delta t_\text{stop} = t_d + t_k \approx \SI{25}{s}$ al tempo di viaggio\footnote{Con $t_d$ e $t_k$ si allude rispettivamente al \emph{dwell time} (tempo di sosta) e al \emph{kinematic delay} (ritardo cinematico in decelerazione e ripartenza del mezzo). La stima del $\Delta t_\text{stop}$ è stata effettuata in accordo a \cite{TRB2013}.}. L'eliminazione di 31~fermate consente quindi un risparmio di:
+\begin{equation}
+  \Delta t_\text{stop} = 31 \times 25\,\text{s} = 775\,\text{s}
+  \approx \mathbf{13\,\text{min}}
+  \label{eq:time_saving}
+\end{equation}
+riducendo il tempo di percorrenza da \SI{52}{min} a \SI{39}{min},
+con un miglioramento relativo di
+
+\begin{equation}
+  \frac{\Delta t_\text{stop}}{t_0} = -\frac{13}{52} \approx -25\% \quad.
+  \label{eq:pct_time}
+\end{equation}
+Si noti che il segno $-$ è dovuto al fatto che il tempo di percorrenza della linea express è \emph{minore} rispetto a quello impiegato dall'originale.
+
+% =============================================================
+\section{Stima della Domanda}
+\label{sec:ridership}
+
+Non essendo disponibili matrici Origine-Destinazione (OD) pubbliche per singola linea GTT, si adotta una strategia di stima basata sull'analisi della matrice aggregata degli spostamenti in mezzo pubblico del dataset AMP-IMQ 2022 \cite{amp_imq2022}.
+
+\subsection{Stima Bottom-Up da Indagine IMQ 2022}
+Applicando un filtro spaziale mirato al reale corridoio servito (Moncalieri, Trofarello, Santena, Torino Sud), si è isolato un volume di domanda pari a $12\,866$ spostamenti/giorno.
+
+Poiché l'indagine aggrega il dato modale senza specificare la linea commerciale, si introduce un fattore di attribuzione $\alpha_\text{att} = 0.55$, proporzionale alla quota di mercato e alla densità dell'offerta di fermate della Linea 45 sul tratto in esame\footnote{In particolare, $\alpha_\text{att}$ è stato ricavato dal rapporto tra i veicoli-km della Linea~45 e il totale dei veicoli-km delle linee del corridoio (Linee 45, 81, 82, 84), calcolato in accordo a \cite{gtt_gtfs} relativamente ai giorni feriali tipo.}. L'annualizzazione del dato, assumendo $250$ giorni operativi in accordo a \cite{gtt_gtfs}, restituisce la seguente stima:
+\begin{equation}
+  \hat{D}_{45}^\text{b-u} = 12\,866 \times 0.55 \times 250 \approx 1.77 \times 10^6 \;\text{pass/anno} \quad.
+  \label{eq:ridership}
+\end{equation}
+
+
+\subsection{Profilo della Domanda sul Corridoio}
+
+Il corridoio Moncalieri--Trofarello--Santena, servito dalla linea 45, costituisce un asse
+di pendolarismo intercomunale strutturale verso Torino, come
+attestato dai dati del Censimento generale della popolazione
+\cite{istat2011}. La quota di residenti che si sposta
+giornalmente fuori comune per motivi di lavoro o di studio
+(\textit{mobilità fuori comune}) risulta sistematicamente
+superiore alla media regionale in tutti e tre i comuni serviti
+dal corridoio (Tabella~\ref{tab:ISTAT}).
+
+
+\begin{table}[htbp]
+\caption{Indicatori di pendolarismo dei comuni del corridoio della linea 45. Censimento della popolazione 2011.}
+\label{tab:ISTAT}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Indicatore \textbf{Mobilità} & Moncalieri & Trofarello & Santena \\
+\midrule
+giornaliera lavoro/studio $(\%)$  & $67.1$ & $68.3$  & $66.8$  \\
+\emph{fuori comune} lavoro/studio $(\%)$ & $39.1$ & $46.8$ & 40.1 \\
+pubblica $(\%)$  & $16.3$ & $16.6$ & 12.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Le quote di mobilità fuori comune delle tre città
+riflette la condizione strutturale di comune satellite di
+Torino: la stragrande maggioranza degli spostamenti motorizzati
+è diretta verso il capoluogo, con orari rigidamente ancorati
+ai turni lavorativi e agli orari scolastici. La natura
+sistematica e orario-vincolata di questa domanda è rilevante
+sotto il profilo trasportistico: come dimostrato da
+Litman~(2023) \cite{litman2023}, i viaggiatori abituali con
+vincoli di orario rigido massimizzano l'elasticità della
+domanda in risposta ai risparmi dei tempi di percorrenza,
+rendendo il corridoio un candidato ideale per un servizio
+\textit{Express}.
+
+% =============================================================
+\section{Valutazione dell'Impatto}
+\label{sec:impact}
+
+\subsection{Aumento della Domanda tramite Elasticità}
+
+Si adotta l'approssimazione di elasticità al primo ordine
+\cite{ortuzar2011}:
+
+\begin{equation}
+  \frac{\Delta Q}{Q} = \varepsilon \cdot \frac{\Delta t}{t_0},
+  \label{eq:elasticity}
+\end{equation}
+
+dove $\varepsilon$ è l'elasticità della domanda rispetto al tempo
+a bordo e $\Delta Q / Q$ corrisponde alla variazione relativa di passeggeri sulla linea. Si considerano tre scenari fondati su evidenze empiriche \cite{litman2023}:
+
+\begin{table}[htbp]
+\caption{Scenari di elasticità della domanda e nuovi utenti}
+\label{tab:elasticity}
+\centering
+\renewcommand{\arraystretch}{0.99}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Scenario & $\varepsilon$ & $\Delta Q/Q$ & Nuovi pass./anno \\
+\midrule
+Breve periodo  & $-0.3$ & $+7.5\%$  & 132\,750  \\
+Mediano        & $-0.4$ & $+10\%$ & 177\,000 \\
+Lungo periodo  & $-0.6$ & $+15\%$ & 265\,500 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Riduzione di \co\ da Spostamento Modale}
+
+I nuovi utenti che abbandonano l'auto privata evitano emissioni
+veicolari. Il risparmio netto di \co\ segue il framework ASIF
+\cite{IEA_schipper}:
+
+\begin{equation}
+  \Delta C_{\co}^{\text{ shift}} = \Delta Q \cdot \gamma_\text{auto}
+    \cdot \frac{L}{O_\text{auto}} \cdot E_\text{auto},
+  \label{eq:co2_shift}
+\end{equation}
+
+dove:
+\begin{itemize}
+  \item $\gamma_\text{auto} = 0.5$: quota di nuovi utenti
+    precedentemente in auto privata. \cite{litman2023} riporta che in contesti suburbani europei si ha  $\gamma_\text{auto} \in [0.3,0.6$], giustificando la scelta di 0.5 come valore mediano;
+  \item $L = \SI{6,0}{km}$: lunghezza media del percorso auto
+    sul corridoio \cite{amp_imq2022_report};
+  \item $O_\text{auto} = 1.2$: occupazione media del veicolo
+    \cite{mit_cnit};
+  \item $E_\text{auto} = \SI{0.14}{kg_{CO_2}/km}$ \cite{ispra2023}.
+\end{itemize}
+
+Poiché il bus opera a orario fisso, il costo marginale di \co\
+per un passeggero aggiuntivo è nullo; al bilancio contribuiscono
+solo le auto tolte dalla strada. I risultati per scenario sono
+riportati nella Tabella~\ref{tab:co2_shift}.
+
+\begin{table}[htbp]
+\caption{Riduzione di \co\ da spostamento modale (t\,\co/anno)}
+\label{tab:co2_shift}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & Breve & Mediano & Lungo \\
+\midrule
+$\Delta Q \cdot \gamma_\text{auto}$ [pass/anno] & 66\,375 & 88\,500 & 132\,750 \\
+Auto rimosse equiv. ($\Delta Q \cdot \gamma_\text{auto}/ O_{\text{auto}}$) & 55\,313 & 73\,750 & 110\,625 \\
+$\Delta C_{\co}$ [t/anno] & \textbf{46.5} & \textbf{62.0} & \textbf{93.0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Riduzione di \co\ dai Risparmi di Carburante del Bus}
+
+L'eliminazione di un evento di fermata garantisce un risparmio netto di carburante riconducibile a due fattori fisici: la mancata dissipazione dell'energia cinetica in frenata (e successivo transitorio di accelerazione ad alto carico motore) e la soppressione del consumo al minimo durante il tempo di sosta.
+Secondo i manuali di calcolo trasportistico europei, e in particolare rifacendosi ai parametri tabulati nel framework ASEK 7.0 [24] per i mezzi pesanti in ambito urbano, il consumo marginale addizionale imputabile a un singolo ciclo di stop-and-go è stimato in:
+\begin{equation}
+  \Delta F_\text{fermata} = \SI{0.025}{L/fermata}  \quad,
+  \label{eq:fuel_stop}
+\end{equation}
+con un risparmio di $31 \times 2 \times 0.025 = \SI{1.55}{L/corsa}$
+per percorrenza semplice. Su $N_\text{corse} \approx 40$~corse
+AR/giorno per 250~giorni operativi:
+
+\begin{equation}
+  \Delta F_y = 1.55 \times 40 \times 250 = \SI{15\,500}{L/anno} \quad,
+  \label{eq:fuel_annual}
+\end{equation}
+supponendo che la flotta sia interamente composta di autobus a gasolio\footnote{L'assunzione non è giustificabile in mancanza di dati di dominio pubblico riguardo la ripartizione del parco veicoli di GTT. In ogni caso, i lotti di autobus elettrici sono generalmente demandati a \emph{linee centrali}, non periferiche come la 45. Questa assunzione corrobora, almeno euristicamente, l'approssimazione introdotta.}. Con il fattore di combustione ISPRA di
+$\SI{2.65}{kg_{CO_2}/L}$\,\cite{ispra2023}:
+\begin{equation}
+  \Delta C_{\co}^{\text{ bus}} = 15\,500 \times 2.65
+  \approx \mathbf{\SI{41.1}{t_{CO_2}/anno}}.
+  \label{eq:co2_bus}
+\end{equation}
+
+\textbf{Riduzione totale di \co} Complessivamente, il progetto ambisce ad ottenere una diminuzione di \co annua entro il range di 
+\begin{equation}
+  \Delta C_{\co}^{\text{ tot}} = \Delta C_{\co}^{\text{ bus}} + \Delta C_{\co}^{\text{ shift}} \in [87.6, 134.1] \, \text{t/anno} \quad,
+\end{equation}
+con un \emph{scenario mediano} che si attesta su
+$62.0 + 41.1 = \bm{{103.1} \, \text{t/anno}}$.
+
+\subsection{Qualità dell'Aria: \nox\ e \pmtwo}
+
+I co-benefici sulla qualità dell'aria locale derivanti dall'implementazione del servizio Express sono stimati su due vie indipendenti: lo spostamento modale dell'utenza e l'ottimizzazione cinematica del servizio autobus. Per coerenza con le metodologie di Analisi Costi-Benefici comunitarie, l'analisi si concentra sugli ossidi di azoto (\nox) e sul particolato fine (\pmtwo), evitando l'inclusione del $PM_{10}$ al fine di scongiurare il doppio conteggio dei danni sanitari marginali.
+
+\subsubsection{Via spostamento modale}
+I benefici ambientali derivanti dall'attrazione di nuova utenza sono valutati quantificando le percorrenze veicolari private evitate. Per ogni singolo spostamento modale verso il trasporto pubblico, la distanza veicolare risparmiata è pari a $d_\text{veic} = L/O_\text{auto}$, dove $L = \SI{6.0}{km}$ è la lunghezza media della tratta e $O_\text{auto} = 1.2$ il coefficiente di riempimento dell'autovettura.
+
+Al fine di non sovrastimare l'abbattimento inquinante, si adottano i fattori di emissione medi ponderati del parco circolante europeo (\textit{Tier 1, Passenger Cars}, EMEP/EEA 2025 \cite{eea_guidebook2025}):
+\begin{align}
+  E_{\nox}  &= \SI{0,22}{g/km}, &
+  E_{\pmtwo} &= \SI{0,004}{g/km}.
+  \label{eq:ef_car}
+\end{align}
+
+Moltiplicando le emissioni chilometriche evitate per il volume totale di veicoli rimossi dalla rete ($\Delta Q \cdot \gamma_{\text{auto}} / O_\text{auto}$), si ottiene il risparmio complessivo annuo (Tabella~\ref{tab:aq_shift}).
+
+\begin{table}[htbp]
+\caption{Risparmio qualità dell'aria da spostamento modale (kg/anno)}
+\label{tab:aq_shift}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Scenario & \nox\ [kg/a] & \pmtwo\ [kg/a] \\
+\midrule
+Breve periodo & 73,0  & 1,3 \\
+Mediano       & 97,4  & 1,8 \\
+Lungo periodo & 146,0 & 2,7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Via risparmio tramite bus}
+Dai fattori di combustione EMEP/EEA \cite{eea_guidebook2025}:
+$c_{\nox} = \SI{1.89}{g/L}$ e
+$c_{\pmtwo}^{\text{ scarico}} = \SI{9.03}{g/L}$.
+L'abrasione meccanica aggiunge un $c_{\pmtwo}^{\text{ freni}} = \SI{0.05}{g/fermata}$ di particolato \textit{non-exhaust} dovuto ai cicli di arresto \cite{hbefa2022}.
+Considerando il risparmio annuo di $15\,500$ litri di gasolio e la soppressione di $31 \cdot 80 \cdot 250 = 620\,000$ fermate totali per la flotta, i benefici ambientali lato offerta sono riassunti nella Tabella~\ref{tab:aq_bus}.
+
+\begin{table}[htbp]
+\caption{Risparmio qualità dell'aria da ottimizzazione servizio bus (kg/anno)}
+\label{tab:aq_bus}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Componente di risparmio & \nox\ [kg/a] & \pmtwo\ [kg/a] \\
+\midrule
+Combustione (gasolio evitato) & 29,3 & 140,0 \\
+Abrasione (freni e pneumatici) & -- & 31,0 \\
+\midrule
+\textbf{Totale} & \textbf{29,3} & \textbf{171,0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+Si noti come l'elevato divario nei benefici sul particolato fine è fisicamente coerente. Da un lato, il parco auto circolante include un'ampia quota di vetture a benzina o ibride con emissioni \pmtwo\ allo scarico pressoché nulle. Dall'altro, i frequenti cicli di \textit{stop-and-go} di un autobus Diesel da 18~tonnellate impongono transitori di accelerazione ad alta generazione di incombusti, a cui si sommano le ingenti emissioni \textit{non-exhaust} derivanti dall'abrasione dell'impianto frenante.
+
+\subsection{Valutazione Economica}
+
+\subsubsection{Riduzione flotta e autisti}
+Con l'orario attuale, una percorrenza di andata-ritorno richiede
+circa $120$~min $(52+52+15$~min di sosta ai capolinea). Con una
+frequenza media nelle ore di punta\footnote{Un'analisi più precisa permette di constatare che il servizio attuale prevede $\approx80$ corse giornaliere spalmate su $\approx \SI{20}{\hour}$ di attività, per cui $80 \, \text{corse}/\SI{20}{\hour} = 4$ corse all'ora e 1 bus ogni $\SI{15}{\minute}$. Tenendo conto del fatto che la 45, poi, vive su un'arteria fortemente interssata da pendolarismo, si nota come l'approssimazione introdotta di \emph{ora di punta} permetta comunque di ottenere una stima realsitica della frequenza media delle corse.} di 15~min \cite{gtt_gtfs}:
+
+\begin{equation}
+  N_\text{bus} = \left\lceil\frac{120}{15}\right\rceil
+  = 8\;\text{bus sulla linea} \quad.
+  \label{eq:fleet_current}
+\end{equation}
+
+La linea express riduce il tempo di A/R a $\approx 90$~min:
+
+\begin{equation}
+  N_\text{bus}^\text{exp} = \left\lceil\frac{90}{15}\right\rceil
+  = 6\;\text{bus} \quad.
+  \label{eq:fleet_express}
+\end{equation}
+
+Occorrono due bus in meno per mantenere la stessa frequenza, con
+una riduzione di circa 5~conducenti equivalenti a tempo pieno.
+Assumendo che il servizio express sia attivo dalle ore $4.00$ alle ore $00.00$ del giorno successivo (per un totale di $\approx \SI{20}{\hour}$ \cite{gtt_gtfs}) e tenendo conto del costo operativo GTT di 65\euro{}/h (ammortamento, stipendio
+autista, manutenzione) \cite{art_costi_standard_2021}:
+\begin{equation}
+  2\;\text{bus} \times 20\;\text{h/gg} \times 250\;\text{gg}
+  \times \SI{65}{\euro}/\text{h} \approx 650\,000\si{\euro}/\text{anno} \quad.
+  \label{eq:fleet_savings}
+\end{equation}
+
+Dal momento che sarebbe irrealistico assumere che i due mezzi in questione venissero esclusi dal servizio e non generassero ulteriori costi, una stima di guadagno prudente che considera il parziale reimpiego del materiale rotabile, si attesta \textbf{300\,000\euro{}/anno}.
+
+\subsubsection{Risparmio carburante}
+Benchè già tenuto in considerazione nella stima appena proposta, per onestà intellettuale si calcola il guadagno proveniente dal risparmio di carburante. Al prezzo del gasolio industriale di 1.40\euro{}/L (IVA e accise
+incluse) \cite{mit_costi_gasolio}:
+\begin{equation}
+  \text{Risparmio}_\text{carb.} = 15\,500 \times 1.40
+  = \SI{21\,700}{\euro}\text{/anno}.
+  \label{eq:fuel_savings_eur}
+\end{equation}
+
+\subsubsection{Costo esterno degli inquinanti evitati}
+La monetizzazione dei benefici sanitari legati al miglioramento della qualità dell'aria locale è stata condotta adottando i costi marginali esterni proposti dallo \textit{Handbook on the External Costs of Transport} della Commissione Europea \cite{ec_handbook2019}. Considerando il contesto operativo urbano per l'Italia, i prezzi ombra assunti sono pari a $c_{\nox} = 11.40\,\text{\euro}/\text{kg}$ e $c_{\pmtwo} = 304.90\,\text{\euro}/\text{kg}$.
+
+\begin{table}[htbp]
+\caption{Risparmio costi esterni da spostamento modale (\euro/anno)}
+\label{tab:ext_costs}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & Breve & Mediano & Lungo \\
+\midrule
+\nox\ evitato [\euro/a]   & 832 & 1\,110 & 1\,664 \\
+\pmtwo\ evitato [\euro/a] & 396 & 549 & 823 \\
+\midrule
+\textbf{Totale} [\euro/a] & \textbf{1\,228} & \textbf{1\,659} & \textbf{2\,487} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Beneficio annuo totale e payback}
+Si riporta dunque una tabella contenete tutte le fonti di risparmio citate e ciò a cui sommano nel caso mediano.
+
+\begin{table}[H]
+\caption{Riepilogo beneficio economico annuo (scenario mediano)}
+\label{tab:economics}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Voce & Valore [\euro{}/anno] \\
+\midrule
+Risparmio sulla flotta ($-2$ bus)  & 300\,000\euro{} \\
+Costo esterno \nox\ evitato (shift modale + bus)       & 1\,110 + 33 = 1\,444\euro{} \\
+Costo esterno \pmtwo\ evitato (shift modale + bus)     & 549 + 52\,138 = 52\,687\euro{} \\
+\midrule
+\textbf{Beneficio totale}          & \textbf{{}354\,131\euro} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Costo dell'intervento}
+Trattandosi esclusivamente di una riorganizzazione dell'esercizio --- senza la posa di nuove infrastrutture pesanti --- i costi di investimento (CAPEX) risultano estremamente contenuti. La stima analitica delle voci una-tantum (Tabella~\ref{tab:cost}) è stata condotta assumendo i parametri del Prezziario Regionale delle Opere Pubbliche del Piemonte per gli interventi fisici \cite{prezziario_piemonte} e le tariffe professionali standard per l'ingegneria dei sistemi \cite{oice_tariffe}.
+
+In particolare, l'aggiornamento della segnaletica (65 fermate interessate tra soppressioni e declassamenti) è valutato in circa \SI{350}{\euro}/postazione per la rimozione dei paletti e la cancellazione della segnaletica orizzontale. Le attività di adeguamento informatico (database GTFS, sistemi AVM di bordo, \textit{Passenger Information System}) e il successivo monitoraggio prestazionale sono stati quantificati in base al monte ore-uomo specialistico necessario.
+
+\begin{table}[htbp]
+\caption{Stima analitica dei costi di implementazione una-tantum}
+\label{tab:cost}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Voce & Costo [\euro] \\
+\midrule
+Aggiornamento GTFS e sistemi IT (200 h) & \euro\,15\,000 \\
+Adeguamento segnaletica (65 fermate) & \euro\,22\,750 \\
+Campagna di comunicazione all'utenza    & \euro\,20\,000 \\
+Fase di monitoraggio dati (3~mesi)      & \euro\,12\,000 \\
+Imprevisti e arrotondamenti (15\%)      & \euro\,10\,463 \\
+\midrule
+\textbf{Totale}                         & \textbf{\euro\,80\,213} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Ipotizzando un risparmio operativo annuo stimato in Tabella \ref{tab:economics}, il periodo di rientro dell'investimento (\textit{payback period}) implicito risulta essere:
+\begin{equation}
+    PBP = \frac{80\,213}{354\,131} \approx 0.23 \text{ anni} \quad (\mathbf{\approx 2.8 \text{ mesi}}).
+\end{equation}
+Tale indicatore evidenzia un ritorno economico pressoché immediato per l'azienda esercente, confermando l'assoluta sostenibilità finanziaria dell'intervento.
+
+% =============================================================
+\section{Limitazioni e Sviluppi Futuri}
+\label{sec:discussion}
+
+\paragraph{Incertezza campionaria sulla domanda}
+La stima dei volumi di utenza e del conseguente \textit{modal shift} (Eq.~\ref{eq:ridership}) poggia sull'espansione dell'universo di indagine IMQ~2022, per il quale i record strettamente afferenti al corridoio in esame risultano limitati ($n=70$). Una futura campagna di validazione empirica tramite sistemi contapasseggeri automatici (APC) a bordo delle linee 45 e 99 consentirebbe di ridurre il margine di incertezza al di sotto del 5\%.
+
+\paragraph{Raffinamento del fattore di attribuzione}
+L'attuale modello impiega un fattore di ripartizione statico $\alpha_\text{att} = 0.55$, proporzionale all'offerta spaziale di fermate. L'approccio trascura le dinamiche di scelta degli utenti (es. tempo di attesa percepito). Uno sviluppo futuro del modello dovrà integrare l'esatta schedulazione estratta dai flussi GTFS per calcolare la probabilità di scelta in funzione dell'\textit{headway} relativo tra le linee concorrenti nella medesima fascia oraria.
+
+\paragraph{Penalità di accesso a piedi e servizio locale ombra}
+L'eliminazione di 31 fermate sul tracciato principale incrementa nominalmente la distanza di accesso per l'utenza di prossimità. Tuttavia, tale criticità è fortemente mitigata dalla presenza della già discussa 99, \emph{capillare e locale}, e della linea 45/ (barrato), la quale condivide con la direttrice principale un indice di sovrapposizione Jaccard pari a $0.75$. Di fatto, nel tratto sovrapposto, il 45/ agisce come servizio locale "ombra": l'utente non subisce un aumento della distanza di marcia, ma affronta una scelta modale interna tra il servizio capillare (45/) e il servizio rapido a maggiore distanza (45 Express). Un'analisi tramite modello gravitazionale sulle matrici O/D permetterebbe di mappare esattamente questo \textit{trade-off}.
+
+\paragraph{Replicabilità a livello di rete}
+Lo screening Jaccard ha individuato diverse altre coppie ad alta sovrapposizione nella rete GTT. Applicare sistematicamente la stessa pipeline di conversione in Express --- previa verifica della copertura di bacino --- costituisce la direzione principale di sviluppo, con potenziali benefici aggregati di un ordine di grandezza superiore rispetto al singolo caso studio.
+
+\paragraph{Correzione per flotta elettrica}
+Con il progressivo rinnovo della flotta aziendale verso veicoli \textit{Zero Emission} (ZEV), il modello di risparmio dovrà abbandonare l'equivalente termico a favore del bilancio elettrico. L'energia cinetica dissipata da un autobus di 18~tonnellate in fase di arresto ammonta a circa \SI{0.25}{kWh}. Assumendo un recupero in frenata rigenerativa del 65\% e considerando l'assorbimento degli ausiliari di bordo durante il transitorio di accelerazione, il costo energetico netto di una fermata si attesta su $\Delta E_\text{fermata} = \SI{0,15}{kWh}$ \cite{nrel_ebus}.
+Riportato ai volumi annui del progetto ($620\,000$ fermate evitate), il risparmio energetico raggiunge i $93\,000 \text{ kWh/anno}$. Valutando tale volume ai costi per uso non domestico ($0{,}22 \text{ \euro/kWh}$, ARERA 2024 \cite{arera_2024}) e applicando il fattore di emissione della rete elettrica italiana ($0{,}256 \text{ kg}_{\text{CO}_2}\text{/kWh}$ \cite{ispra2023}), si otterrebbe:
+\begin{align}
+  \Delta C_{\text{finanziario}}^\text{e-bus} &\approx \mathbf{ 20\,460 \text{ \euro/anno}}, \\
+  \Delta C_{\co}^\text{e-bus} &\approx \mathbf{ 23{,}8 \text{ t/anno}}.
+\end{align}
+Tale scenario evidenzia come l'elettrificazione dimezzi l'abbattimento di \co\ lato offerta rispetto al gasolio (da 41 a 23~t/anno), a fronte però di un valore intrinseco dell'intervento che permane altamente sostenibile sotto il profilo finanziario.
+
+% =============================================================
+\section{Conclusioni}
+\label{sec:conclusion}
+
+Il presente studio ha dimostrato come l'integrazione di analisi spaziale sui flussi GTFS, screening algoritmico per indici di Jaccard e rielaborazione di dati Open-Access sulle abitudini di mobilità, fornisca una metodologia quantitativa robusta e a basso costo per l'identificazione e la risoluzione delle inefficienze nelle reti di trasporto pubblico urbano.
+
+L'applicazione del modello alla rete gestita da GTT S.p.A. nel bacino metropolitano di Torino ha permesso di isolare il corridoio sud --- caratterizzato da una sovrapposizione di 34 fermate tra la linea di forza 45 e il servizio locale 99 --- quale candidato prioritario per la riqualificazione in ottica Express. L'intervento progettuale, consistente nella soppressione o nel declassamento di 31 fermate sul tracciato principale, non richiede opere infrastrutturali di tipo \textit{Heavy Rail/BRT} e, secondo lo scenario mediano di elasticità della domanda, è in grado di generare i seguenti benefici annui:
+
+\begin{itemize}
+  \item $103.1 \text{ t}_{\text{CO}_2}\text{/anno}$ di riduzione delle emissioni climalteranti globali;
+  \item $126.7 \text{ kg/anno}$ di ossidi di azoto ($\text{NO}_x$) e $172.8 \text{ kg/anno}$ di particolato fine ($\text{PM}_{2{,}5}$) evitati, a forte tutela della sanità pubblica locale;
+  \item $15\,500 \text{ L/anno}$ di carburante (gasolio) risparmiato grazie all'efficientamento della regolarità di marcia e all'abbattimento dei transitori di accelerazione;
+  \item Oltre $350\,000 \text{ \euro/anno}$ di beneficio economico complessivo, equamente ripartito tra risparmi operativi aziendali e recupero del costo opportunità del tempo per l'utenza;
+  \item Un periodo di rientro dell'investimento (\textit{payback period}) pari a soli $2.8 \text{ mesi}$, a fronte di costi una-tantum analiticamente stimati in $\approx 80\,000 \text{ \euro}$.
+\end{itemize}
+
+La metodologia sviluppata risulta computazionalmente snella, interamente replicabile a partire da dati di pubblico dominio e scalabile a qualsiasi rete urbana aderente agli standard informativi GTFS. L'approccio si configura pertanto come uno strumento di supporto alle decisioni di immediata applicabilità tecnica, pienamente allineato con le direttive del quadro normativo europeo in materia di Mobilità Urbana Sostenibile.
+
+% =============================================================
+\begin{thebibliography}{99}
+
+\bibitem{gtt_gtfs}
+GTT - Gruppo Torinese Trasporti. (2024). \textit{Dati di Rete e Orari del Trasporto Pubblico Locale (Formato GTFS) [Data set]}. Portale Open Data della Città di Torino. Estratto da: \url{https://aperto.comune.torino.it/dataset/feed-gtfs-trasporti-gtt/resource/88035475-b429-40de-ba64-99de232d6327}
+
+\bibitem{gtt2022}
+Gruppo Torinese Trasporti,
+\textit{Relazione sulla Gestione 2022},
+GTT S.p.A., Torino, 2022.
+
+\bibitem{darrick2010}
+Derrible, S., \& Kennedy, C. (2010). "The complexity and robustness of transit networks." \textit{Physica A: Statistical Mechanics and its Applications}, 389(17), 3678-3691.
+
+\bibitem{cats2016}
+Cats, O. (2016). "The robustness value of public transport development plans." \textit{Journal of Transport Geography}, 51, 236-246.
+
+\bibitem{cats2017}
+Cats, O. (2017). "Topological evolution of a metropolitan rail transport network: The case of Stockholm." \emph{Journal of Transport Geography}, 62, 172-183.
+
+\bibitem{TRB2013}
+TRB (2013). Transit Capacity and Quality of Service Manual (TCQSM), 3rd Edition. \textit{TCRP Report 165, Transportation Research Board of the National Academies}, Washington, D.C.
+
+\bibitem{Li2019}
+Li, Y., et al. (2019). "Identifying redundant public transit lines using smart card data and GPS trajectories." \emph{Transportation}, 46(6), 2269-2287.
+
+\bibitem{barabasi2002}
+A.-L.~Barabási e R.~Albert,
+``Emergence of scaling in random networks,''
+\textit{Science}, vol.~286, n.~5439, pp.~509--512, 1999.
+
+\bibitem{roth2012}
+C.~Roth, S.~M.~Kang, M.~Batty e M.~Barthélemy,
+``A long-time limit for world subway networks,''
+\textit{Journal of the Royal Society Interface},
+vol.~9, n.~75, pp.~2540--2550, 2012.
+
+\bibitem{ortuzar2011}
+J.~de~D.~Ortúzar e L.~G.~Willumsen,
+\textit{Modelling Transport}, 4a~ed.
+Chichester: Wiley, 2011, cap.~12, sez.~12.2.
+
+\bibitem{litman2023}
+T.~Litman,
+\textit{Transit Price and Service Elasticities},
+Victoria Transport Policy Institute, 2023.
+[Online]. Disponibile: \url{https://vtpi.org/tranelas.pdf}
+
+\bibitem{IEA_schipper}
+Schipper, L., Marie-Lilliu, C., \& Gorham, R. (2000). \textit{Flexing the link between transport and greenhouse gas emissions: A path for the World Bank}. International Energy Agency (IEA) / World Bank.
+
+\bibitem{ispra2023}
+ISPRA,
+\textit{Italian Greenhouse Gas Inventory 1990--2021},
+National Inventory Report, Roma, 2023.
+
+\bibitem{hbefa2022}
+INFRAS,
+\textit{HBEFA 4.2 - Handbook Emission Factors for Road Transport},
+Berna, Svizzera, 2022. 
+[Online]. Disponibile: \url{https://www.hbefa.net/}
+
+\bibitem{ec_handbook2019}
+Commissione Europea,
+\textit{Handbook on the External Costs of Transport, Versione 2019},
+Publications Office of the European Union, Lussemburgo, 2019.
+
+\bibitem{ema_factors}
+European Environment Agency,
+\textit{EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023},
+EEA, Copenaghen, 2023.
+
+\bibitem{amp_imq2022}
+Agenzia della Mobilità Piemontese,
+\textit{Indagine sulla Mobilità e la Qualità 2022 --- Open Data},
+AMP, Torino, 2022.
+[Online]. Disponibile: \url{https://mtm.torino.it}
+
+\bibitem{istat2011}
+Istituto Nazionale di Statistica,
+\textit{Censimento generale della popolazione e delle abitazioni. Spostamenti quotidiani per studio o lavoro --- Open Data},
+ISTAT, 2011.
+[Online]. Disponibile: \url{https://ottomilacensus.istat.it}
+
+\bibitem{art_costi_standard_2021}
+Autorità di Regolazione dei Trasporti (ART),
+\textit{Metodologia per l'individuazione dei costi standard dei servizi di trasporto pubblico locale e regionale --- Modelli applicativi e aggiornamenti},
+ART, Torino, 2021.
+[Online]. Disponibile: \url{https://www.autorita-trasporti.it/}
+
+\bibitem{tcrp95_cap9}
+Kittelson \& Associates,
+\textit{Traveler Response to Transportation System Changes. Chapter 9: Transit Scheduling and Frequency},
+TCRP Report 95, Transportation Research Board, Washington, D.C., 2004.
+
+\bibitem{mit_cnit}
+Ministero delle Infrastrutture e dei Trasporti,
+\textit{Conto Nazionale delle Infrastrutture e dei Trasporti --- Anno 2022},
+MIT, Roma, 2023.
+[Online]. Disponibile: \url{https://www.mit.gov.it/nazionale-infrastrutture-e-trasporti}
+
+\bibitem{amp_imq2022_report}
+Agenzia della Mobilità Piemontese (AMP),
+\textit{Indagine sulla Mobilità e Qualità dei Trasporti 2022 --- Report Completo},
+Torino, 2023.
+[Online]. Disponibile: \url{https://mtm.torino.it/it/dati-statistiche/indagini/}
+
+\bibitem{vti_asek}
+Trafikverket e VTI (Statens väg- och transportforskningsinstitut),
+\textit{ASEK 7.0 - Analysmetod och samhällsekonomiska kalkylvärden för transportsektorn} (Metodi di analisi e valori di calcolo socio-economico per il settore dei trasporti),
+Swedish Transport Administration, Borlänge, Svezia, 2020.
+
+\bibitem{nrel_transit_stops}
+National Renewable Energy Laboratory (NREL),
+\textit{Transit Bus Evaluation: Fuel Economy and Emissions in Stop-and-Go Drive Cycles},
+U.S. Department of Energy, Golden, CO, 2016.
+
+\bibitem{eea_guidebook2025}
+European Environment Agency,
+\textit{EMEP/EEA Air Pollutant Emission Inventory Guidebook 2025 --- 1.A.3.b.i-iv Road transport},
+EEA, Copenaghen, 2025.
+[Online]. Disponibile: \url{https://www.eea.europa.eu/publications/emep-eea-guidebook}
+
+\bibitem{mit_costi_gasolio}
+Ministero delle Infrastrutture e dei Trasporti (MIT),
+\textit{Valori indicativi di riferimento dei costi di esercizio dell'impresa di autotrasporto: Costo del gasolio per veicoli di massa superiore a 7,5 tonnellate --- Anno 2022},
+Roma, 2022.
+[Online]. Disponibile: \url{https://www.mit.gov.it/temi/trasporti/autotrasporto-merci/documentazione}
+
+\bibitem{oice_tariffe}
+OICE (Associazione delle organizzazioni di ingegneria, architettura e consulenza tecnico-economica),
+\textit{Linee guida per la determinazione dei corrispettivi per i servizi di ingegneria ed architettura},
+Roma, 2023.
+
+\bibitem{prezziario_piemonte}
+Regione Piemonte,
+\textit{Prezziario di riferimento per le opere e i lavori pubblici nella Regione Piemonte --- Edizione 2024},
+Torino, 2024.
+[Online]. Disponibile: \url{https://www.regione.piemonte.it/web/temi/sviluppo/opere-pubbliche/prezziario-delle-opere-pubbliche}
+
+\bibitem{nrel_ebus}
+National Renewable Energy Laboratory (NREL),
+\textit{Battery Electric Buses: State of the Practice},
+Golden, CO, 2022.
+[Online]. Disponibile: \url{https://www.nrel.gov/docs/fy22osti/82307.pdf}
+
+\bibitem{arera_2024}
+Autorità di Regolazione per Energia Reti e Ambiente (ARERA),
+\textit{Condizioni economiche per i clienti non domestici nel mercato di tutela},
+Roma, 2024.
+[Online]. Disponibile: \url{https://www.arera.it/}
+
+\end{thebibliography}
+\end{document}

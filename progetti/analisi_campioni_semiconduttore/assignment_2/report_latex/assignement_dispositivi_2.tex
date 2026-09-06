@@ -1,0 +1,957 @@
+\documentclass[a4paper,11pt]{report}
+% --- 1. CONFIGURAZIONE LINGUA E CODIFICA ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern} % Font vettoriale migliore di default
+
+% --- 2. LAYOUT E FORMATTAZIONE ---
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage[bottom]{footmisc} % Note a piè pagina bloccate in basso
+\usepackage{float}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% --- 3. MATEMATICA E FISICA ---
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{bm}      % Per il grassetto matematico corretto
+\usepackage{siunitx} % Per le unità di misura
+\usepackage{xparse}  % Per comandi avanzati
+
+% --- 4. GRAFICA E TIKZ ---
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{tikz-3dplot}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, calc, positioning, 3d, decorations.markings, angles, quotes, decorations.pathmorphing}
+
+% --- 5. NAVIGAZIONE ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Dispense di Elettrostatica}
+}
+
+% --- 6. COMANDI PERSONALIZZATI ---
+\renewcommand{\contentsname}{Indice}
+\renewcommand{\tablename}{Tabella}
+\pagecolor{white}
+
+% Stile Sezioni con linea orizzontale
+\NewDocumentCommand{\fancysectiontitle}{m}{%
+  \noindent
+  \textbf{\thesection\quad #1}%
+  \hspace{0.5em}%
+  \raisebox{0.6ex}{\rule{\linewidth - \widthof{\textbf{\thesection\quad #1}} - 0.6em}{0.4pt}}%
+}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {}
+  {0pt}
+  {\fancysectiontitle}
+
+\setcounter{tocdepth}{2}
+
+
+\pagestyle{fancy}
+\fancyhf{} % Pulisce tutti i campi di default
+
+\setlength{\headheight}{15pt} 
+
+% --- CONFIGURAZIONE HEADER (Intestazione) ---
+\lhead{\itshape \nouppercase{\rightmark}} % Sinistra: Titolo sezione
+\rhead{}                                 % Destra: Vuoto (prima c'era il numero)
+
+% --- CONFIGURAZIONE FOOTER (Piè di pagina) ---
+\lfoot{}                         % Sinistra: Numero di pagina
+\cfoot{}                                 % Centro: Vuoto
+\rfoot{\thepage}                                 % Destra: Vuoto
+
+% --- CONFIGURAZIONE LINEE ---
+\renewcommand{\headrulewidth}{0.4pt}     % Linea sopra
+\renewcommand{\footrulewidth}{0.4pt}     % Linea sotto (attivata)
+
+% Personalizzazione marcatori sezioni
+\renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+% --- RIDEFINIZIONE STILE CAPITOLO (ESERCIZIO) ---
+% --- RIDEFINIZIONE STILE CAPITOLO (ESERCIZIO) ---
+\titleformat{\chapter}[display] % [display] mette l'etichetta sopra, [hang] sulla stessa riga
+  {\normalfont\Huge\bfseries}   % Formattazione generale
+  {Esercizio \thechapter}       % ETICHETTA: Qui definisci la scritta "Esercizio"
+  {20pt}                        % Spazio verticale tra "Esercizio X" e il titolo
+  {\huge}                       % Formattazione specifica del titolo
+
+%Linee in basso in pagina iniziale capitolo
+\fancypagestyle{plain}{%
+  \fancyhf{}                           % Pulisce tutti i campi (header e footer)
+  \fancyfoot[R]{\thepage}              % Numero di pagina in basso a destra
+  \renewcommand{\headrulewidth}{0pt}   % Nessuna linea in alto (intestazione pulita)
+  \renewcommand{\footrulewidth}{0.4pt} % Linea in basso presente (spessore 0.4pt)
+}
+
+% Opzionale: Riduci lo spazio bianco enorme sopra il titolo del capitolo
+\titlespacing*{\chapter}{0pt}{-30pt}{40pt}
+
+% --- GESTIONE NOTE A PIÈ DI PAGINA ---
+\usepackage{chngcntr} % Pacchetto per reset dei contatori
+\counterwithin*{footnote}{chapter} % Resetta il contatore a ogni nuovo capitolo
+\renewcommand{\thefootnote}{\thechapter.\arabic{footnote}} % Imposta formato X.Y
+
+\begin{document}
+
+% --- 1. FRONTESPIZIO + INDICE (Tutto in una pagina) ---
+\pagestyle{empty}          % Niente numeri o header su questa pagina
+\tocloftpagestyle{empty}   % Assicura che tocloft non rimetta il numero
+
+% --- BLOCCO INTESTAZIONE ---
+{ \centering
+    % LOGO (Sostituisci 'logo_polito.png' con il nome del tuo file)
+    % Se non hai l'immagine, commenta la riga sotto con %
+    \includegraphics[width=5cm]{Logo_PoliTo.png} 
+    \vspace{1em}
+    
+    {\scshape\Large Politecnico di Torino \par}
+    {\large Corso di Dispositivi Elettronici \par}
+    \vspace{0.5cm}
+    
+    % TITOLO DEL REPORT
+    {\LARGE\bfseries Analisi e Simulazione di una Giunzione pn in Silicio:\par}
+    {\Large\bfseries Equilibrio e fuori equilibrio. Esperimento di Haynes Shockley \par}
+    \vspace{0.5cm}
+    
+    % AUTORE
+    {\large\itshape Carlo Alberto Riva} -- {\small Matricola: 339313 \par}
+    \vspace{0.5cm}
+}
+
+% --- INDICE ---
+% Il trucco: \let\clearpage\relax impedisce all'indice di andare a pagina nuova
+\begingroup
+    \let\clearpage\relax
+    \vspace{-1cm} % Riduciamo un po' lo spazio prima della scritta "Indice"
+    \tableofcontents
+\endgroup
+
+\clearpage % Ora forziamo il salto pagina per iniziare i capitoli veri
+
+% --- 2. INIZIO CONTENUTI (Pagina 1) ---
+\pagestyle{fancy}          % Ripristina il tuo stile personalizzato
+\pagenumbering{arabic}     % Resetta il contatore a 1
+
+% ... Il resto del documento prosegue come prima ...
+
+\chapter*{Caratteristiche del Campione}
+\addcontentsline{toc}{chapter}{Caratteristiche del Campione}
+
+Le simulazioni presentate in questo report fanno riferimento a una giunzione pn in Silicio omogenea [Esercizio (\ref{chap:pn})] e a un campione di semiconduttore in Silicio omogeneo uniformemente drogato [Esercizio (\ref{chap:HS})]. I parametri fisici e ambientali\footnote{I parametri contrassegnati dall'asterisco $*$ non sono caratteristiche intrinseche del sistema bensì \textit{condizioni al contorno} imposte esternamente in alcune parti delle simulazioni.}, mantenuti costanti a meno di diversa indicazione, sono stati determinati, come da indicazione, a partire dai valori $n = 12$ e $c = 4$.
+
+\subsubsection{Caratteristiche geometriche e fisiche}
+Si riportano le caratteristiche della giunzione pn analizzata a una temperatura costante $T = \SI{300}{\kelvin}$. Si segnala che la concentrazione intrinseca $n_i$ è stata valutata a partire dai valori di $N_C$ e $N_V$ utilizzati negli script di \texttt{Padre} secondo la relazione:
+\begin{equation}
+n_i = \sqrt{N_C N_V}\exp\left(-\frac{E_g}{2k_B T}\right).
+\label{eq:n_i}
+\end{equation}
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{0.1}
+    \caption{Parametri fisici e di simulazione della giunzione in Silicio.}
+    \label{tab:parametri_fisici}
+    \begin{tabular}{@{}l c l@{}}
+        \toprule
+        \textbf{Parametro} & \textbf{Simbolo} & \textbf{Valore} \\
+        \midrule
+        Materiale (Silicio) & Si & - \\
+        Lunghezza lato $n$ [$= (n + c + 1) \times 10$] & $w_n$ & \SI{170}{\micro\meter} \\
+        Lunghezza lato $p$ [$= (n + c + 1) \times 10$] & $w_p$ & \SI{170}{\micro\meter} \\
+        Lunghezza totale [$w_n + w_p$] & $L_{\text{tot}}$ & \SI{340}{\micro\meter} \\
+        Larghezza & $L_y$ & \SI{10}{\micro\meter} \\
+        Spessore & $L_z$ & \SI{1}{\milli\meter} \\
+        Energy Gap & $E_g$ & \SI{1.12}{\electronvolt} \\
+        Densità efficace degli stati in BC & $N_C$ & \SI{2.8e19}{\per\cubic\centi\meter} \\
+        Densità efficace stati in BV & $N_V$ & \SI{1.04e19}{\per\cubic\centi\meter} \\
+        Concentrazione intrinseca (calc.) & $n_i$ & \SI{6.68e9}{\per\cubic\centi\meter} \\
+        Permittività relativa & $\varepsilon_r$ & \num{11.7} \\
+        Costante dielettrica del Silicio [$=\varepsilon_r \varepsilon_0$] & $\varepsilon$ & \SI{1.04e-14}{\farad\per\centi\meter} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection{Drogaggio e tensione di bias}
+I valori di \textit{drogaggio} usati nelle simulazioni sono stati determinati a partire da $n \geq c$. Per il calcolo della \textit{tensione di bias} $V_{\text{bias}}$, invece, si è proceduto preliminarmente a valutare la \textit{tensione di built-in} $V_{\text{bi}}$:
+\begin{equation}
+V_{\text{bi}} = V_T\ln\left( \frac{N_AN_D}{n_i^2} \right) = \frac{k_BT}{q}\ln\left( \frac{N_AN_D}{n_i^2} \right) \approx \SI{0.97}{\volt}.
+\label{eq:V_bi}
+\end{equation}
+Essendo $n+c$ pari e $(n/20 = 0.6) \si{\volt} < V_{\text{bi}}$, il valore di tensione di bias assunto è $V_{\text{bias}} = \SI{0.6}{\volt}$.
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{0.1}
+    \caption{Parametri esterni: drogaggio e tensione di bias.}
+    \label{tab:drogaggi_bias}
+    \begin{tabular}{@{}l c l@{}}
+        \toprule
+        \textbf{Parametro} & \textbf{Simbolo} & \textbf{Valore} \\
+        \midrule
+        Drogaggio donatore (lato $n$) [$=n \times 10^{17}$] & $N_D$ & \SI{1.2e18}{\per\cubic\centi\meter} \\
+        Drogaggio accettatore (lato $p$) [$=\sqrt{nc} \times 10^{17}$] & $N_A$ & \SI{6.93e17}{\per\cubic\centi\meter} \\
+        Tensione di bias$^{*}$ [= $n/20$] & $V_{\text{bias}}$ & \SI{0.6}{\volt} \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\chapter{Analisi di una Giunzione pn}
+\label{chap:pn}
+Nel primo esercizio si analizza fisicamente e numericamente una giunzione pn \textit{brusca} in Silicio. Le simulazioni sono state condotte mediante il software \texttt{Padre}, il post-processing tramite il calcolatore \texttt{MATLAB}. \\
+\\
+Di seguito è riportata un'analisi in condizioni di equilibrio termodinamico e sotto l'applicazione di un bias costante dei diagrammi a bande di energia, del potenziale elettrostatico, del campo elettrico e della densità di carica netta caratterizzati il campione oggetto di studio. Si propone inoltre un'analisi delle correnti di elettroni, delle lacune e della somma delle due (corrente totale) in condizioni di polarizzazione e, conseguentemente, l'estrazione della caratteristica $I-V$ completa del dispositivo, esplorando sia la regione di polarizzazione diretta sia quella inversa.
+Viene preliminarmente richiesta una validazione dei parametri di mobilità dei portatori e delle dimensioni della regione di carica spaziale, in funzione del drogaggio e della tensione applicata. \\
+\\
+Si segnala che lo script utilizzato per eseguire le simulazioni, dovutamente adattato alle caratteristiche del dispositivo precedentemente discusse per garantirne la coerenza sperimentale, è il \textit{template} riportato sulla presentazione Power-Point di consegna del lavoro. 
+
+\section{Mobilità dei portatori}
+\subsubsection{Modello teorico}
+Sfruttando il modello di \textit{Caughey-Thomas}, è stato possibile determinare i valori di mobilità $\mu$ dei portatori maggioritari nelle due regioni della giunzione in funzione della concentrazione $N$ degli atomi droganti:
+\begin{equation}
+\mu(N) = \mu_{\text{min}} + \frac{\mu_{\text{max}} - \mu_{\text{min}}}{1 + \left( \frac{N}{N_{\text{ref}}} \right)^{\alpha}},
+\label{eq1:caug:thom}
+\end{equation}
+dove $\alpha$ e $N_{\text{ref}}$ sono parametri tipici del materiale mentre $\mu_{\text{min}}$ e $\mu_{\text{max}}$ caratteristiche del portatore. La relazione $\mu-N$ è stata implementata in ambiente \texttt{MATLAB} per eseguirne il plot al variare di $N \in [10^{15}, 10^{19}] \, \si{\per\cubic\centi\meter}$, con la scala delle concentrazioni semi-logaritmica (Figura (\ref{fig:mobilita})). 
+
+\subsubsection{Analisi dei risultati}
+
+Dalle concentrazioni riportate in Tabella (\ref{tab:drogaggi_bias}), si ottengono i seguenti valori di mobilità\footnote{Approssimati all'intero, emulando gli script di riferimento di \texttt{Padre}.},
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{0.9}
+    \caption{Mobilità dei portatori maggioritari.}
+    \label{tab:mobilità}
+    \begin{tabular}{@{}l c l@{}}
+        \toprule
+        \textbf{Parametro} & \textbf{Simbolo} & \textbf{Valore} \\
+        \midrule
+        Mobilità degli elettroni (lato $n$) & $\mu_n$ & \SI{240}{\centi\meter\squared\per\volt\per\second} \\
+        Mobilità delle lacune (lato $p$) & $\mu_p$ & \SI{110}{\centi\meter\squared\per\volt\per\second} \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\noindent
+evidentemente inferiori rispetto al silicio intrinseco, per il quale vale $\mu_{n}^{\text{intr}} \approx \SI{1360}{\centi\meter\squared\per\volt\per\second}$, $\mu_{p}^{\text{intr}} \approx \SI{495}{\centi\meter\squared\per\volt\per\second}$. La motivazione di questo notabile calo è da ricercarsi nell'aumento degli eventi di scattering reticolare causati dalla presenza non trascurabile di ioni droganti nel campione analizzato. La mobilità delle lacune risulta, infine, sistematicamente inferiore a quella degli elettroni a causa della maggiore massa efficace, come previsto dalla teoria: $m_p^{*} > m_n^{*}$.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{mobilità.pdf}
+    \caption{Modello di \textit{Caughey-Thomas} per la mobilità dei portatori. I marker indicano i valori di mobilità corrispondenti ai livelli di drogaggio del dispositivo in esame ($N_D\rightarrow \mu_n$ e $N_A \rightarrow \mu_p$).}
+    \label{fig:mobilita}
+\end{figure}
+
+
+\section{Regione di svuotamento}
+\label{sec:regione_svuotata}
+\subsubsection{Modello teorico}
+Lo studio della regione di carica spaziale, nell'approssimazione di \textit{completo svuotamento}\footnote{Che prescrive per la densità di carica nella giunzione un profilo \textit{costante a tratti}: nulla nelle regioni quasi-neutre, positiva nella parte di regione svuotata compresa nel lato $n$, negativa nella parte nel lato $p$.}, ha condotto alla determinazione della sua estensione parziale nelle regioni $n$ e $p$ (rispettivamente $x_n$ e $x_p$) e della sua ampiezza totale $x_d$. Definendo la \textit{concentrazione equivalente} $N_{\text{eq}} = N_D \parallel N_A$: 
+\begin{equation}
+x_n(V_{\text{bias}}) = \sqrt{\frac{2\varepsilon}{q}\frac{N_{\text{eq}}}{N_D^2}(V_{\text{bi}} - V_{\text{bias}})} \quad x_p(V_{\text{bias}}) = \sqrt{\frac{2\varepsilon}{q}\frac{N_{\text{eq}}}{N_A^2}(V_{\text{bi}} - V_{\text{bias}})}
+\label{eq:x_n_x_p},
+\end{equation}
+da cui si ricava $x_d$:
+\begin{equation}
+x_d(V_{\text{bias}}) = x_n(V_{\text{bias}}) + x_p(V_{\text{bias}}) = \sqrt{\frac{2\varepsilon}{q}\frac{1}{N_{\text{eq}}}(V_{\text{bi}} - V_{\text{bias}})}.
+\label{eq:x_d}
+\end{equation}
+Le caratteristiche $x-V_{\text{bias}}$ appena discusse sono state implementate in \texttt{MATLAB} per rappresentarne graficamente i profili di estensione\footnote{L'intervallo di variazione della variabile indipendente $V_{\text{bias}}$ è stato scelto per coprire in parte la polarizzazione inversa e la polarizzazione diretta fino al limite di validità del modello ($V_{\text{bias}} < V_{\text{bi}}$).}, riportati in Figura (\ref{fig:reg_svuotata}). 
+
+\subsubsection{Analisi dei risultati}
+
+Imponendo inizialmente l'equilibrio termodinamico ($V_{\text{bias}} = \SI{0}{\volt}$) e simulando successivamente il campione con la tensione $V_{\text{bias}}$ prescritta (cfr. Tabella (\ref{tab:drogaggi_bias})), si ottengono i valori riportati di seguito. \\
+\begin{table}[h!] % Il contenitore flottante va FUORI
+    \centering
+    % PRIMA MINIPAGE (SINISTRA)
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \caption{Ampiezze all'equilibrio termodinamico ($V_{\text{bias}} = \SI{0}{\volt}$).} % Caption specifica
+        \label{tab:mob_n}
+        \renewcommand{\arraystretch}{0.9}
+       \begin{tabular}{@{}l c l@{}}
+            \toprule
+            \textbf{Parametro} & \textbf{Valore} \\
+            \midrule
+            $x_{n,0}$ & \SI{192}{\nano\meter} \\
+            $x_{p,0}$ & \SI{333}{\nano\meter} \\
+            $x_{d,0}$ & \SI{524}{\nano\meter} \\
+            \bottomrule
+        \end{tabular}
+    \end{minipage}
+    \hfill % Spinge le minipage agli estremi
+    % SECONDA MINIPAGE (DESTRA)
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \caption{Ampiezze con bias applicato ($V_{\text{bias}} = \SI{0.6}{\volt}$).} % Caption specifica
+        \label{tab:mob_p}
+        \renewcommand{\arraystretch}{0.9}
+            \begin{tabular}{@{}l c l@{}}
+            \toprule
+            \textbf{Parametro} & \textbf{Valore} \\
+            \midrule
+            $x_{n,{\text{bias}}}$ & \SI{118}{\nano\meter} \\
+            $x_{p,{\text{bias}}}$ & \SI{205}{\nano\meter} \\
+            $x_{d,{\text{bias}}}$ & \SI{324}{\nano\meter} \\
+            \bottomrule
+        \end{tabular}
+    \end{minipage}
+\end{table}
+
+\noindent
+I dati confermano in generale la relazione inversa tra estensione della regione svuotata e livello di drogaggio ($x \propto 1/N$). Essendo il lato $p$ meno drogato del lato $n$ ($N_A < N_D$), la regione di svuotamento si estende coerentemente in prevalenza nel lato drogato con atomi accettatori ($x_p > x_n$), garantendo la neutralità di carica globale. All'applicazione di una tensione esterna positiva si registra, inoltre, una \textit{diminuzione} dell'ampiezza della regione di carica spaziale, in accordo con la dipendenza dell'estensione $x$ dalla radice quadrata della caduta di potenziale complessiva ai capi del campione ($x \propto \sqrt{V_{\text{bi}} - V_{\text{bias}}}$).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{ampiezza_regione_svuotamento.pdf}
+    \caption{Ampiezza della regione svuotata al variare della tensione di bias applicata. I marker indicano i valori corrispondenti di estensione all'equilibrio termodinamico e con una differenza di potenziale $V_{\text{bias}} = \SI{0.6}{\volt}$.}
+    \label{fig:reg_svuotata}
+\end{figure} 
+
+
+\section{Diagramma a bande: equilibrio termodinamico}
+A seguito della caratterizzazione geometrica della regione di svuotamento, si è proceduto alla simulazione tramite \texttt{Padre} del dispositivo in condizioni di equilibrio termodinamico ($V_{\text{bias}} = \SI{0}{\volt}$). L'obiettivo di questa fase è l'estrazione e l'analisi del diagramma a bande di energia, porgendo particolare attenzione alla regione di transizione.
+Per validare la correttezza della simulazione numerica, i risultati ottenuti sono stati confrontati con le previsioni teoriche. Più precisamente, è stata verificata la coerenza della barriera di potenziale di built-in ($qV_{\text{bi}}$) e del posizionamento del livello di Fermi rispetto ai bordi banda proibita nelle regioni quasi-neutre, sfruttando le previsioni di Maxwell-Boltzmann. 
+
+\subsection{Analisi teorica}
+\label{sub:analisi_teorica}
+Stante la condizione di \textit{sistema isolato}\footnote{Conseguenza dell'ipotesi di equilibrio termodinamico.}, si assume che i \textit{Quasi Livelli di Fermi} di elettroni e lacune, rispettivamente $E_{F_n}$ e $E_{F_p}$, coincidano con il \textit{Livello di Fermi} $E_F$ del dispositivo ($E_F \equiv E_{F_n} \equiv E_{F_p}$), costante lungo l'intera lunghezza del campione\footnote{Altra conseguenza dell'ipotesi di equilibrio termodinamico.}. 
+Al fine del calcolo delle concentrazioni di elettroni e lacune nelle regioni quasi-neutre della giunzione, necessario per valutare la distanza del Livello di Fermi dai bordi della banda proibita, è stata sfruttata l'approssimazione di \textit{completa ionizzazione} delle specie droganti\footnote{Data la temperatura $T = \SI{300}{\kelvin}$.} e, essendo la loro concentrazione $N \gg n_i$, la concentrazione dei maggioritari è stata stimata come pari a $N$ mentre quella dei minoritari a partire dalla \textit{Legge di Azione di Massa}.
+
+\vspace{-0.1em}
+\subsubsection{Regione $\bm{p}$}
+Le concentrazioni dei portatori nella regione drogata con atomi accettatori ($N_A$) risultano $p \approx N_A$ e $n = {n_i^2}/{p} \approx {n_i^2}/{N_A}$. Le distanze energetiche, quindi :
+\begin{equation}
+    \begin{aligned}
+        &E_{C,p} - E_{F} = k_B T \ln\left(\frac{N_C N_A}{n_i^2}\right) \approx \SI{1.05}{\electronvolt} \\
+        &E_F - E_{V,p} = k_B T \ln\left(\frac{N_V}{N_A}\right) \approx \SI{70.0}{\milli\electronvolt}. 
+    \end{aligned}
+    \label{eq:energies_p_formulas}
+\end{equation}
+
+
+\subsubsection{Regione \textit{n}}
+Le concentrazioni dei portatori nella regione drogata con atomi donatori ($N_D$) risultano $n \approx N_D$ e $p = {n_i^2}/{n} \approx {n_i^2}/{N_D}$. Analogamente alla regione $p$, le distanze energetiche risultano:
+        \begin{equation}
+            \begin{aligned}
+                &E_{C,n} - E_{F} = k_B T \ln\left(\frac{N_C}{N_D}\right) \approx \SI{81.4}{\milli\electronvolt} \\
+                &E_F - E_{V,n} = k_B T \ln\left(\frac{N_V N_D}{n_i^2}\right) \approx \SI{1.04}{\electronvolt}.
+            \end{aligned}
+            \label{eq:energies_n_formulas}
+            \end{equation}
+
+\subsubsection{Barriera di built-in $\bm{qV_{\text{bi}}}$}
+Dalla \eqref{eq:V_bi}, la barriera di potenziale di built-in si calcola come:
+\begin{equation}
+qV_{\text{bi}} \approx \SI{0.97}{\electronvolt}.
+\label{eq:qV_bi}
+\end{equation}
+
+
+\subsubsection{Implicazioni grafiche dei calcoli teorici}
+L'analisi quantitativa appena condotta impone precisi vincoli geometrici al diagramma a bande restituito dalla simulazione numerica: affinché i risultati di \texttt{Padre} possano considerarsi fisicamente coerenti, infatti, il grafico deve esibire le seguenti caratteristiche distintive:
+
+\begin{enumerate}
+    \item $E_{F_p} \equiv E_{F_n} \equiv E_F$ costante;
+   
+    \item nelle regioni quasi-neutre, lontano dalla giunzione metallurgica, le distanze energetiche devono stabilizzarsi sui valori teorici previsti e le singole bande devono risultare orizzontali, in ossequio all'assunzione della quasi neutralità\footnote{Se così non fosse, dovrebbe esistere un campo elettrico non nullo (essendo $d_xE_{F_i} \propto E$) e, di conseguenza, una densità di carica diversa da zero per la Legge di Gauss.};
+   
+    \item dal momento che la transizione tra due livelli energetici asintotici consecutivi genera un piegamento delle bande (\textit{band bending}) attraverso la regione di svuotamento, si deve verificare che questo "gradino" energetico, interpretabile come la differenza di quota tra $E_{C,p}$ e $E_{C,n}$, corrisponda esattamente all'energia potenziale di built-in $qV_{\text{bi}}$;
+
+\item nel lato $n$ il Livello di Fermi $E_F$ deve trovarsi al di sopra del Livello di Fermi Intrinseco $E_{F_i}$; viceversa nella regione $p$. La somma delle distanze energetiche, poi, deve essere uguale all'\textit{energy gap} caratteristico del Silicio.
+
+\end{enumerate}
+
+\subsection{Plot del diagramma a bande}
+I dati ottenuti dalla simulazione \texttt{Padre} sono stati importati in \texttt{MATLAB} per eseguire il plotting dei profili di estensione spaziale delle bande di energia, come riportato in Figura (\ref{fig:bands_padre}). 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{en_band_diag_eq.pdf} % Inserisci il tuo file
+    \caption{Diagramma a bande all'equilibrio termodinamico. Zoom sulla regione di svuotamento (intervallo $[-x_{p,0},x_{n,0}]$), evidenziata in grigio.}
+    \label{fig:bands_padre}
+\end{figure}
+
+\subsubsection{Convenzione sul riferimento spaziale}
+I valori di posizione $x$ estratti dal simulatore sono contraddistinti dall'avere, in corrispondenza dell'ascissa nulla, l'estremo del lato $p$ del campione (e quello del lato $n$ per $x = L_{\text{tot}}$): per ottenere un grafico che riportasse la giunzione metallurgica in posizione $x = 0$, i dati sono stati traslati\footnote{Così è stato fatto per ciascuno dei grafici che viene analizzato in questo report.} di un fattore $-w_n$\footnote{Indifferentemente sarebbe stato possibile eseguire una traslazione di $-w_p$, essendo $w_n = w_p$.}. Data la marcata disparità tra le dimensioni macroscopiche del dispositivo ($L_{\text{tot}} = \SI{340}{\micro\meter}$) e l'estensione della regione di carica spaziale\footnote{Si riporta in questo caso la disparità in equilibrio: si verifica che, anche nel caso in polarizzazione diretta, valgono le stesse considerazioni e sono quindi giustificabili le medesime convenzioni sul riferimento spaziale, essendo infatti $x_{d,0} > x_{d,\text{bias}}$.} ($x_{d,0} \approx \SI{524}{\nano\meter}$), la visualizzazione dell'intero campione renderebbe indistinguibili i dettagli della giunzione. Si è pertanto optato per uno zoom\footnote{Tecnica sfruttata per ogni altro grafico proposto in questo report.} mirato nell'intervallo $x \in [-0.1, 0.1]\,\si{\micro\meter}$. Tale finestra, coprendo un'area pari a circa quattro volte l'ampiezza di svuotamento calcolata ($x_{d,0}$), permette di osservare non solo l'intera regione di transizione (evidenziata in colore grigio), ma anche il ristabilirsi della neutralità elettrica ai bordi della finestra stessa.
+
+
+
+\subsubsection{Confronto delle distanze energetiche: simulazione vs teoria}
+Si riporta di seguito il confronto fra la previsione teorica $\mathcal{V}_{\text{th}}$ e il calcolo numerico $\mathcal{V}_{\text{num}}$ delle distanze energetiche analizzate e della barriera di built-in. Viene proposto, con il fine di rendere meglio sostenuta la discussione, il calcolo dell'errore relativo fra i valori ottenuti:
+\begin{equation}
+\epsilon = \frac{|\mathcal{V}_{\text{num}} - \mathcal{V}_{\text{th}}|}{\mathcal{V}_{\text{th}}}.
+\end{equation}
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.1} % Aumentato leggermente per leggibilità
+    \caption{Confronto tra risultati simulati e teorici: analisi dell'errore.}
+    \label{tab:confronto_errori}
+    \begin{tabular}{@{}l l l l@{}} % 4 colonne pulite: sinistra, centro, centro, centro
+        \toprule
+        \textbf{Parametro} & \textbf{Valore Simulato} & \textbf{Valore Teorico} & \textbf{Errore Relativo} \\
+        \midrule
+        $E_{C,p} - E_{F}$ & \SI{1.05}{\electronvolt} & \SI{1.05}{\electronvolt} & \num{8.95e-6} \\
+        $E_F - E_{V,p}$   & \SI{70.0}{\milli\electronvolt} & \SI{70.0}{\milli\electronvolt} & \num{1.34e-4} \\
+        $E_{C,n} - E_{F}$ & \SI{81.4}{\milli\electronvolt} & \SI{81.4}{\milli\electronvolt} & \num{3.85e-5} \\
+        $E_F - E_{V,n}$   & \SI{1.04}{\electronvolt} & \SI{1.04}{\electronvolt} & \num{3.02e-6} \\
+        $V_{\text{bi}}$   & \SI{0.97}{\electronvolt} & \SI{0.97}{\electronvolt} & \num{9.09e-5} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\subsubsection{Analisi del diagramma: validazione delle previsioni teoriche}
+Dall'esame del grafico si riscontra una piena validazione delle implicazioni teoriche discusse nella sezione precedente:
+\begin{enumerate}
+    \item \textit{Livello di Fermi costante}: come previsto, il livello di Fermi (coincidente con i quasi livelli di elettroni e lacune) appare perfettamente costante e "piatto" attraverso l'intera giunzione;
+    
+    \item \textit{transizione alle regioni neutre}: fuori dalla regione di carica spaziale (dunque per $x > x_{n,0} \lor x < -x_{p,0}$) e verso gli estremi dello zoom ($|x| = \SI{0.1}{\micro\meter}$), le bande tendono ad appiattirsi asintoticamente. Le distanze energetiche simulate, riportate in Tabella (\ref{tab:confronto_errori}), risultano assolutamente consistenti con i valori calcolati nelle \eqref{eq:energies_p_formulas} e \eqref{eq:energies_n_formulas}, confermando l'annullarsi del campo elettrico al di fuori della regione di svuotamento e, conseguentemente, l'approssimazione di quasi neutralità;
+
+    \item \textit{band bending e $V_{bi}$}: le bande energetiche $E_C$ ed $E_V$ mostrano la caratteristica curvatura parabolica all'interno della regione di svuotamento\footnote{Conseguenza dell'equazione di Poisson con densità di carica costante a tratti.}. La differenza di potenziale totale tra la regione $p$ (sinistra) e la regione $n$ (destra), interpretata come discusso nelle considerazioni teoriche, corrisponde visivamente e quantitativamente al valore teorico di $qV_{bi} \approx \SI{0.97}{\electronvolt}$ calcolato analiticamente;
+    
+    \item è evidente come nel lato $p$ valga $E_{F} - E_{F_i} < 0$ mentre nella regione $n$ sia $E_{F} - E_{F_i} > 0$. La somma delle distanze energetiche, inoltre, corrisponde a $E_g$.
+    \end{enumerate}
+
+
+\section{Diagramma a bande: tensione di bias}
+Lo studio è proseguito simulando la risposta del dispositivo a una sollecitazione esterna di tipo statico. Applicando all'elettrodo anodico (lato $p$) una tensione di bias $V_{\text{bias}} = \SI{0.6}{\volt}$, si porta la giunzione in regime di \textit{polarizzazione diretta}. In tale condizione, l'equilibrio termodinamico viene interrotto e la corrente netta non è più nulla. A livello energetico, ciò comporta due conseguenze fondamentali che la simulazione deve evidenziare: la riduzione della barriera di potenziale alla giunzione e la separazione del Livello di Fermi unico in due \textit{Quasi-Livelli di Fermi} distinti per elettroni ($E_{F_n}$) e lacune ($E_{F_p}$). \\
+Di seguito si riporta un confronto fra i diagrammi a bande in equilibrio e sotto bias.
+
+\begin{figure}[h!]
+    \centering
+    % MINIPAGE SINISTRA: EQUILIBRIO (Riferimento)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{en_band_diag_eq.pdf} % Usa il file che hai già
+        \caption{Equilibrio ($V_{\text{bias}} = \SI{0}{\volt}$).}
+        \label{fig:bands_eq_side}
+    \end{minipage}
+    \hfill % Spinge le figure agli estremi
+    % MINIPAGE DESTRA: BIAS (Nuovo grafico)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{en_band_diag_bias.pdf} % Inserisci il nome del NUOVO file (0.6V)
+        \caption{Bias diretto ($V_{\text{bias}} = \SI{0.6}{\volt}$).}
+        \label{fig:bands_bias_side}
+    \end{minipage}
+    % Didascalia generale opzionale (se vuoi un commento globale)
+    \caption*{Confronto diretto tra i diagrammi a bande: si noti, nel caso polarizzato, la riduzione della barriera di potenziale e lo splitting dei livelli di Fermi.}
+\end{figure}
+
+\subsubsection{Validazione delle previsioni teoriche}
+La differenza tra i Quasi-Livelli di Fermi nelle regioni neutre corrisponde teoricamente alla tensione esterna applicata moltiplicata per la carica elementare:
+\begin{equation}
+    E_{F_n} - E_{F_p} = q V_{\text{bias}} = \SI{0.6}{\electronvolt},
+\end{equation}
+coerentemente con il risultato numerico ottenuto da \texttt{Padre}. Ancora, la barriera di potenziale in condizioni di polarizzazione:
+\begin{equation}
+    V_{\text{bi,bias,th}} = q(V_{\text{bi}} - V_{\text{bias}}) \approx \SI{0.37}{\electronvolt},
+    \label{eq:V_bi-V_bias}
+\end{equation}
+in perfetto accordo con la simulazione numerica che prevede $V_{\text{bi,bias,num}} \approx \SI{0.37}{\electronvolt}$, con un errore relativo rispetto alla teoria di $\epsilon = \SI{3.16e-6}{}$.\\
+
+\subsubsection{Analisi e confronto con l'equilibrio}
+Dall'analisi comparata dei due diagrammi a bande emerge chiaramente come l'applicazione della tensione positiva riduca l'altezza della barriera di potenziale e, di conseguenza, l'estensione della regione di carica spaziale (cfr. Sezione (\ref{sec:regione_svuotata}))
+Si osserva, inoltre, che nel caso fuori equilibrio:
+\begin{enumerate}
+\item i Quasi-Livelli appaiono pressoché paralleli lungo l'intero asse delle ascisse, senza mostrare la caratteristica convergenza verso un unico livello di Fermi. Tale comportamento è imputabile alla ristretta finestra di visualizzazione adottata ($x \in [-0.1, 0.1]\,\si{\micro\meter}$).
+La ricombinazione dei portatori, responsabile del riallineamento dei livelli di Fermi, avviene infatti su distanze caratteristiche pari alla \textit{lunghezza di diffusione} $L$, definita come:
+\begin{equation}
+    L = \sqrt{D \tau} = \sqrt{V_T \mu \tau}.
+\end{equation}
+Considerando i valori di mobilità ricavati in precedenza ($\mu \approx \SI{100}{\centi\meter\squared\per\volt\per\second}$) e il tempo di vita medio impostato nello script ($\tau = \SI{2e-7}{\second}$), si ottiene una lunghezza di diffusione $L \approx \SI{22}{\micro\meter}$.
+Confrontando tale grandezza con la finestra di zoom:
+\begin{equation}
+    x_{\text{max}} = \SI{0.1}{\micro\meter} \ll L \approx \SI{22}{\micro\meter}.
+\end{equation}
+Risulta evidente che, all'interno della regione visualizzata, i processi di ricombinazione siano trascurabili, giustificando l'andamento costante della separazione $E_{F_n} - E_{F_p}$;
+
+\item i Quasi-Livelli dei maggioritari nelle regioni quasi neutre sono contraddistinti dalla stessa distanza dagli estremi della BV e BC che caratterizza il Livello di Fermi nel caso all'equilibrio termodinamico, in accordo con la teoria. 
+\end{enumerate}
+Si riporta il diagramma a bande con bias applicato per consentire di apprezzare al meglio le considerazioni proposte.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{en_band_diag_bias.pdf} % Inserisci il tuo file
+    \caption{Diagramma a bande in polarizzazione diretta. Zoom sulla regione di svuotamento (intervallo $[-x_{p,\text{bias}},x_{n,\text{bias}}]$), evidenziata in grigio.}
+    \label{fig:bands_padre_bias}
+\end{figure}
+
+
+\section{Potenziale elettrostatico}
+Contestualmente all'analisi energetica, si è proceduto all'analisi del profilo spaziale del potenziale elettrostatico $\varphi(x)$ in condizioni di equilibrio termodinamico e a seguito dell'applicazione di una tensione di bias. Dal punto di vista fisico, tale grandezza rappresenta la soluzione dell'equazione di Poisson:
+\begin{equation}
+    \frac{d^2\varphi}{dx^2} = -\frac{\rho(x)}{\varepsilon},
+\end{equation}
+ed è legata intrinsecamente all'andamento del livello di Fermi intrinseco ($\varphi(x) = -E_{F_i}(x)/q$).
+L'obiettivo di questa sezione è confrontare la soluzione numerica esatta fornita dal simulatore \texttt{Padre} con il modello teorico analitico basato sull'approssimazione di completo svuotamento.
+
+\subsubsection{Modello teorico}
+Secondo il modello teorico della giunzione brusca, il potenziale elettrostatico deve esibire un andamento parabolico all'interno della regione di carica spaziale e costante nelle regioni neutre\footnote{Si sceglie lo zero del potenziale in corrispondenza della giunzione metallurgica: $\varphi(0) = \SI{0}{\volt}$.}:
+
+\begin{equation}
+\varphi(x) = 
+\begin{cases}
+-\frac{qN_A}{2\varepsilon}x_{p}^2   \\
+\frac{qN_A}{2\varepsilon}(x_{p}+x)^2 - \frac{qN_A}{2\varepsilon}x_{p}^2 \\
+-\frac{qN_D}{2\varepsilon}(x-x_{n})^2 + \frac{qN_D}{2\varepsilon}x_{n}^2 \\
+\frac{qN_D}{2\varepsilon}x_{n}^2
+\end{cases}
+\quad
+\begin{aligned}
+&x < -x_{p} \\
+&-x_{p,0} \leq x < 0 \\
+&0 \leq x < x_{n} \\
+&x \geq x_{n}. 
+\end{aligned}
+\label{eq:profilo_pot}
+\end{equation}
+
+\subsection{Potenziale elettrostatico: equilibrio termodinamico}
+Si riporta in Figura (\ref{fig:potential_eq}) il profilo di potenziale all'equilibrio estratto dalla simulazione (e plottato in \texttt{MATLAB}) e l'andamento previsto dalla teoria.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{potential_equilibrium.pdf} % Inserisci il nome del tuo file
+    \caption{Confronto del profilo di potenziale elettrostatico teorico e simulato, in equilibrio termodinamico. Zoom sulla regione svuotata, evidenziata in grigio.}
+    \label{fig:potential_eq}
+\end{figure}
+
+\noindent
+Dallo studio del grafico è possibile riscontrare punti di tangenza e lievi discrepanze fra la simulazione e la previsione teorica. All'analisi viene giustapposto un breve paragrafo riguardo le conseguenze dell'approssimazione di completo svuotamento: essendo la più "brutale" considerazione teorica, influenza infatti non solo la resa numerico-teorica del profilo di potenziale ma anche quella di campo elettrostatico e densità netta di carica spaziale.  
+
+\subsubsection{Simulazione vs teoria}
+\label{sec_prova}
+Si propongono alcune considerazioni di confronto inerenti la Figura (\ref{fig:potential_eq}):
+\begin{enumerate}
+    \item \textit{andamento parabolico:} nella regione di transizione, la curva del potenziale segue fedelmente l'andamento quadratico previsto dalla teoria. La concavità della curva si inverte, come atteso, in corrispondenza della giunzione metallurgica ($x=0$);
+
+    \item \textit{barriera di potenziale ($V_{\text{bi}}$):} la differenza di potenziale complessiva che si instaura tra la regione neutra di tipo $n$ e quella di tipo $p$ corrisponde alla barriera di built-in.
+    Dall'analisi numerica si rileva:
+    \begin{equation}
+        \Delta \varphi = \varphi_n(x \gg -x_{n,0}) - \varphi_p(x \ll -x_{p,0}) \approx \SI{0.97}{\volt}.
+    \end{equation}
+    Tale valore coincide perfettamente con il potenziale di built-in teorico $V_{bi}$ calcolato nella \eqref{eq:V_bi}, confermando la coerenza interna della simulazione.
+   
+
+\subsubsection{Conseguenze dell'approssimazione di completo svuotamento}
+\label{sec:conseguenze_compl_svuot}
+\item l'approssimazione di completo svuotamento, benché utile in prima analisi, presenta limiti intrinseci nell'aderenza alla realtà fisica. Essa assume infatti una densità di portatori liberi identicamente nulla nella regione di carica spaziale (\(n=p=0\)), cosicché la densità di carica netta coincida esattamente con la carica fissa degli ioni droganti (\(\rho = qN_D\) nel lato \(n\), \(\rho = -qN_A\) nel lato \(p\)).
+La simulazione numerica, risolvendo in modo auto-consistente l'equazione di Poisson, mostra invece una transizione \textit{graduale} ai confini della regione di svuotamento, dove persiste una densità non trascurabile di portatori. Questo comportamento è dovuto al \textit{decadimento esponenziale} delle concentrazioni dei minoritari nelle regioni quasi-neutre, governato da una lunghezza caratteristica (come la lunghezza di Debye o di diffusione).
+La simulazione offre quindi una rappresentazione più accurata del profilo di carica, specialmente nelle zone di transizione, dove l'approssimazione a gradino risulta eccessivamente idealizzata.
+    \end{enumerate}
+
+\subsection{Potenziale elettrostatico: tensione di bias}
+Estendendo l'indagine al regime di non-equilibrio, è stato analizzato il profilo del potenziale elettrostatico $\varphi(x)$ in regime di polarizzazione diretta con una $V_{\text{bias}} = \SI{0.6}{\volt}$. I dati estratti da \texttt{Padre} sono stati importati in \texttt{MATLAB} per eseguirne il plot comparato alla previsione teorica. 
+
+\subsubsection{Simulazione vs teoria}
+L'applicazione di una tensione di bias positiva agisce riducendo la caduta di potenziale complessiva ai capi del campione, pur senza modificare il profilo globale descritto nella \eqref{eq:profilo_pot}. 
+La tensione netta ai capi della regione di svuotamento ($V_{\text{bi,bias}}$), intesa come dislivello di potenziale tra le regioni neutre $n$ e $p$, non può infatti coincidere con il potenziale di built-in all'equilibrio, ma risulta teoricamente modulata secondo la relazione:
+\begin{equation}
+    V_{\text{bi,bias}} = V_{\text{bi}} - V_{\text{bias}}.
+    \label{eq:barrier_reduction}
+\end{equation}
+Essendo $V_{\text{bias}} > 0$, la nuova tensione di-built in deve essere minore di quella registrata in condizioni di equilibrio, come appare evidente dalla Figura (\ref{fig:potential_bias1}). 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.69\textwidth]{potential_bias1.pdf} % Inserisci il nome del tuo file
+    \caption{Confronto del profilo di potenziale elettrostatico teorico e simulato, in condizioni di polarizzazione diretta. Zoom sulla regione svuotata, evidenziata in grigio.}
+    \label{fig:potential_bias1}
+\end{figure}
+
+\noindent
+Sostituendo il valore precedentemente ricavato per la tensione di built-in ($\SI{0.97}{\volt}$( e la prescrizione di $\SI{0.60}{\volt}$ del bias, si ottiene un valore teorico di $V_{\text{bi,bias}} = \SI{0.37}{\volt}$. Confrontando tale risultato con il salto di potenziale estratto dalla simulazione numerica ($V_{\text{bi,num}} \approx \SI{0.37}{\volt}$), si osserva un perfetto accordo quantitativo. 
+Si nota poi che, analogamente al caso di equilibrio, il potenziale assume un profilo parabolico aderente a quello previsto teoricamente nella regione di carica spaziale e mantiene un andamento costante all'interno delle regioni quasi-neutre. Quest'ultimo fatto conferma che la caduta di potenziale ohmica sulle resistenze parassite delle regioni quasi-neutre è trascurabile: l'intera tensione applicata $V_{\text{bias}}$ cade effettivamente ai capi della regione di carica spaziale. Si osserva, in ultimo, come la curva teorica si discosti da quella simulata in corrispondenza degli estremi della regione svuotata: nuovamente si imputa la causa di ciò ai limiti dell'approssimazione a gradino (cfr. Sezione (\ref{sec:conseguenze_compl_svuot}), "Conseguenze dell'approssimazione di completo svuotamento"). \\
+\\
+\noindent
+Di seguito una comparazione dei profili di potenziale all'equilibrio e in condizioni di polarizzazione diretta. \\
+\begin{figure}[h!]
+    \centering
+    % MINIPAGE SINISTRA: EQUILIBRIO (Riferimento)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{potential_equilibrium.pdf} % Usa il file che hai già
+        \caption{Equilibrio ($V_{\text{bias}} = \SI{0}{\volt}$).}
+        \label{fig:bands_eq_side}
+    \end{minipage}
+    \hfill % Spinge le figure agli estremi
+    % MINIPAGE DESTRA: BIAS (Nuovo grafico)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{potential_bias.pdf} % Inserisci il nome del NUOVO file (0.6V)
+        \caption{Bias diretto ($V_{\text{bias}} = \SI{0.6}{\volt}$).}
+        \label{fig:bands_bias_side}
+    \end{minipage}
+    % Didascalia generale opzionale (se vuoi un commento globale)
+    \caption*{Confronto diretto tra i profili di potenziale: si noti la riduzione della caduta di potenziale totale sulla giunzione. Zoom sulla regione di svuotamento, evidenziata in grigio.}
+\end{figure}
+
+\subsection{Commento sul sistema di riferimento}
+Coerentemente con la trattazione analitica, che fissa lo zero del potenziale in corrispondenza della giunzione metallurgica ($x = 0$), si è proceduto alla post-elaborazione dei dati simulati. Nello specifico, ricordando che $\varphi(x) = -E_{F_i}(x)/q$ e che il simulatore fissa lo \textit{zero} dell'energia in corrispondenza del Livello di Fermi del materiale, è stato necessario applicare una traslazione rigida all'intero profilo di potenziale simulato, sottraendo il valore $\varphi_{\text{num}}(0)$ estratto da \texttt{Padre}, per ottenere coerenza $\varphi_{\text{th}} = \varphi_{\text{num}} = \SI{0}{\volt}$. Tale normalizzazione ha garantito la congruenza dei riferimenti e permesso la sovrapposizione diretta delle curve per il confronto.
+
+\section{Campo elettrostatico}
+A completamento dell'analisi elettrostatica, si è esaminato l'andamento del campo elettrico $\mathcal{E}(x)$ all'interno del dispositivo. Essendo tale grandezza definita come l'opposto del gradiente spaziale del potenziale:
+\begin{equation}
+    \mathcal{E}(x) = -\frac{d\varphi}{dx},
+    \label{eq:profilo_E}
+\end{equation}
+il suo profilo risulta strettamente correlato alle variazioni di pendenza della curva del potenziale discusse nella sezione precedente.
+
+\subsubsection{Modello teorico}
+Il campo elettrico analizzato è soluzione dell'equazione di Gauss per una distribuzione di carica che rispetta le implicazioni delle approssimazioni di giunzione brusca e completo svuotamento. D'altronde, dalla \eqref{eq:profilo_E} e dalle considerazioni proposte nella sezione precedente, si evince come $\mathcal{E}(x)$ debba risultare identicamente nullo nelle regioni quasi neutre e presentare un profilo lineare nella regione di svuotamento, assumendo il suo massimo, in modulo, in corrispondenza della giunzione metallurgica:
+\begin{equation}
+\mathcal{E}(x) = 
+\begin{cases}
+0  \\
+-\frac{qN_A}{\varepsilon}(x_{p}+x) \\
+\frac{qN_D}{\varepsilon}(x-x_{n}) \\
+0 \\
+\end{cases}
+\quad
+\begin{aligned}
+&x < -x_{p} \\
+&-x_{p,0} \leq x < 0 \\
+&0 \leq x < x_{n} \\
+&x \geq x_{n},
+\end{aligned}
+\end{equation}
+\begin{equation}
+\mathcal{E}_{\text{max}} = |\mathcal{E}(0)| = -\frac{qN_A}{\varepsilon}x_{p} = -\frac{qN_D}{\varepsilon}x_{n}.
+\end{equation}
+
+\subsection{Campo elettrostatico: equilibrio termodinamico}
+La Figura (\ref{fig:electric_field_eq}) riporta il plotting comparato in \texttt{MATLAB} del profilo di campo elettrostatico in condizioni di equilibrio previsto dalla teoria e dalla simulazione effettuata tramite \texttt{Padre}. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{campo_el_eq.pdf} % Inserisci il nome del tuo file
+    \caption{Confronto del profilo di campo elettrostatico teorico e simulato, in equilibrio termodinamico. Zoom sulla regione svuotata, evidenziata in grigio.}
+    \label{fig:electric_field_eq}
+\end{figure}
+
+\subsubsection{Simulazione vs teoria}
+Dall'analisi delle due curve, si avanzano le seguenti considerazioni:
+\begin{enumerate}
+    \item \textit{linearità e pendenza (Legge di Gauss)}:
+    nella parte centrale della regione di svuotamento (attorno alla giunzione metallurgica), entrambe le curve esibiscono un andamento lineare con pendenze pressoché identiche. Poiché dalla legge di Gauss vale $d\mathcal{E}/dx = \rho/\varepsilon_s$, la coincidenza dei coefficienti angolari conferma come il simulatore stia modellando correttamente i livelli di drogaggio costanti ($N_A$ e $N_D$) imposti nella definizione del dispositivo;
+
+    \item \textit{valore di picco:}
+    si osserva che il picco del campo elettrico simulato risulta leggermente inferiore, in modulo, rispetto a quello teorico ($\text{max}\{|\mathcal{E}_{\text{eq,sim}}|\} < \text{max}\{|\mathcal{E}_{\text{eq,th}}|\}$).
+    
+    \begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.1} % Aumentato leggermente per leggibilità
+    \caption{Confronto tra risultati simulati e teorici: analisi dell'errore.}
+    \label{tab:confronto_errori}
+    \begin{tabular}{@{}l l l l@{}} % 4 colonne pulite: sinistra, centro, centro, centro
+        \toprule
+        \textbf{Parametro} & \textbf{Valore Simulato} & \textbf{Valore Teorico} & \textbf{Errore Relativo} \\
+        \midrule
+       $\mathcal{E}_{\text{max}} [= \max\{|\mathcal{E}_{\text{eq}}|\}]$ & \SI{3.50e5}{\volt\per\centi\meter} & \SI{3.69e5}{\volt\per\centi\meter} & \num{5.16e-2} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+    
+Tale fenomeno è giustificabile nei limiti dell'approssimazione di completo svuotamento (cfr. Sezione (\ref{sec:conseguenze_compl_svuot}), "Conseguenze dell'approssimazione di completo svuotamento").
+Nella realtà fisica simulata da \texttt{Padre}, infatti, la diffusione dei portatori maggioritari attraverso la giunzione causa un leggero "sconfinamento" di cariche mobili (teoricamente trascurate) in prossimità dell'interfaccia metallurgica ($x=0$). La presenza di questi portatori mobili compensa parzialmente la carica fissa degli ioni, riducendo localmente la densità di carica netta effettiva ($|\rho_{\text{eff}}| < qN$). Poiché il campo elettrico è dato dall'integrazione della densità di carica, una densità media inferiore risulta inevitabilmente in un valore massimo del campo più contenuto e in un profilo dal vertice arrotondato ("smussato") anziché a cuspide;
+    
+    \item \textit{bordi della regione:}
+    la differenza più significativa fra le due curve si osserva agli estremi della regione di carica spaziale (in prossimità di $-x_{p,0}$ e $x_{n,0}$). La motivazione per questo comportamento è da ricercarsi nei limiti dell'approssimazione di completo svuotamento (cfr Sezione (\ref{sec:conseguenze_compl_svuot}), "Conseguenze dell'approssimazione di completo svuotamento"): la presenza di portatori liberi ai bordi della regione di carica spaziale impedisce la realizzazione effettiva del profilo lineare previsto dalla teoria.
+\end{enumerate}
+
+
+\subsection{Campo elettrostatico: tensione di bias}
+L'applicazione di una tensione anodica positiva ($V_{\text{bias}} = \SI{0.6}{\volt}$) altera la distribuzione del campo elettrico all'interno della giunzione, agendo in riduzione della barriera di potenziale netta e diminuendo così il campo interno necessario a sostenerla. La Figura (\ref{fig:electric_field_bias}) riporta il profilo spaziale del campo elettrostatico nel campione, con tensione applicata, derivante dalla simulazione numerica confrontato con quello previsto dalla teoria.
+
+\begin{figure}[h]
+    \centering
+    % Se hai un grafico con entrambe le curve sovrapposte, usa quello.
+    % Altrimenti affiancali o usa quello solo con bias se il confronto è già stato fatto.
+    \includegraphics[width=0.64\textwidth]{campo_el_bias.pdf} 
+    \caption{Confronto del profilo di campo elettrostatico teorico e simulato, con una tensione di bias applicata. Zoom sulla regione svuotata, evidenziata in grigio.}
+    \label{fig:electric_field_bias}
+\end{figure}
+
+
+\subsubsection{Simulazione vs teoria}
+Come denotato in condizioni di equilibrio, nella parte centrale della regione di svuotamento (attorno alla giunzione metallurgica), entrambe le curve esibiscono un andamento lineare con pendenze pressoché identiche, in ossequio ai livelli costanti di drogaggio imposti nella definizione del dispositivo. Nuovamente, il picco del campo si registra in corrispondenza della giunzione metallurgica, come previsto dalla teoria e, globalmente, vale che $\text{max}\{|\mathcal{E}_{\text{bias}}|\} < \text{max}\{|\mathcal{E}_{\text{eq}}|\}$, rispettando la dipendenza dall'ampiezza parziale della regione svuotata ($\mathcal{E} \propto x_{(n,p),d}$). \\
+\begin{figure}[h!]
+    \centering
+    % MINIPAGE SINISTRA: EQUILIBRIO (Riferimento)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{campo_el_eq.pdf} % Usa il file che hai già
+        \caption{Equilibrio ($V_{\text{bias}} = \SI{0}{\volt}$).}
+        \label{fig:bands_eq_side}
+    \end{minipage}
+    \hfill % Spinge le figure agli estremi
+    % MINIPAGE DESTRA: BIAS (Nuovo grafico)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{campo_el_bias1.pdf} % Inserisci il nome del NUOVO file (0.6V)
+        \caption{Bias diretto ($V_{\text{bias}} = \SI{0.6}{\volt}$).}
+        \label{fig:bands_bias_side}
+    \end{minipage}
+    % Didascalia generale opzionale (se vuoi un commento globale)
+    \caption*{Confronto diretto tra i profili di campo elettrico: si noti la diminuzione in modulo del picco in occorrenza della giunzione. Zoom sulla regione di svuotamento, evidenziata in grigio.}
+\end{figure}
+
+\noindent
+L'approssimazione di completo svuotamento implica, ancora una volta, la mancata aderenza delle curve in corrispondenza degli estremi della regione di carica spaziale e il fatto, ben evidente nella Figura (\ref{fig:electric_field_bias}), che $\text{max}\{|\mathcal{E}_{\text{bias,sim}}|\} < \text{max}\{|\mathcal{E}_{\text{bias,th}}|\}$ (cfr Sezione (\ref{sec:conseguenze_compl_svuot}), "Conseguenze dell'approssimazione di completo svuotamento"). Infatti:
+    \begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.1} % Aumentato leggermente per leggibilità
+    \caption{Confronto tra risultati simulati e teorici: analisi dell'errore.}
+    \label{tab:confronto_errori}
+    \begin{tabular}{@{}l l l l@{}} % 4 colonne pulite: sinistra, centro, centro, centro
+        \toprule
+        \textbf{Parametro} & \textbf{Valore Simulato} & \textbf{Valore Teorico} & \textbf{Errore Relativo} \\
+        \midrule
+       $\mathcal{E}_{\text{bias,max}} [= |\min\{ \mathcal{E_{\text{bias}}}\}|]$ & \SI{2.05e5}{\volt\per\centi\meter} & \SI{2.28e5}{\volt\per\centi\meter} & \num{1.01e-1} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+    
+    
+ \section{Densità di carica}
+ \subsubsection{Modello teorico}
+A chiusura della caratterizzazione elettrostatica del dispositivo, si è analizzato il profilo della densità di carica netta $\rho(x)$ che, dal punto di vista microscopico, è definita dalla somma algebrica dei portatori mobili (elettroni $n$ e lacune $p$) e delle cariche fisse dei droganti ionizzati ($N_D^+$ e $N_A^-$)\footnote{La densità di droganti ionizzati è stata assunta pari alla loro concentrazione, stante l'approssimazione di completa ionizzazione.}. Data l'approssimazione di completo svuotamento, si ha:
+\begin{equation}
+\rho(x) = q \left[ p(x) - n(x) + N_D(x) - N_A(x) \right] = 
+\begin{cases}
+0  \\
+-{qN_A}\\
+{qN_D} \\
+0 \\
+\end{cases}
+\quad
+\begin{aligned}
+&x < -x_{p} \\
+&-x_{p,0} \leq x < 0 \\
+&0 \leq x < x_{n} \\
+&x \geq x_{n}.
+\end{aligned}
+\end{equation}
+
+\subsection{Densità di carica: equilibrio elettrostatico}
+In Figura (\ref{fig:charge_density}) si riporta il grafico ottenuto in ambiente \texttt{MATLAB} dai dati estratti dalla simulazione via \texttt{Padre}, ritraente il profilo spaziale della densità di carica teorico e simulato.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{charge_density.pdf} % Inserisci il nome del tuo file
+    \caption{Profilo della densità di carica netta $\rho(x)$ in equilibrio termodinamico. Si noti la forma quasi rettangolare ("a gradino") tipica dell'approssimazione di svuotamento. Confronto fra teoria e simulazione, zoom sulla regione svuotata, evidenziata in grigio.}
+    \label{fig:charge_density}
+\end{figure}
+
+\subsubsection{Simulazione vs teoria}
+Dall'analisi comparata delle due curve emergono conferme sulla correttezza dei parametri di simulazione e importanti evidenze sui limiti del modello teorico semplificato:
+
+\begin{enumerate}
+    \item \textit{coincidenza dei valori di plateau}:
+    si osserva una perfetta corrispondenza tra i valori massimi e minimi raggiunti dalle due curve all'interno della regione di carica spaziale.
+    Nella zona centrale di svuotamento (attorno a $x \approx 0$, escludendo l'interfaccia immediata), la densità di portatori liberi è, in questo contesto, \textit{pressoché} trascurabile ($n, p \ll N_{D,A}$), portando la densità di carica netta a saturare sui valori della carica fissa ionizzata:
+    \begin{equation}
+        \rho_{\text{max}} \approx +q N_D \approx \SI{0.19}{\coulomb\per\cubic\centi\meter} \quad \text{e} \quad \rho_{\text{min}} \approx -q N_A \approx \SI{-0.11}{\coulomb\per\cubic\centi\meter}.
+    \end{equation}
+    Il fatto che la curva simulata raggiunga gli stessi identici livelli della curva teorica conferma che i livelli di drogaggio simulati in \texttt{Padre} sono coerenti con quelli utilizzati per il calcolo teorico e che il simulatore sta operando in regime di completa ionizzazione;
+
+    \item \textit{coerenza asintotica}:
+    allontanandosi dalla giunzione, per $x < -x_{p,0}$ e $x > x_{n,0}$, entrambe le curve convergono asintoticamente a zero.
+    Questo comportamento testimonia il corretto ristabilirsi della condizione di neutralità di carica locale ($\rho = 0$) nelle regioni quasi-neutre, dove la densità dei maggioritari compensa esattamente quella dei droganti ($p \approx N_A$ nel lato $p$, $n \approx N_D$ nel lato $n$);
+
+    \item \textit{discrepanze in corrispondenza dei bordi della regione svuotata:}
+    la discrepanza morfologica tra le curve evidenzia il limite intrinseco del modello a gradino (cfr Sezione (\ref{sec:conseguenze_compl_svuot}), "Conseguenze dell'approssimazione di completo svuotamento").
+    
+    \end{enumerate}
+
+
+
+\subsection{Densità di carica: tensione di bias}
+L'indagine sulla distribuzione di carica spaziale è stata estesa al regime di polarizzazione diretta ($V_{\text{bias}} = \SI{0.6}{\volt}$). La Figura (\ref{fig:charge_bias_comparison}) riporta il confronto tra il profilo di densità di carica sotto bias teorico e estrapolato da simulazione via \texttt{Padre}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.62\textwidth]{charge_density_bias.pdf} % Inserisci il nome del file (confronto o solo bias)
+    \caption{Confronto dei profili di densità di carica netta: equilibrio (linea blu) vs bias diretto (linea rossa). Si noti il restringimento della regione attiva a parità di altezza dei plateau.}
+    \label{fig:charge_bias_comparison}
+\end{figure}
+
+\subsubsection{Simulazione vs teoria}
+Fisicamente, la riduzione della barriera di potenziale comporta una minor repulsione per i portatori maggioritari, i quali possono diffondere più profondamente verso l'interfaccia metallurgica. Macroscopicamente, come precedentemente discusso, ciò si traduce in un restringimento della regione di svuotamento, mentre la densità locale della carica, che non dipende dalla caduta di potenziale ai capi della giunzione, rimane vincolata ai livelli di drogaggio costruttivi. L'esame comparato delle due curve riportate in Figura (\ref{fig:charge_bias_comparison}) suggerisce che valgono le medesime considerazioni avanzate nel caso all'equilibrio. \\
+
+\noindent
+Più interessante è, invece, il confronto fra i plot con e senza tensione di bias applicata. 
+\begin{figure}[h!]
+    \centering
+    % MINIPAGE SINISTRA: EQUILIBRIO (Riferimento)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{charge_density.pdf} % Usa il file che hai già
+        \caption{Equilibrio ($V_{\text{bias}} = \SI{0}{\volt}$).}
+        \label{fig:bands_eq_side}
+    \end{minipage}
+    \hfill % Spinge le figure agli estremi
+    % MINIPAGE DESTRA: BIAS (Nuovo grafico)
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{charge_density_bias.pdf} % Inserisci il nome del NUOVO file (0.6V)
+        \caption{Bias diretto ($V_{\text{bias}} = \SI{0.6}{\volt}$).}
+        \label{fig:bands_bias_side}
+    \end{minipage}
+    % Didascalia generale opzionale (se vuoi un commento globale)
+    \caption*{Confronto diretto tra i profili di densità di carica, con e senza bias applicato. Zoom sulla regione di svuotamento, evidenziata in grigio.}
+\end{figure}
+
+\noindent
+Si può notare infatti:
+\begin{enumerate}
+    \item \textit{contrazione spaziale}:
+     i fronti di salita e discesa della densità di carica (i bordi della regione di svuotamento) si sono spostati verso l'origine ($x=0$). Questo restringimento della base rettangolare conferma la dipendenza della larghezza di svuotamento dalla radice quadrata del potenziale di giunzione netto, come discusso in precedenza;
+
+    \item \textit{invarianza dei livelli di saturazione:}
+    nonostante la variazione geometrica, i valori di plateau ($\rho_{\text{max}}$ e $\rho_{\text{min}}$) rimangono rigorosamente invariati rispetto al caso di equilibrio, coerentemente con la teoria.
+
+\end{enumerate}
+
+
+\section{Correnti}
+Conclusa l'analisi elettrostatica, l'indagine si è spostata sullo studio della dinamica dei portatori di carica in condizioni di polarizzazione diretta ($V_{\text{bias}} =\SI{0.6}{\volt}$). In regime stazionario, l'equazione di continuità impone che la densità di corrente totale, e dunque la corrente totale $I_{\text{tot}}$ essendo la sezione del dispositivo costante, sia anch'essa costante lungo l'intera struttura. Tuttavia, la composizione interna di tale corrente varia drasticamente in funzione della posizione: 
+\begin{equation} 
+I_{\text{tot}} = I_n(x) + I_p(x) = \underbrace{(I_{n,\text{drift}} + I_{n,\text{diff}})}_{\text{Elettroni}} + \underbrace{(I_{p,\text{drift}} + I_{p,\text{diff}})}_{\text{Lacune}} = \text{cost}. 
+\end{equation} 
+L'obiettivo di questa sezione è disaggregare i contributi di trascinamento (\textit{Drift}), dominanti nelle regioni neutre per i maggioritari, dai contributi di diffusione (\textit{Diffusion}), che governano l'iniezione dei minoritari attraverso la regione di carica spaziale.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{current.pdf} % Inserisci il grafico con Jn, Jp e Jtot
+    \caption{Profilo spaziale delle correnti: elettroni, lacune e totale. Si noti la costanza della corrente totale.}
+    \label{fig:currents}
+\end{figure}
+
+\subsection{Discussione sui meccanismi dominanti}
+Dall'analisi della Figura (\ref{fig:currents}) si possono identificare i seguenti contributi dei portatori:
+\begin{enumerate}
+    \item \textit{regioni quasi-neutre:}
+    lontano dalla giunzione, la corrente è data quasi interamente dal drift portatori maggioritari ($I_n$ nel lato $n$, $I_p$ nel lato $p$). Sebbene il campo elettrico residuo in queste zone sia estremamente basso (pressoché nullo come visto nella Sezione (6)), l'elevata concentrazione di portatori ($n \approx N_D$ o $p \approx N_A$) rende il termine di \textit{Drift} ($J \approx q\mu N \mathcal{E}$) dominante;
+    
+    
+    \item \textit{minoritarietà e iniezione:}
+    una volta attraversata la giunzione, gli elettroni iniettati, a questo punto minoritari nel lato $p$, diffondono allontanandosi dall'interfaccia (viceversa per le lacune). Il gradiente di concentrazione risultante dall'iniezione suggerisce che la corrente di minoritari nelle regioni quasi neutre sia di \textit{diffusione};
+        \item \textit{costanza totale:}
+    come predetto dalla teoria, la somma di corrente di elettroni e lacune e uguale in ogni punto alla costante $I_{\text{tot}}$. 
+    \end{enumerate}
+   Si conclude che i rami di corrente sicuramente dovuti alla diffusione dei portatori sono quelli propri dei minoritari nelle regioni quasi-neutre.
+
+
+\section{Caratteristica I-V}
+A sintesi dell'analisi fisica svolta, si presenta la caratteristica stazionaria Corrente-Tensione del dispositivo, estrapolata dalla simulazione eseguita con \texttt{Padre} e successivamente graficata in ambiente \texttt{MATLAB}. In accordo con i parametri prescritti in consegna, la simulazione copre il seguente intervallo di tensioni:
+\begin{equation}
+\begin{aligned}
+    V \in [V_{\text{start}}, &V_{\text{end}}], \\ 
+    V_{\text{start}} = -\frac{c}{10} \si{\volt} = \SI{-0.4}{\volt} \quad & V_{\text{end}} = \frac{n}{10} \si{\volt} = \SI{1.2}{\volt}.
+    \end{aligned}
+    \label{eq:IV}
+\end{equation}
+In Figura (\ref{fig:IV}) è riportata la caratteristica $I-V$ del campione analizzato. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{IV_car.pdf} % Inserisci il grafico con Jn, Jp e Jtot
+    \caption{Caratteristica $I-V$ della giunzione pn analizzata. In azzurro la regione di \textit{polarizzazione inversa}, in viola quella di \textit{polarizzazione diretta}.}
+    \label{fig:IV}
+\end{figure}
+
+
+\subsection{Metodologia di simulazione}
+La ricostruzione della caratteristica $I-V$ ha richiesto l'applicazione di una rampa di tensione variabile nel range discusso precedentemente \eqref{eq:IV}.
+Dal punto di vista numerico, la risoluzione del sistema accoppiato di equazioni differenziali non lineari (Poisson e continuità) richiede particolare attenzione nella scelta del passo di discretizzazione della tensione di bias. Un incremento troppo repentino della tensione applicata tra due iterazioni successive può portare al fallimento dell'algoritmo di convergenza (metodo di Newton), in quanto la soluzione al passo precedente ($V_i$) potrebbe non costituire più una stima iniziale ("initial guess") valida per il passo successivo ($V_{i+1}$).
+Per ovviare a tali criticità e garantire la stabilità numerica della simulazione, si è adottato un approccio incrementale con un passo di tensione conservativo:
+\begin{equation}
+    \Delta V_{\text{step}} = \SI{0.01}{\volt}.
+\end{equation}
+Tale discretizzazione ha permesso al simulatore di ricalcolare i profili di potenziale e concentrazione aggiornando gradualmente le condizioni al contorno, assicurando la convergenza della soluzione numerica per ogni singolo punto di lavoro analizzato lungo la caratteristica.
+
+\subsection{Analisi della curva}
+Dall'analisi del grafico, emerge chiaramente il comportamento asimmetrico e non lineare del dispositivo, coerente con il modello teorico del diodo ideale governato dalla legge di Shockley:
+\begin{equation}
+    I(V) = I_s \left( e^{\frac{qV}{n k_B T}} - 1 \right).
+\end{equation}
+Si possono poi distinguere due regioni operative principali:
+\begin{itemize}
+    \item \textit{polarizzazione inversa ($V < 0$):}
+    per tensioni negative, il termine esponenziale nell'equazione tende a zero e la corrente si assesta al valore di saturazione $-I_s$. Essendo $I_s$ di ordini di grandezza estremamente ridotti (tipicamente nell'ordine dei $\si{\pico\ampere}$ o inferiore), in scala lineare tale contributo risulta invisibile, confondendosi con l'asse delle ascisse. Il dispositivo si comporta dunque, macroscopicamente, come un circuito aperto;
+
+    \item \textit{polarizzazione diretta ($V > 0$):}
+    per tensioni positive, la corrente inizialmente si mantiene prossima allo zero fino al raggiungimento di una tensione critica, detta tensione di soglia ($V_{\gamma}$).
+    Superato tale valore (che per il Silicio si colloca tipicamente nell'intorno di $\SI{0.6}{\volt} - \SI{0.7}{\volt}$), il termine esponenziale diviene dominante, causando una brusca impennata della densità di corrente. Il grafico evidenzia efficacemente questa "piegatura", confermando che il dispositivo richiede una polarizzazione minima sufficiente a ridurre la barriera di potenziale interna prima di poter condurre correnti significative.
+\end{itemize}
+
+
+\chapter{Esperimento di Haynes Shockley}
+\label{chap:HS}
+Oggetto di questa seconda sezione è lo studio dell'esperimento di Haynes-Shockley, tecnica classica per la caratterizzazione dei parametri di trasporto dei portatori minoritari in un semiconduttore. Scopo della simulazione, condotta mediante il software \texttt{Padre}, è l'osservazione della dinamica spazio-temporale dei portatori minoritari al fine di isolare il contributo di deriva (\textit{Drift}). L'analisi dello spostamento del baricentro del pacchetto di portatori (minoritari, appunto) ha consentito di estrarre e validare il valore della mobilità $\mu$, verificandone la coerenza con i parametri di input. 
+
+\subsubsection{Parametri di simulazione}
+Viene simulato un campione di Silicio omogeneo contraddistinto dalle medesime caratteristiche della giunzione pn oggetto di studio dell'Esercizio 1 (cfr Tabella (\ref{tab:parametri_fisici}))\footnote{A parte i dati inerenti le caratteristiche intrinseche della giunzione, dunque la lunghezza delle regioni $n$ e $p$.}. Il semiconduttore risulta pertanto \textit{uniformemente} drogato con atomi accettatori ($N_A$) e donatori $(N_D)$, con drogaggio netto $N_{\text{net}}$ donatore\footnote{I portatori minoritari sono, di conseguenza, le lacune.} essendo $N_D > N_A$. Il tempo medio di vita dei portatori è stato assunto come $\tau = \SI{2e-7}{\second}$ per mantenere coerenza con lo script utilizzato per le simulazioni discusse nel capitolo precedente. La tensione di bias applicata all'estremo sinistro del campione, infine, corrisponde a $V_{\text{bias}} = \SI{0.6}{\volt}$, emulando l'Esercizio 1. 
+
+\subsection{Analisi dei risultati}
+\label{sec:drift_mobility}
+
+Si riporta il grafico ottenuto in ambiente \texttt{MATLAB} a partire dai dati estratti dalla simulazione \texttt{Padre}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Heynes_Shockley.pdf} % Inserisci il grafico con Jn, Jp e Jtot
+    \caption{Andamento spaziale dell'iniezione di minoritari al variare del tempo, in \textit{polarizzazione diretta}. Con un punto nero sono evidenziati i picchi di concentrazione al variare del tempo: si noti il profilo di decadimento esponenziale, coerente con le previsioni teoriche.
+}
+    \label{fig:Heynes_Shockley}
+\end{figure}
+\noindent
+La simulazione ha restituito l'evoluzione temporale del profilo di concentrazione dei portatori minoritari in eccesso $\delta p(x,t)$ in cinque istanti successivi distinti: $t_1 = \SI{1e-12}{\second}, t_2 = \SI{1e-8}{\second}, t_3 = \SI{1e-7}{\second}, t_4 = \SI{1e-6}{\second}, t_5 = \SI{2e-6}{\second}$, scelti appositamente per permettere di apprezzare tanto il processo di diffusione quanto quello di drift. Al fine di valutare la mobilità dei portatori minoritari, si è proceduto all'analisi della velocità di trascinamento (\textit{drift velocity}) del pacchetto di carica iniettato.
+
+
+\subsubsection{Estrazione della velocità di deriva}
+Per ciascuna delle cinque curve simulate, è stata identificata la coordinata spaziale $x_{\text{peak}}^{(i)}$ corrispondente al massimo della concentrazione all'istante $t_i$.
+Le tuple $(t_i, x_{\text{peak}}^{(i)})$ così ricavate sono state sottoposte a un'analisi di regressione lineare. Assumendo un moto a velocità costante sotto l'azione di un campo elettrico uniforme, la legge oraria del baricentro del pacchetto è descritta da:
+\begin{equation}
+    x_{\text{peak}}(t) = x_0 + v_d t
+\end{equation}
+dove $v_d$ rappresenta la velocità di deriva. Il coefficiente angolare della retta di regressione, calcolato in ambiente \texttt{MATLAB}, ha permesso di stimare la velocità di deriva come:
+\begin{equation}
+   v_d \approx \SI{1.84e3}{\centi\meter\per\second}.
+\end{equation}
+Coerentemente con la tensione positiva imposta all'estremo sinistro del campione, dall'analisi della Figura (\ref{fig:Heynes_Shockley}) si evince come i minoritari si muovano verso destra (nella direzione delle $x$ crescenti), seguendo le linee di forza del campo elettrico interno al semiconduttore.
+
+\subsubsection{Calcolo della mobilità}
+Il campo elettrostatico $\mathcal{E}$ applicato lungo la barra di semiconduttore è stato valutato assumendo una caduta di potenziale uniforme lungo l'intera lunghezza del dispositivo $L_{tot}$:
+\begin{equation}
+    \mathcal{E} = \frac{V_{\text{bias}}}{L_{\text{tot}}} \approx \SI{17.7}{\volt\per\centi\meter}.
+\end{equation}
+Dal momento che la velocità di deriva è legata alla mobilità come ($v_d = \mu \mathcal{E}$), risulta:
+\begin{equation}
+    \mu = \frac{v_d}{\mathcal{E}} = \frac{v_d L_{tot}}{V_{\text{bias}}} \approx \SI{107}{\centi\meter\squared\per\volt\per\second}.
+\end{equation}
+Il risultato ottenuto da questa procedura di post-processing risulta assolutamente coerente con il valore teorico imposto al simulatore di $\mu_p = \SI{110}{\centi\meter\squared\per\volt\per\second}$, confermando la bontà della simulazione eseguita.
+\end{document}

@@ -1,0 +1,477 @@
+\documentclass[a4paper,11pt]{report}
+% --- 1. CONFIGURAZIONE LINGUA E CODIFICA ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern} % Font vettoriale migliore di default
+
+% --- 2. LAYOUT E FORMATTAZIONE ---
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage[bottom]{footmisc} % Note a piè pagina bloccate in basso
+\usepackage{float}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% --- 3. MATEMATICA E FISICA ---
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{bm}      % Per il grassetto matematico corretto
+\usepackage{siunitx} % Per le unità di misura
+\usepackage{xparse}  % Per comandi avanzati
+
+% --- 4. GRAFICA E TIKZ ---
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{tikz-3dplot}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, calc, positioning, 3d, decorations.markings, angles, quotes, decorations.pathmorphing}
+
+% --- 5. NAVIGAZIONE ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Dispense di Elettrostatica}
+}
+
+% --- 6. COMANDI PERSONALIZZATI ---
+\renewcommand{\contentsname}{Indice}
+\renewcommand{\tablename}{Tabella}
+\pagecolor{white}
+
+% Stile Sezioni con linea orizzontale
+\NewDocumentCommand{\fancysectiontitle}{m}{%
+  \noindent
+  \textbf{\thesection\quad #1}%
+  \hspace{0.5em}%
+  \raisebox{0.6ex}{\rule{\linewidth - \widthof{\textbf{\thesection\quad #1}} - 0.6em}{0.4pt}}%
+}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {}
+  {0pt}
+  {\fancysectiontitle}
+
+\setcounter{tocdepth}{2}
+
+
+\pagestyle{fancy}
+\fancyhf{} % Pulisce tutti i campi di default
+
+\setlength{\headheight}{15pt} 
+
+% --- CONFIGURAZIONE HEADER (Intestazione) ---
+\lhead{\itshape \nouppercase{\rightmark}} % Sinistra: Titolo sezione
+\rhead{}                                 % Destra: Vuoto (prima c'era il numero)
+
+% --- CONFIGURAZIONE FOOTER (Piè di pagina) ---
+\lfoot{}                         % Sinistra: Numero di pagina
+\cfoot{}                                 % Centro: Vuoto
+\rfoot{\thepage}                                 % Destra: Vuoto
+
+% --- CONFIGURAZIONE LINEE ---
+\renewcommand{\headrulewidth}{0.4pt}     % Linea sopra
+\renewcommand{\footrulewidth}{0.4pt}     % Linea sotto (attivata)
+
+% Personalizzazione marcatori sezioni
+\renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+% --- RIDEFINIZIONE STILE CAPITOLO (ESERCIZIO) ---
+% --- RIDEFINIZIONE STILE CAPITOLO (ESERCIZIO) ---
+\titleformat{\chapter}[display] % [display] mette l'etichetta sopra, [hang] sulla stessa riga
+  {\normalfont\Huge\bfseries}   % Formattazione generale
+  {Esercizio \thechapter}       % ETICHETTA: Qui definisci la scritta "Esercizio"
+  {20pt}                        % Spazio verticale tra "Esercizio X" e il titolo
+  {\huge}                       % Formattazione specifica del titolo
+
+%Linee in basso in pagina iniziale capitolo
+\fancypagestyle{plain}{%
+  \fancyhf{}                           % Pulisce tutti i campi (header e footer)
+  \fancyfoot[R]{\thepage}              % Numero di pagina in basso a destra
+  \renewcommand{\headrulewidth}{0pt}   % Nessuna linea in alto (intestazione pulita)
+  \renewcommand{\footrulewidth}{0.4pt} % Linea in basso presente (spessore 0.4pt)
+}
+
+% Opzionale: Riduci lo spazio bianco enorme sopra il titolo del capitolo
+\titlespacing*{\chapter}{0pt}{-30pt}{40pt}
+
+% --- GESTIONE NOTE A PIÈ DI PAGINA ---
+\usepackage{chngcntr} % Pacchetto per reset dei contatori
+\counterwithin*{footnote}{chapter} % Resetta il contatore a ogni nuovo capitolo
+\renewcommand{\thefootnote}{\thechapter.\arabic{footnote}} % Imposta formato X.Y
+
+\begin{document}
+
+% --- 1. FRONTESPIZIO + INDICE (Tutto in una pagina) ---
+\pagestyle{empty}          % Niente numeri o header su questa pagina
+\tocloftpagestyle{empty}   % Assicura che tocloft non rimetta il numero
+
+% --- BLOCCO INTESTAZIONE ---
+{ \centering
+    % LOGO (Sostituisci 'logo_polito.png' con il nome del tuo file)
+    % Se non hai l'immagine, commenta la riga sotto con %
+    \includegraphics[width=5cm]{Logo_PoliTo.png} 
+    \vspace{1em}
+    
+    {\scshape\Large Politecnico di Torino \par}
+    {\large Corso di Dispositivi Elettronici \par}
+    \vspace{0.5cm}
+    
+    % TITOLO DEL REPORT
+    {\LARGE\bfseries Analisi e Simulazione di un Dispositivo in Silicio:\par}
+    {\Large\bfseries Effetti di Drogaggio e Illuminazione \par}
+    \vspace{0.5cm}
+    
+    % AUTORE
+    {\large\itshape Carlo Alberto Riva} -- {\small Matricola: 339313 \par}
+    \vspace{0.5cm}
+}
+
+% --- INDICE ---
+% Il trucco: \let\clearpage\relax impedisce all'indice di andare a pagina nuova
+\begingroup
+    \let\clearpage\relax
+    \vspace{-1cm} % Riduciamo un po' lo spazio prima della scritta "Indice"
+    \tableofcontents
+\endgroup
+
+\clearpage % Ora forziamo il salto pagina per iniziare i capitoli veri
+
+% --- 2. INIZIO CONTENUTI (Pagina 1) ---
+\pagestyle{fancy}          % Ripristina il tuo stile personalizzato
+\pagenumbering{arabic}     % Resetta il contatore a 1
+
+% ... Il resto del documento prosegue come prima ...
+
+\chapter*{Caratteristiche del Campione}
+\addcontentsline{toc}{chapter}{Caratteristiche del Campione} % <--- AGGIUNGI QUESTA RIGA
+
+Tutte le simulazioni presentate in questo report fanno riferimento a un campione di Silicio (Si) omogeneo. I parametri fisici e ambientali\footnote{I parametri contrassegnati nella tabella (\ref{tab:parametri_fisici}) dall'asterisco $*$ non sono caratteristiche intrinseche del sistema bensì \textit{condizioni al contorno} imposte esternamente in alcune parti delle simulazioni.}, mantenuti costanti a meno di diversa indicazione, sono stati determinati, come da indicazione, a partire dai valori $n = 12$ e $c = 4$. 
+
+\subsubsection{Caratteristiche del materiale} 
+Si riportano le caratteristiche del campione di semiconduttore analizzato, sottoposto a un drogaggio di tipo $n$ (essendo la somma $n+p$ pari). Si segnala che la concentrazione intrinseca $n_i$ è stata valutata a partire dai valori di $N_C$ e $N_V$ utilizzati negli script di \texttt{Padre} come:
+\begin{equation}
+n_i = \sqrt{N_C N_V}\exp\left(-\frac{E_g}{2k_B T}\right).
+\label{eq:n_i}
+\end{equation}
+
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1} % Aumenta lo spazio tra le righe
+    \caption{Parametri fisici e di simulazione del campione di Silicio.}
+    \label{tab:parametri_fisici}
+    \begin{tabular}{@{}l c l@{}}
+        \toprule
+        \textbf{Parametro} & \textbf{Simbolo} & \textbf{Valore} \\
+        \midrule
+        Materiale (Silicio) & Si & - \\
+        Lunghezza ($= (2n + c) \cdot 10$) & $L_x$ & \SI{260}{\micro\meter} \\
+        Larghezza ($= (n + 2c) \cdot 10$) & $L_y$ & \SI{200}{\micro\meter} \\
+        Spessore & $L_z$ & \SI{1e3}{\micro\meter} \\
+        Sezione trasversale ($= L_y \cdot L_z$) & $A$ & \SI{2e-3}{\centi\meter\squared} \\
+        Energy Gap & $E_g$ & \SI{1.12}{\electronvolt} \\
+        Densità efficace degli stati in BC & $N_C$ & \SI{2.8e19}{\per\cubic\centi\meter} \\
+        Densità efficace degli stati in BV & $N_V$ & \SI{1.04e19}{\per\cubic\centi\meter} \\
+        Temperatura & $T$ & \SI{300}{\kelvin} \\
+        Concentrazione intrinseca & $n_i$ & \SI{6.68e9}{\per\cubic\centi\meter} \\
+        Drogaggio primario, donatore ($= n \times 10^{16}$) & $N_D$ & \SI{1.2e17}{\per\cubic\centi\meter} \\
+        Drogaggio secondario, accettatore ($= \frac{N_D}{10}$) & $N_A$ & \SI{1.2e16}{\per\cubic\centi\meter} \\
+        Drogaggio netto (donatore) & $N_{\text{net}}$ & \SI{1.08e17}{\per\cubic\centi\meter} \\
+        Permettività relativa & $\varepsilon_r$ & \num{11.7} \\
+        Tensione di bias$^{*}$ ($= \frac{n}{c} \,\si{\volt}$) & $V_{\text{bias}}$ & \SI{3}{\volt} \\
+        Tasso di generazione ottica$^{*}$ & $G_{\text{opt}}$ & \SI{2e22}{\per\cubic\centi\meter\per\second} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection{Mobilità} 
+I valori di \textit{mobilità} dei portatori sono stati calcolati sfruttando il modello di \textit{Caughey-Thomas}, approssimando i valori ottenuti all'intero\footnote{Emulando gli script di riferimento del simulatore.}.
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{0.85} % Aumenta lo spazio tra le righe
+    \caption{Mobilità dei portatori.}
+    \label{tab:mobilità}
+    \begin{tabular}{@{}l c l@{}}
+        \toprule
+        \textbf{Parametro} & \textbf{Simbolo} & \textbf{Valore} \\
+        \midrule
+        Mobilità degli elettroni & $\mu_n$ & \SI{722}{\centi\meter\squared\per\volt\per\second} \\
+        Mobilità delle lacune & $\mu_p$ & \SI{210}{\centi\meter\squared\per\volt\per\second} \\
+ \bottomrule
+    \end{tabular}
+\end{table}
+
+
+
+\chapter{Silicio omogeneo senza illuminazione}
+Nel primo esercizio si analizza un campione di silicio omogeneo e drogato uniformemente, inizialmente in condizioni di equilibrio termodinamico, ai quali capi viene successivamente applicata una differenza di potenziale. 
+
+I file di input utilizzati per eseguire le simulazioni sono stati adattati al sistema perché fossero coerenti con le caratteristiche del dispositivo.
+
+\section{Diagramma a bande di energia}
+Il diagramma a bande di energia all'equilibrio termodinamico è stato ottenuto effettuando la simulazione del campione con il software \texttt{Padre} (file di input: \texttt{2.Doped\_semic\_ntype\_equi.txt}).\footnote{Si è trattato il sistema come \textit{isolato}, in ossequio alla definizione di equilibrio termodinamico.} I dati esportati sono stati elaborati in \texttt{MATLAB} per tracciare i livelli energetici delle bande ($E_C, E_V$), i quasi-livelli di Fermi ($E_{F_n}, E_{F_p}$) e il livello di Fermi intrinseco ($E_{F_i}$), ricavato a partire dalla relazione:
+\begin{equation}
+E_{F_i} = -q\phi(x),
+\end{equation} 
+dove $\phi(x)$ rappresenta il potenziale elettrostatico\footnote{Costante in caso di equilibrio termodinamico.}. Per convenzione, il simulatore fissa lo $zero$ dell'energia in corrispondenza del livello di Fermi (coincidente con i quasi-livelli all'equilibrio termodinamico: $E_F \equiv E_{F_n} \equiv E_{F_p} = 0$).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{diagramma_a_bande.pdf}
+    \caption{Diagramma a bande di energia all'equilibrio termodinamico.}
+    \label{fig:potenziale}
+\end{figure}
+
+\subsection{Analisi del diagramma}
+L'andamento delle bande energetiche risulta spazialmente invariante lungo l'intero dispositivo, riflettendo l'assenza di campi elettrici macroscopici dovuta alla mancanza di polarizzazione esterna (la differenza di potenziale agli estremi del campione è infatti nulla). La condizione di equilibrio termodinamico è confermata dalla perfetta coincidenza dei quasi-livelli di Fermi per elettroni e lacune ($E_{F_n} \equiv E_{F_p}$), i quali collassano su un unico livello di Fermi costante, fissato a \SI{0}{\electronvolt} come riferimento della simulazione. Risulta inoltre che $E_F > E_{F_i}$, coerentemente con il drogaggio di tipo $n$ imposto al campione. 
+
+Si noti in ultimo come la somma delle distanze energetiche (teoricamente uguale all'energy gap del materiale) corrisponda effettivamente a $\SI{1.12}{\electronvolt} = E_g$, confermando la bontà della simulazione.    
+
+\subsection{Calcolo delle distanze energetiche: confronto teorico}
+Le distanze energetiche riportate in figura (\ref{fig:potenziale})\footnote{Scritte con due cifre significative, stante lo stretto legame fra i risultati energetici prodotti da \texttt{Padre} e i dati utilizzati di $N_V$ e $N_C$ in particolare, avente 2 cifre significative (si veda tabella (\ref{tab:parametri_fisici})).} sono state calcolate tramite \texttt{MATLAB} e confrontate con i risultati teorici attesi, valutati sfruttando la teoria dei semiconduttori. Nonostante i risultati numerici siano evidentemente affetti da incertezze, per il calcolo degli errori si sono utilizzate tutte le cifre significative disponibili, arrotondando in ultimo il risultato ottenuto alla seconda significativa, al fine di evitare fenomeni di cancellazione numerica che avrebbero falsato i risultati. 
+
+Si segnala che, data la temperatura di $\SI{300}{\kelvin}$, è stata assunta la completa ionizzazione delle specie droganti e, essendo il valore del drogaggio netto $N_{\text{net}} = N_D-N_A \gg n_i$, è stata approssimata la concentrazione di maggioritari come $n_0 \approx N_{\text{net}}$ e quella di minoritari tramite la legge di azione di massa $p_0 = n_i^2/n_0 \approx n_i^2/N_{\text{net}}$.
+
+\subsubsection{Distanza \boldsymbol{$E_C - E_F$}} 
+\begin{itemize}
+\item Analisi teorica:
+	\begin{equation}
+		\Delta_{\text{th}} = (E_C - E_F)_{\text{th}} = k_BT \ln\left( \frac{N_C}{N_{\text{net}}} \right) \approx \SI{1.43e-1}{\electronvolt}
+	\end{equation}
+	Detto $\Delta_{\text{num}}$ il valore ottenuto da analisi software, l'errore relativo percentuale risulta:
+	\begin{equation}
+\epsilon_{\text{err}} = \frac{|\Delta_{\text{th}}-\Delta_{\text{num}}|}{\Delta_{\text{th}}} \cdot 100 \% \approx (3.9 \times 10^{-3}) \%.
+	\end{equation}
+\end{itemize}
+
+\subsubsection{Distanza \boldsymbol{$E_F - E_{F_i}$}} 
+\begin{itemize}
+\item Analisi teorica:
+	\begin{equation}
+		\Delta_{\text{th}} = (E_F - E_{F_i})_{\text{th}} = k_BT \ln\left( \frac{N_{\text{net}}}{n_i} \right) \approx \SI{4.29e-1}{\electronvolt}
+	\end{equation}
+	Errore relativo percentuale:
+	\begin{equation}
+\epsilon_{\text{err}} = \frac{|\Delta_{\text{th}}-\Delta_{\text{num}}|}{\Delta_{\text{th}}} \cdot 100 \% \approx (1.2 \times 10^{-3}) \%.
+	\end{equation}
+\end{itemize}
+
+\subsubsection{Distanza \boldsymbol{$E_{F_i} - E_V$}} 
+\begin{itemize}
+\item Analisi teorica:
+	\begin{equation}
+    \begin{split} % Usa split per allineare meglio
+        \Delta_{\text{th}} &= (E_{F_i} - E_V)_{\text{th}} = (E_F-E_V)-(E_F - E_{F_i}) \\
+                           &= k_BT \left[2\ln\left( \frac{N_{\text{net}}}{n_i} \right) + \ln\left( \frac{N_V}{N_C} \right)\right] \approx \SI{5.47e-1}{\electronvolt}
+    \end{split}
+    \end{equation}
+	Errore relativo percentuale:
+	\begin{equation}
+\epsilon_{\text{err}} = \frac{|\Delta_{\text{th}}-\Delta_{\text{num}}|}{\Delta_{\text{th}}} \cdot 100 \% \approx (9.0 \times 10^{-5}) \%.
+	\end{equation}
+\end{itemize}
+
+Il confronto conferma l'accuratezza della simulazione, con errori relativi pressoché trascurabili (ordine di $10^{-3}\%$ o inferiore).
+
+\section{Concentrazione dei portatori}
+\label{sec:conc_port}
+I dati relativi alla concentrazione dei portatori di carica sono stati estrapolati dalla simulazione numerica e successivamente elaborati in ambiente \texttt{MATLAB} per tracciarne l'andamento spaziale (lungo la coordinata longitudinale del campione). L'asse della $concentrazione$ è stato reso in scala logaritmica al fine di giovare alla leggibilità del grafico.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{concentrazione_portatori.pdf}
+    \caption{Concentrazione dei portatori in funzione della posizione (scala semilogaritmica).}
+    \label{fig:concentrazione_portatori}
+\end{figure}
+
+\subsection{Analisi delle concentrazioni}
+Come atteso dall'assunzione di campione omogeneo uniformemente drogato e dalla condizione di equilibrio termodinamico, le concentrazioni di portatori sono costanti lungo l'intera lunghezza del semiconduttore. Si verifica inoltre che $n_0 \gg p_0$, coerentemente con un drogaggio netto donatore.
+
+\subsubsection{Maggioritari, elettroni}
+Stanti considerazioni precedentemente esposte, la previsione teorica per la concentrazione di elettroni $n$ nel campione richiede ${n_{0,\text{th}}} \approx {N_\text{net}} = \SI{1.08e17}{\per\cubic\centi\meter}$, valore che corrisponde esattamente al risultato della simulazione (come si evince dal grafico in figura (\ref{fig:concentrazione_portatori})).
+
+\subsubsection{Minoritari, lacune}
+Dalla legge di azione di massa, si ha:
+\begin{equation}
+p_{0,\text{th}} = \frac{n_i^2}{n_{0,\text{th}}} \approx \frac{n_i^2}{N_{\text{net}}} = \SI{4.12e2}{\per\cubic\centi\meter},
+\end{equation}
+in perfetto accordo con la simulazione di \texttt{Padre} (figura (\ref{fig:concentrazione_portatori})).
+
+\section{Fuori equilibrio, applicazione di una ddp}
+Viene ora simulata l'applicazione di una rampa di tensione di valore $V_{\text{bias}} = \SI{3}{\volt}$ tramite software \texttt{Padre} (file di input: \texttt{3.Doped\_semic\_ntype\_PosBias.txt}). Sono stati estratti dalla simulazione i dati relativi al profilo di campo elettrico $\mathcal{E}(x)_{\text{num}}$ a e quello di potenziale $\phi(x)_{\text{num}}$ lungo il campione analizzato. 
+
+\subsection{Analisi dei risultati}
+Dal momento che si sta trattando un campione omogeneo e isotropo\footnote{Almeno in prima approssimazione.}, di lunghezza $L_x$ e con una $ddp$ costante applicata ai suoi capi, la teoria prevede che il campo elettrico al suo interno sia anch'esso costante e pari a:
+\begin{equation}
+\mathcal{E}_{\text{th}} = \frac{V_{\text{bias}}}{L_x} \approx \SI{1.15e2}{\volt\per\centi\meter}.
+\end{equation}
+Per valutare numericamente il suo valore utilizzando i dati forniti dalla simulazione, si è effettuato un fit lineare\footnote{Si è utilizzata la funzione di \texttt{MATLAB} \texttt{polyfit}.} del potenziale in funzione della posizione. Data la relazione $\mathcal{E}(x)= -d\phi(x)/dx$, il coefficiente angolare della retta interpolante cambiato di segno deve essere il valore di campo elettrico simulato:
+\begin{equation}
+\mathcal{E}_{\text{fit}} \approx \SI{1.15e2}{\volt\per\centi\meter}.
+\end{equation}
+I due valori ottenuti sono evidentemente consistenti. Un'analisi più approfondita permette di stimare l'errore relativo fra il valore teorico e quello di fitting come $\epsilon_{\text{err}} = (\SI{2.5e-6}{})\% $, confermando la bontà della simulazione. 
+
+Si è effettuato, in ultimo, un confronto fra $\mathcal{E}_{\text{th}}$ e il valore di campo elettrico \textit{costante} $\mathcal{E}(x)_{\text{num}}$ direttamente calcolato da \texttt{Padre} che, a meno del segno\footnote{Il software simulatore ha notoriamente un bug per cui il campo elettrico calcolato risulta a priori negativo.}, risulta: 
+\begin{equation}
+\mathcal{E}_{\text{num}} \approx \SI{1.15e2}{\volt\per\centi\meter},
+\end{equation}
+ancora una volta assolutamente coerente con $\mathcal{E}_{\text{th}}$ (e di conseguenza $\mathcal{E}_{\text{fit}}$).
+
+\section{Caratteristica I-V}
+Sfruttando la stessa simulazione oggetto della discussione della sezione precedente, sono stati estratti e importati in \texttt{MATLAB} i dati relativi alla caratteristica $I-V$\footnote{Valutata all'elettrodo 1.}. Data la $ddp$ costante applicata ai suoi capi e il comportamento approssimativamente da resistore lineare del campione di silicio analizzato, è stato possibile eseguire un fit lineare fra i valori di corrente e tensione.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{caratteristica_iv.pdf}
+    \caption{Interpolazione lineare della caratteristica $I-V$.}
+    \label{fig:I-V}
+\end{figure}
+
+
+\subsection{Fitting lineare, valutazione della resistenza}
+Al fine di massimizzare l'accuratezza del fit lineare, la simulazione della caratteristica $I-V$ è stata configurata prevedendo una discretizzazione del dominio in 30 step. Tale risoluzione ha garantito una densità di punti sufficiente a ridurre l'incertezza nell'interpolazione dei dati. Si è valutato\footnote{Nuovamente si è fatto uso della funzione \texttt{polyfit}.} quindi il coefficiente angolare della retta interpolante come corrispondente alla conduttanza $G$ dell'elemento semiconduttore, essendo $m = I/V$.  La resistenza del campione è stata calcolata come:
+\begin{equation}
+R_{\text{num}} = \frac{1}{G} \approx \SI{1.04}{\ohm},
+\end{equation}
+come si può verificare in figura (\ref{fig:I-V}).
+
+\subsubsection{Confronto teorico}
+La conducibilità totale $\sigma$ del materiale è data da:
+\begin{equation}
+\sigma = \sigma_n + \sigma_p = qn\mu_n + qp\mu_p = qn\left(\mu_n + \mu_p\frac{p}{n}\right).
+\end{equation}
+Nonostante il sistema non sia più isolato, continua a valere la neutralità locale. Per l'equazione di continuità, si ha che la variazione spaziale e temporale della concentrazione di portatori è nulla: i valori sono pari a quelli che caratterizzano l'equilibrio. Nella sezione dedicata al computo di $n_0$ e $p_0$ si è osservato come $n_0 \gg p_0$, da cui $p/n = p_0/n_0 \approx 0$:
+\begin{equation}
+\sigma \approx \sigma_n = qn\mu_n = \SI{1.25}{\siemens\per\centi\meter}.
+\end{equation}
+La resistenza del campione si ottiene dalla seconda legge di Ohm, ricordando che la resistività $\rho$ è l'inverso della conducibilità $\sigma$:
+\begin{equation}
+R_{\text{th}} = \rho \frac{L_x}{A} = \frac{L_x}{\sigma A} \approx \frac{L_x}{\sigma_n A} = \SI{1.04}{\ohm}.
+\end{equation}
+L'errore relativo percentuale fra i valori di $R_{\text{th}}$ e $R_{\text{num}}$ si attesta sul valore di $\epsilon_{\text{err}} = (\SI{1.11e-4}{})\%$, confermando la consistenza di risultato teorico e simulato. 
+
+
+\chapter{Silicio omogeneo illuminato}
+Nel secondo esercizio si analizza un campione di silicio omogeneo e drogato uniformemente (con drogaggio netto donatore), illuminato su una delle sue estremità con un \textit{tasso di generazione ottica} costante $G_{\text{opt}} = \SI{2e22} {\per\cubic\centi\meter\per\second}$. Si instaura dunque un regime di eccesso di portatori, con $\delta n (x)= n(x)-n_0$ per gli elettroni e $\delta p(x) = p(x)-p_0$ per le lacune. L'analisi è condotta nell'approssimazione di \textit{basso livello di iniezione}\footnote{In un semiconduttore drogato $n$, la condizione di bassa iniezione richiede che l'eccesso di portatori (uguale per lacune e elettroni, $\delta_n \approx \delta_p$, stante la quasi-neutralità) sia molto minore della concentrazione dei maggioritari ($\delta_n \approx \delta_p \ll n_0$). Non è invece richiesto che l'eccesso sia minore dei minoritari di equilibrio ($p_0$); al contrario, tipicamente risulta $\delta_p \gg p_0$.}.
+
+Si segnala che le concentrazioni di portatori all'equilibrio sono indicate con il pedice $0$ ($n_0, p_0$); fuori equilibrio, si utilizza la notazione semplice $n$ e $p$. I file di input utilizzati per le simulazioni\footnote{Si segnala che negli script è stata aggiunta una riga di codice contenente le caratteristiche del materiale: \texttt{+	EG300=1.12 PERMITTIVITY=11.7 NC300=2.8E19 NV300=1.04E19}. Questo accorgimento ha imposto al simulatore di valutare $n_i$ come nella \eqref{eq:n_i}, cosicché il computo della concentrazione dei minoritari all'equilibrio, e quindi di eccessi, risultasse coerente con quanto discusso nella sezione (\ref{sec:conc_port}) dell'esercizio 1.} sono stati adattati per garantire la coerenza con i parametri fisici del dispositivo.
+
+\section[Calcolo della lunghezza di diffusione $L_p$]{Calcolo della lunghezza di diffusione \texorpdfstring{$\bm{L_p}$}{Lp}}
+La lunghezza di diffusione dei portatori minoritari (le lacune, essendo il drogaggio netto di tipo donatore) è calcolata come segue:
+\begin{equation}
+L_p = \sqrt{D_p \tau_p},
+\end{equation} 
+dove $D_p$ rappresenta la \textit{diffusività} delle lacune, legata alla mobilità dalla relazione di Einstein:
+\[
+D_p = V_T \mu_p = \frac{k_B T}{q}\mu_p \approx \SI{5.43}{\centi\meter\squared\per\second},
+\]
+assumendo un tempo di vita medio dei minoritari\footnote{Fornito come assunzione per il calcolo.} $\tau_p \approx \SI{1e-6}{\second}$. Si ottiene quindi:
+\begin{equation}
+L_p \approx \SI{2.33e-3}{\centi\meter} = \SI{23.3}{\micro\meter}.
+\label{eq:L_p}
+\end{equation} 
+Il rapporto fra la lunghezza di diffusione $L_p$ e la lunghezza totale del campione $L_x$ risulta:
+\begin{equation}
+\frac{L_p}{L_x} \approx \num{8.96e-2} \ll 1.
+\end{equation}
+Tale risultato giustifica l'adozione dell'approssimazione di \textit{semiconduttore lungo}, che permette di modellare l'evoluzione spaziale degli eccessi di portatori come un semplice decadimento esponenziale. Detto $\delta_i(x)$ il generico eccesso, vale la relazione:
+\begin{equation}
+\delta_i(x) = \delta_i(0) e^{-\frac{x}{L_{\text{diff}}}},
+\end{equation} 
+dove $\delta_i(0)$ è una costante determinata dalle condizioni al contorno (\textit{boundary conditions}) all'interfaccia illuminata e $x \in [0,L_{i,x}]$, con $L_{i,x}$ la lunghezza del campione. Normalizzando, infine, si ottiene
+\begin{equation}
+\delta_{i,\text{norm}}(x) = \frac{\delta_i(x)}{\delta_i(0)} = e^{-\frac{x}{L_{\text{diff}}}}.
+\label{eq:semic_lungo_norm}
+\end{equation} 
+
+\section{Analisi dell'eccesso dei portatori}
+
+I profili di concentrazione dei portatori in eccesso sono stati ottenuti elaborando (e normalizzando\footnote{Per un'analisi più dettagliata del processo di normalizzazione si rimanda alla sezione (\ref{sezione:norm}).}) in ambiente \texttt{MATLAB} i risultati della simulazione ottica eseguita con software \texttt{Padre} \\ (file di input: \texttt{5.Doped\_semic\_ntype\_lungo\_equi.txt}). Dall'analisi della Figura \ref{fig:confronto_eccessi} si evince chiaramente il carattere esponenziale del decadimento dei portatori, comportamento atteso nell'approssimazione di "semiconduttore lungo". 
+Inoltre, la sovrapposizione delle curve conferma che $\delta_n(x) \approx \delta_p(x)$, in perfetto accordo con la condizione di \textit{quasi-neutralità} di carica prevista dalla teoria.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.66\linewidth]{confronto_eccessi.pdf}
+    \caption{Eccesso di portatori $\delta_n$ e $\delta_p$ a seguito dell'illuminazione.}
+    \label{fig:confronto_eccessi}
+\end{figure}
+
+\subsection{Confronto teorico per i minoritari}
+Si procede a sovrapporre il profilo di eccesso di lacune ottenuto via simulazione con quello frutto della previsione teorica, ricavata
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{confronto_eccessi_teoria.pdf}
+    \caption{Confronto dell'eccesso di minoritari: $\delta_p$ vs $\delta_p^{\text{th}}$.}
+    \label{fig:confronto_eccessi}
+\end{figure}
+in accordo con la \eqref{eq:semic_lungo_norm} e sfruttando la lunghezza di diffusione ricavata nella \eqref{eq:L_p}:
+\begin{equation}
+\delta_{p,\text{norm}}^{\text{th}}(x) = e^{-\frac{x}{L_{\text{p}}}}.
+\label{eq:1}
+\end{equation} 
+Le due curve risultano evidentemente sovrapponibili, a conferma dell'approssimazione di semiconduttore lungo e quindi della bontà del modello teorico espresso dalla \eqref{eq:1}. 
+
+
+\section{Variazione della lunghezza del campione}
+Si ripropone ora la simulazione e il confronto dei profili di eccesso dei portatori per campioni di lunghezza rispettivamente pari a ${L_{x,1}} {= 0.1} \cdot {L_p} \approx {\SI{2.33}{\micro\meter}}$, ${L_{x,2}} = {2 } \cdot{L_p} \approx \SI{46.6}{\micro\meter}$ e ${L_{x,3}} = {40 } \cdot {L_p} \approx \SI{932}{\micro\meter}$, con il fine di rendere evidenti le situazioni (e quindi giustificare le conseguenti approssimazioni) di \textit{semiconduttore corto}, \textit{intermedio} e \textit{lungo}. 
+
+\subsection[Semiconduttore corto $L_x = 0.1 \cdot L_p$]{Semiconduttore corto \texorpdfstring{$\bm{L_x = 0.1 \cdot L_p}$}{Lx = 0.1 Lp}}
+Si è eseguita la simulazione del campione corto ($L_x \ll L_p$) tramite \texttt{Padre}  (file di input: \texttt{7.Doped\_semic\_ntype\_light\_corto\_equi.txt}). Una volta estratti i dati, è stato effettuato il plotting dei profili di concentrazione con \texttt{MATLAB}. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{confronto_eccessi_corto.pdf}
+    \caption{Eccesso di portatori $\delta_n$ e $\delta_p$: campione corto.}
+    \label{fig:confronto_eccessi_corto}
+\end{figure}
+Si ha evidenza della quasi totale\footnote{Le lievi discrepanze sono imputabili a effetti numerici o limitate violazioni della neutralità locale su scala microscopica nelle vicinanze del contatto ohmico. Vale infatti la condizione di quasi-neutralità $\delta_n(x) \approx \delta_p(x)$, $\forall x$ al di fuori della regione di illuminazione.} sovrapposizione delle due curve. Il profilo (normalizzato) di decadimento della concentrazione di eccessi risulta inoltre $lineare$, in accordo con la previsione teorica basata sull'approssimazione di \textit{semiconduttore corto}:
+\begin{equation}
+\delta_{p,\text{norm}}^{\text{th}}(x)_{\text{corto}} = 1-\frac{x}{L_x}.
+\end{equation} 
+
+\subsection[Semiconduttore intermedio $L_x = 2 \cdot L_p$]{Semiconduttore intermedio \texorpdfstring{$\bm{L_x = 2 \cdot L_p}$}{Lx = 2 Lp}}
+Si è eseguita la simulazione del campione intermedio ($L_x \approx L_p$) tramite \texttt{Padre}  (file di input: \texttt{6.Doped\_semic\_ntype\_light\_medio\_equi.txt}). Una volta estratti i dati, è stato effettuato il plotting dei profili normalizzati di concentrazione con \texttt{MATLAB}. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{confronto_eccessi_medio.pdf}
+    \caption{Eccesso di portatori $\delta_n$ e $\delta_p$: campione intermedio.}
+    \label{fig:confronto_eccessi_corto}
+\end{figure}
+Nuovamente i profili di concentrazione sono quasi completamente sovrapposti, confermando l'approssimazione di neutralità locale. Le curve di decadimento normalizzate rispondono alla previsione teorica, infatti ricalcano l'andamento di un seno iperbolico smorzato da costante:
+\begin{equation}
+\delta_{p,\text{norm}}^{\text{th}}(x)_{\text{intermedio}} = \frac{\sinh\left(\frac{L_x-x}{L_p}\right)}{\sinh\left(\frac{L_x}{L_p}\right)}.
+\end{equation} 
+ 
+ \subsection[Semiconduttore lungo $L_x = 40 \cdot L_p$]{Semiconduttore lungo \texorpdfstring{$\bm{L_x = 40 \cdot L_p}$}{Lx = 40 Lp}}
+ Si è eseguita la simulazione del campione lungo ($L_x \gg L_p$) tramite \texttt{Padre}  (file di input: \texttt{8.Doped\_semic\_ntype\_light\_lungo\_equi.txt}). Una volta estratti i dati, è stato effettuato il plotting dei profili normalizzati di concentrazione con \texttt{MATLAB}. 
+ \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{confronto_eccessi_lungo.pdf}
+    \caption{Eccesso di portatori $\delta_n$ e $\delta_p$: campione lungo.}
+    \label{fig:confronto_eccessi_corto}
+\end{figure}
+ Ancora una volta si ha $\delta_p(x) \approx \delta_n(x)$, in accordo con la neutralità locale. Il profilo di decadimento osservato è esponenziale, coerentemente con l'approssimazione di campione lungo che prevede un profilo di concentrazione degli eccessi che ricalca quello descritto nella \eqref{eq:semic_lungo_norm}. 
+
+\section{Normalizzazione dei risultati della simulazione}
+\label{sezione:norm}
+Al fine di analizzare la dipendenza spaziale della concentrazione dei portatori in eccesso, isolando il comportamento diffusivo dalla magnitudo assoluta dell'iniezione, i dati estratti dalle simulazioni analizzate sono stati sottoposti a un processo di normalizzazione.
+
+Poiché l'obiettivo dell'analisi è la verifica del profilo di decadimento caratteristico, si è definito l'eccesso normalizzato $\delta p_{\text{norm}}(x)$ come il rapporto tra l'eccesso locale e il valore massimo registrato nel campione (teoricamente\footnote{Per ovviare a eventuali problemi numerici o trascurabili violazioni della quasi-neutralità in corrispondenza della regione illuminata, la normalizzazione nel calcolatore è stata effettuata calcolando il rapporto fra la distribuzione dell'eccesso $\delta(x)$ e il suo massimo \texttt{max(delta(x))}.} corrispondente all'interfaccia illuminata a $x=0$):
+
+\begin{equation}
+    \delta p_{\text{norm}}(x) = \frac{\delta p(x)}{\max(\delta p(x))} = \frac{\delta p(x)}{\delta p(0)}.
+\end{equation}
+Tale operazione mappa i valori di concentrazione nell'intervallo adimensionale $[0, 1]$. In questo modo, il confronto con il modello teorico si riduce alla verifica del solo fattore geometrico di decadimento. La rappresentazione grafica dei dati così elaborati permette di apprezzare visivamente la congruenza tra la lunghezza di diffusione simulata e quella teorica, indipendentemente dall'intensità del tasso di generazione ottica $G_{\text{opt}}$ imposto.
+
+\end{document}

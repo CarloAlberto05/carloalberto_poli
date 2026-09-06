@@ -1,0 +1,1060 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{amsmath} 
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, margin=1in]{geometry} 
+\usepackage{amsfonts}
+\usepackage{xstring}  
+\usepackage{calc} 
+\usepackage[table,xcdraw]{xcolor} 
+\usepackage{tabularx}
+\usepackage{nicefrac}
+\usepackage{float}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{xparse}
+\usepackage{enumitem} 
+\usepackage[italian]{babel}
+\usepackage{lmodern}  
+\usepackage{wrapfig}
+\usepackage{fancyhdr}  
+\usepackage{tocloft} 
+\usepackage{hyperref}   
+\usepackage{enumitem} 
+\usepackage{etoolbox} 
+\usepackage{circuitikz}
+\usepackage{siunitx}
+\usepackage{tocloft}      
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{multicol}
+\usepackage[bottom]{footmisc} 
+\usepackage{fontawesome5}
+\usepackage{titlesec}
+\pagecolor{white}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array}
+\definecolor{lightgray}{gray}{0.9}
+\usepackage[table]{xcolor}
+\definecolor{headerGray}{RGB}{200,200,200}
+\definecolor{lightGray}{RGB}{240,240,240}
+\definecolor{headerBlue}{RGB}{200,220,255}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\usetikzlibrary{patterns.meta, arrows.meta}
+\usetikzlibrary{angles, quotes}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\newcommand{\datagara}{2 ottobre 2025}
+
+% Intestazione e piè di pagina
+\fancyhead[C]{Coppa Ferraris — GaS — 2025-2026}
+\fancyfoot[C]{Pag. \thepage}
+
+\newcommand{\problemtitle}[1]{
+  \noindent
+  \textbf{\Large #1}\hspace{0.5em}
+  \raisebox{0.6ex}{\rule{\linewidth - \widthof{\textbf{\Large #1}} - 0.6em}{0.4pt}}%
+}
+
+
+% --- Macro per pagina di apertura sezione ---
+\fancypagestyle{sectionpage}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+    \fancyhead[C]{Coppa Ferraris — GaS — 2025-2026}
+    \fancyfoot[C]{Pag. \thepage}
+}
+
+
+\newcommand{\sectionpage}[1]{
+  \clearpage
+  \thispagestyle{sectionpage} 
+  \vspace*{\fill}
+  \begin{center}
+    \Huge\bfseries #1
+  \end{center}
+  \vspace*{\fill}
+  \clearpage
+}
+
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=cyan,
+    pdftitle={Dispensa di Fisica},
+    pdfauthor={Coppa Ferraris}
+}
+
+\renewcommand{\cftsecfont}{\color{black}}
+\renewcommand{\cftsecpagefont}{\color{black}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\definecolor{titlecolor}{RGB}{50,90,140}
+\definecolor{subtitlecolor}{RGB}{90,90,90}
+\definecolor{accentcolor}{RGB}{180,45,50}
+
+
+\fancypagestyle{plain}{ 
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+    \fancyhead[C]{Coppa Ferraris — GaS — 2025-2026}
+    \fancyfoot[C]{Pag. \thepage}
+}
+
+
+\begin{document}
+
+
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    
+    % Linea decorativa superiore
+    \rule{\textwidth}{0.8pt}\\[1cm]
+    
+    % Titolo principale
+    {\fontsize{28}{32}\selectfont\bfseries
+        Problemi di Fisica\\[0.5cm]
+    }
+    
+    % Sottotitolo
+    {\fontsize{14}{26}\selectfont
+        Raccolta di esercizi \\[1cm]
+    }
+    
+    % Linea decorativa centrale
+    \rule{\textwidth}{0.4pt}\\[2cm]
+    
+    % Autori
+
+    % Istituzione
+    {\large
+        \textsc{GaS - Coppa Ferraris}\\[2.4cm]}
+
+    
+    % Edizione
+    {\large
+        \textcolor{subtitlecolor}{Edizione \textsc{Estate 2025}}
+    }
+    
+    % Linea decorativa inferiore
+    \vfill
+    \rule{\textwidth}{1pt}
+    
+\end{titlepage}
+
+\newpage
+
+
+\tableofcontents
+\thispagestyle{plain}
+\newpage
+
+
+\sectionpage{MECCANICA}
+\phantomsection
+\addcontentsline{toc}{section}{Meccanica}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ Rotolone}}
+
+Una guida fissa, scabra e di forma semicircolare di raggio \( R = 58 \, \si{\centi\meter} \), è montata su un piano verticale come in figura. Una sfera omogenea e isotropa di raggio \( r = 12 \, \si{\centi\meter}\) e massa \( m = 1.3 \, \si{\kilo\gram}\) è posta sulla guida ed è libera di muoversi di puro rotolamento senza strisciare. La sfera è inizialmente in quiete nella posizione più bassa della guida e, dopo aver ricevuto un piccolo impulso orizzontale, inizia a oscillare attorno alla sua posizione di equilibrio stabile. Quanto vale il periodo delle piccole oscillazioni?
+
+\vspace{0.5em}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+
+  % Parametri
+  \def\Ra{2.9}      % Raggio della guida semicircolare
+  \def\ra{0.6}    % Raggio della circonferenza interna (massa)
+  \def\theta{17} % Angolo theta rispetto alla verticale (in senso orario)
+
+  % Coordinate del centro della guida (origine, in alto)
+  \coordinate (O) at (0,0);
+
+\draw[thick] (0.48829+\Ra,0) -- (0.48829+\Ra, -\Ra-0.5);
+\draw[thick] (-0.48829-\Ra,0) -- (-0.48829-\Ra, -\Ra-0.5);
+\draw[thick] (-0.48829-\Ra,0) -- (-0.48829-\Ra, -\Ra-0.5);
+\draw[thick] (-0.48829-\Ra,0) -- (-\Ra, 0);
+\draw[thick] (0.48829+\Ra,0) -- (+\Ra, 0);
+  % Piano orizzontale (in basso rispetto alla guida)
+  \draw[thick] (-\Ra-0.5,-\Ra-0.5) -- (\Ra+0.5,-\Ra-0.5);
+
+  % Guida semicircolare capovolta (aperta verso il basso)
+  \draw[thick] (0,0) ++(180:\Ra) arc (180:360:\Ra);
+
+  % Centro del cerchio interno (a distanza R - r lungo direzione θ verso il basso)
+  \coordinate (C) at ({( \Ra - \ra) * sin(\theta)}, {-( \Ra - \ra ) * cos(\theta)});
+
+  % Cerchio interno (massa) tangente internamente alla guida
+  \draw[thick] (C) circle (\ra);
+
+  % Linea verticale discendente dal centro della guida
+  \draw[dashed] (O) -- (0,-\Ra);
+  \node at ({-0.35}, {-1.45}) {$R$};
+
+\coordinate (D) at ({(( \Ra - \ra) * sin(\theta))+\ra}, {-( \Ra - \ra ) * cos(\theta)});
+
+\draw[dashed] (C) -- (D);
+  % Raggio che forma angolo theta
+  \draw[dashed] (O) -- (C);
+  \node at ({0.95}, {-2.35}) {$r$};
+
+  % Angolo theta (misurato in senso orario rispetto alla verticale)
+  \draw[thick] (0,-1) arc (270:{270 + \theta}:1);
+  
+
+\end{tikzpicture}
+\end{center}
+
+\textit{Unità di misura: $\si{\second}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Via col vento}}
+
+Un veicolo è fermo in corrispondenza dell'estremità iniziale di un lungo rettilineo. Una foglia di massa $m_f = 1 \, \si{\gram}$ è adagiata sul parabrezza. Si registra un coefficiente di attrito statico pari a $\mu_s = 0.2$ tra il corpo e il vetro a causa di uno strato di resina che ricopre la superficie inferiore della foglia. Si assuma il parabrezza come un piano inclinato rispetto all'orizzontale di un angolo $\theta = \frac{\pi}{6} \, \si{\radian}$. 
+Quanto vale l'accelerazione $A_{\text{max}}$ che il veicolo può raggiungere in fase di partenza affinché la foglia non inizi a scivolare verso l'alto sul vetro?\\
+
+\textit{Unità di misura: $\si{\meter\per\second\squared}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Simmetria portami via}}
+
+\begin{minipage}[c]{0.55\textwidth}
+
+Si vuole costruire una lastra di titanio a forma di parallelepipedo con lunghezza di base $l = 40 \, \si{\centi\meter}$. La distribuzione di massa è uniforme e il corpo è isotropo. Se l'angolo di inclinazione del lato obliquo rispetto all'orizzontale è pari a $\theta = 55 \, \si{\degree}$, qual è la massima altezza di costruzione $h$ per cui la lastra, appoggiata su uno dei suoi lati corti, non si ribalti?\\
+
+\textit{Unità di misura: $\si{\meter}$. Precisione richiesta: 0.5\%.}
+
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.38\textwidth}
+
+\begin{tikzpicture}[scale=1.1]
+
+% Dimensioni
+\def\base{2}      % base (lato corto)
+\def\altezza{4}  % altezza
+\def\slant{1}     % inclinazione parallelogramma
+
+% Coordinate vertici parallelogramma
+\coordinate (A) at (0,0);
+\coordinate (B) at (\base,0);
+\coordinate (C) at ({\base+\slant}, \altezza);
+\coordinate (D) at (\slant, \altezza);
+
+
+% Disegno contenitore (parallelogramma)
+\draw[thick] (A) -- (B) -- (C) -- (D) -- cycle;
+
+% Riempimento "acqua" a puntini
+\path[pattern={Dots[distance=4pt, radius=0.5pt]}, pattern color=blue!60] (A) -- (B) -- (C) -- (D) -- cycle;
+
+% Freccia base (lato corto)
+\draw[<->, thick] (0,-0.3) -- node[below] {\small $l$} (2,-0.3);
+
+% Freccia altezza
+\draw[<->, thick] (3.3,0) -- node[right] {\small $h$} (3.3,4);
+
+% Piano orizzontale
+\draw[thick] (-1,0) -- (\base+\slant+1,0);
+
+\pic["$\theta$", draw=black, angle radius=0.8cm, angle eccentricity=0.5] {angle=B--A--D};
+
+\end{tikzpicture}
+\end{minipage}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \, Prima di fermarsi}}
+
+Due piani inclinati rispettivamente di $\gamma = 21.8 ^{\circ}$ e $\phi = 26.6 ^{\circ}$ sono congiunti come in figura. Un punto materiale di massa $m$, inizialmente in equilibrio ad un altezza $h$, viene fatto scivolare lungo il primo piano. I coefficienti di attrito dinamico fra la massa e i piani sono rispettivamente $\mu_1 = 0.10$ e $\mu_2 = 0.15$. Quante volte il punto materiale passa da $O$ prima che nel suo moto raggiunga un'altezza massima inferiore allo $0.1 \%$ di $h$? \\
+\textit{Si supponga che il corpo non raggiunga mai la condizione di equilibrio statico.} \\
+
+\begin{center}
+\begin{tikzpicture}[scale=1]
+
+
+
+% Coordinate vertici parallelogramma
+\coordinate (O) at (0,0);
+\coordinate (B) at (-5,0);
+\coordinate (C) at (-5, 2);
+\coordinate (D) at (6, 0);
+\coordinate (E) at (6, 3);
+
+% Disegno contenitore (parallelogramma)
+\draw[thick] (O) -- (B) -- (C) -- cycle;
+\draw[thick] (O) -- (D) -- (E) -- cycle;
+
+% Riempimento "acqua" a puntini
+\path[pattern={Dots[distance=4pt, radius=0.5pt]}, pattern color=blue!60] (O) -- (B) -- (C) -- cycle;
+\path[pattern={Dots[distance=4pt, radius=0.5pt]}, pattern color=blue!60] (O) -- (D) -- (E) -- cycle;
+% Freccia base (lato corto)
+
+
+\pic["$\gamma$", draw=black, angle radius=0.8cm, angle eccentricity=1.7] {angle=C--O--B};
+\pic["$\phi$", draw=black, angle radius=0.8cm, angle eccentricity=1.7] {angle=D--O--E};
+
+\filldraw[black] (-4.95,2.05) circle (2pt) node[above right] {$m$};
+
+\draw[<->, thick] (-5.3,0) -- node[left] {\small $h$} (-5.3,2);
+
+\node at ({-3}, {0.85}) {$\mu_1$};
+\node at ({4}, {1.55}) {$\mu_2$};
+\node at ({0}, {0.4}) {$O$};
+
+\end{tikzpicture}
+\end{center}
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 0.5\%.}
+
+
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} \, Curva ellittica}}
+Un'automobile percorre un circuito piano di forma ellittica, con semiasse maggiore e minore rispettivamente  \( a = 500\,\si{\meter} \) e \( b = 400\,\si{\meter} \). Si consideri un sistema di riferimento cartesiano con origine nel centro e asse delle ascisse parallelo all'asse maggiore dell'ellisse. Nel punto \( (0, b) \), la velocità dell’automobile è pari a \( v = \SI{25}{\meter\per\second} \). Quanto vale minimo coefficiente di attrito statico $\mu_s$ tra le ruote e l’asfalto in quel punto affinché il veicolo non slitti? \\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{6}} \, Sbarra oscillante}}
+
+
+\begin{minipage}[c]{0.35\textwidth}
+\begin{tikzpicture}[scale=1.2]
+
+% Parametri
+\def\L{4} % Lunghezza della sbarra
+\def\s{0.2} % Spessore della sbarra
+\def\offset{1} % Offset orizzontale della sbarra dalla parete
+
+% Parete verticale
+\fill[gray!20] (-0.5,-3) rectangle (0,3);
+\draw[thick] (0,-3) -- (0,3);
+
+% Sbarra verticale
+\draw[very thick] (\offset,-\L/2) rectangle ++(\s,\L);
+\node at ({\offset+0.1}, {\L/2+0.2}) {$M$,$L$};
+
+% Centro della sbarra
+\coordinate (C) at (\offset + \s/2, 0);
+
+% Punto di attacco della molla (L/4 sotto il centro)
+\coordinate (M) at (\offset + \s/2, -\L/4);
+
+% Molla verso la parete
+\draw[decorate, decoration={coil, aspect=0.6, segment length=3pt, amplitude=4pt}]
+  (0, -\L/4) -- (M);
+\draw[thick] (0, -\L/4) -- ++(-0.3,0); % Punto fisso a parete
+\node at ({0.5}, {-\L/4-0.4}) {\( k \)};
+
+% Pallina (L/4 sopra il centro)
+\coordinate (P) at (\offset + \s/2 + 2, \L/4);
+\filldraw[fill=black!30] (P) circle (0.1);
+\node at ({\offset + \s/2 + 2+0.35 }, {\L/4}) {\( m \)};
+\draw[->, thick] (P) -- ++(-1,0) node[midway, above] {\( \vec{v} \)};
+
+% Linea guida verso il punto d'impatto
+\draw[dashed] (P) -- (\offset + \s/2, \L/4);
+
+% Indicazioni di quota (facoltative)
+\draw[<->] (\offset + \s + 0.5, 0) -- ++(0, -\L/4) node[midway, right] {\( \frac{L}{4} \)};
+\draw[<->] (\offset + \s + 0.5, 0) -- ++(0, \L/4) node[midway, right] {\( \frac{L}{4} \)};
+
+\filldraw[black] (\offset+0.1,0) circle (2pt) node[above right] {$C$};
+
+\end{tikzpicture}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.6\textwidth}
+Un'asta omogenea di lunghezza $L = \SI{21}{\centi\meter}$ e massa $M = \SI{150}{\gram}$ è vincolata nel suo centro ad un perno che le consente di ruotare senza attrito. Il corpo giace su un piano orizzontale ed è agganciato, in un punto distante $\frac{L}{4}$ dal centro, ad una molla di costante elastica $k = \SI{10}{\newton\per\meter}$ collegata ad una parete. Un punto materiale, di massa $m = \SI{50}{\gram}$, viene sparato in direzione perpendicolare all'asta con una velocità $v = \SI{1.2}{\meter\per\second}$ e la urta in maniera completamente anelastica in un punto distante $\frac{L}{4}$ dal centro. Quanto vale l'ampiezza massima delle oscillazioni del sistema dopo l'urto? \\
+\noindent
+\textit{Si considerino piccole oscillazioni.} \\
+
+
+\textit{Unità di misura: $\si{\radian}$. Precisione richiesta: 0.5\%.}
+
+\end{minipage}
+\section*{\problemtitle{$\mathcal{P}${\small{7}} \, Gira la trottola}}
+
+Una trottola conica di massa \(M = \SI{300}{\gram}\), altezza \(h = \SI{10}{\centi\meter}\) e raggio di base \(r = \SI{4}{\centi\meter}\) ha il centro di massa posto a distanza $d = \frac{2}{3}h $ dal vertice. Essa ruota attorno al proprio asse di simmetria con velocità angolare costante \(\omega = \SI{250}{\radian\per\second}\). A un certo istante, la trottola viene inclinata di un angolo $\alpha = 30^\circ$ rispetto alla verticale; in seguito, il suo asse comincia a ruotare attorno alla verticale con velocità angolare $\Omega$, compiendo un moto di precessione. Quanto vale $\Omega$?\\
+\noindent
+\textit{Il punto di contatto fra la trottola e il terreno è fisso. Il momento d'inerzia di un cono di massa $M$ e raggio di base $r$ in rotazione attorno al suo asse di simmetria è $I = \frac{3}{10}Mr^2$}.\\
+
+\textit{Unità di misura: $\si{\radian\per\second}$. Precisione richiesta: 0.5\%.}
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{8}} \, Iceberg}}
+Con buona approssimazione, la frazione del volume totale di un iceberg (costituito di ghiaccio a densità costante) che emerge dalla superficie dell'acqua è sempre la stessa, indipendentemente dalla sua forma. Quanto vale? \\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{9}} \, Andare d'accordo }}
+Un disco omogeneo di raggio \( R = \SI{0.34}{\meter} \) è posto su un piano orizzontale scabro.  
+Nel centro del disco è applicato un momento torcente di verso entrante nel foglio e modulo \(\tau = \SI{12}{\newton\meter} \).  Dopo l'avvio del moto, una forza \( F\) viene applicata nel centro del disco, orizzontalmente e nel verso del moto. Se il corpo si mantiene in regime di rotolamento puro, qual è il minimo modulo di \( F \) per cui la forza di attrito fra piano e corpo abbia verso opposto al moto? \\
+
+\textit{Unità di misura: $\si{\newton}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{10}} \, Piramide in rotazione}}
+Una piramide omogenea a base quadrata di massa \( m_p = \SI{50}{\gram} \), altezza \( h = \SI{5.5}{\centi\meter} \) e lato di base di base \( l = \SI{3.0}{\centi\meter} \), ruota attorno al proprio asse di simmetria verticale con velocità angolare costante \( \omega_0 = \SI{28}{\radian\per\second} \). Un disco omogeneo di raggio \( r = \frac{1}{2}l \) e massa \( m_d = \frac{1}{2} m_p \), inizialmente in quiete, viene lasciato cadere verticalmente sulla base orizzontale della piramide, in modo tale che i centri dei corpi risultino coincidenti. Si assuma che l’attrito tra le superfici a contatto (base della piramide e faccia del disco) sia sufficiente a impedire lo slittamento. Di quanto è variata l'energia cinetica della piramide una volta raggiunto il regime di rotazione comune rispetto alla condizione iniziale? \\
+
+\textit{Unità di misura: $\si{\joule}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{11}} \, Tempo di un bagno}}
+Un lavandino è costituito da una vasca cilindrica di altezza $H =  \SI{0.076}{\meter}$, da uno scarico capace di svuotarla completamente in un tempo $T_1 = \SI{13}{\second}$ e da un rubinetto che può riempirla in un tempo $T_2 = \SI{17}{\second}$. La vasca è inizialmente vuota, lo scarico aperto e viene aperto al massimo il rubinetto. A che altezza $h$ si stabilizza il livello dell'acqua? \\
+
+\textit{Unità di misura: $\si{\meter}$. Precisione richiesta: 0.5\%.}
+
+
+
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{12}} \, Al punto giusto}}
+Un corpo sferico, geometricamente isotropo e di densità non uniforme ha momento d'inerzia rispetto a un asse passante per il centro di massa $I = \beta M R^2$, con \(\beta\) costante positiva. La sfera è inizialmente ferma su un piano orizzontale scabro.
+Viene applicato un impulso \(J\) parallelo al piano in un piano verticale contenente il centro di massa del corpo, a un'altezza $h = \frac{13}{7} R$ dalla superficie d'appoggio, in modo che il cominci immediatamente a rotolare senza slittamento. Quanto vale \(\beta\)? \\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{13}} \, Gio il calciatore}}
+\begin{minipage}[c]{0.68\textwidth}
+Giovanni, un centrocampista di alto livello, si sta allenando per perfezionare i passaggi rasoterra nel parcheggio sotto casa. Dopo un colpo fortuito, nota un fenomeno che lo lascia perplesso.
+La palla, di raggio $r = 9{.}75\,\text{cm}$ e massa $M = 360\,\text{g}$, striscia sul suolo, liscio, con velocità $v_0 = \SI{8.3}{\meter\per\second}$, senza rotolare. Ad un certo punto, urta in maniera elastica contro una sporgenza di dimensioni trascurabili, nel punto della sua superficie che si trova a una distanza orizzontale $d = 5\,\text{cm}$ dal centro di massa, lungo il diametro della sfera e alla stessa altezza del centro di massa. Dopo l'urto, la palla risulta priva di moto traslatorio ma ruota con una certa velocità angolare $\omega$. Quanto vale $\omega$?\\
+\end{minipage}
+\begin{minipage}[c]{0.35\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=1]
+
+% Parametri
+\def\r{1.5}     % raggio della circonferenza
+\def\d{0.6}   % distanza orizzontale del punto P dal centro
+
+% Piano orizzontale
+\draw[thick] (-1.5, -\r) -- (1.5, -\r);
+\fill[gray!10] (-1.5, -\r) rectangle (1.5, -\r-0.2); % ombra
+
+% Circonferenza (sfera in sezione)
+\draw[thick, fill=red!20] (0,0) circle(\r);
+
+% Centro della circonferenza
+\fill (0,0) circle(0.05);
+\node[below left] at (0,0) {$O$};
+
+% Punto P sulla circonferenza a distanza d orizzontale
+\coordinate (P) at (\d, 0);
+\fill (P) circle(0.05);
+\node[above right] at (P) {\( P \)};
+
+% Distanza orizzontale d
+\draw[dashed] (0,0) -- (\d,0); % linea orizzontale
+\draw[dashed] (\d,0) -- (P);   % verticale verso P
+\node[below] at (\d/2,0) {\( d \)};
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\textit{Unità di misura: $\si{\radian\per\second}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{14}} \, Scopa spaziale is the new alabarda }}
+Nereide, una delle lune di Nettuno, compie un orbita ellittica attorno al gigante gassoso contraddistinta da eccentricità $\epsilon = 0.749$ e semiasse maggiore $a = \SI{5.513e6}{\kilo\meter}$. La massa di Nettuno è pari a $M = \SI{1.024e26}{\kilo\gram}$. Quanto vale la superficie spazzata dal suo raggio vettore in 3 giorni terrestri? \\
+\textit{Si consideri la durata di un giorno terrestre pari a $\SI{24}{\hour}$.} \\
+
+\textit{Unità di misura: $\si{\kilo\meter\squared}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{15}} \, Acqua non inerziale}}
+\begin{minipage}[c]{0.58\textwidth}
+Teresa è su un treno ferma alla stazione di Senigallia e ha con se una bottiglietta d'acqua. Il convoglio si mette improvvisamente in moto con accelerazione costante $A = \SI{3.2}{\meter\per\second\squared}$ e Teresa nota un fenomeno interessante: la superficie libera dell'acqua è inclinata di un angolo $\theta$ rispetto all'orizzontale! Quanto vale $\theta$?  \\
+
+\textit{Unità di misura: $\si{\radian}$. Precisione richiesta: 0.5\%.}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.35\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=1]
+
+\coordinate (O) at (0,0);
+\coordinate (B) at (3,0);
+\coordinate (C) at (3, 5);
+\coordinate (D) at (0, 5);
+\coordinate (E) at (0, 3);
+\coordinate (F) at (3, 4);
+\coordinate (G) at (3, 3);
+
+% Disegno contenitore (parallelogramma)
+\draw[thin] (O) -- (B) -- (C) -- (D) -- cycle;
+\draw[thin] (O) -- (B) -- (F) -- (E) -- cycle;
+\draw[thin] (E) -- (D) -- (C) -- (F) -- cycle;
+
+\path[pattern={Dots[distance=4pt, radius=0.5pt]}, pattern color=blue!60] (O) -- (B) -- (F) -- (E) -- cycle;
+
+\draw[thick, dashed] (E) -- (G);
+
+\pic["$\theta$", draw=black, angle radius=0.8cm, angle eccentricity=1.7] {angle=G--E--F};
+
+\draw[->, thick] (1.5,4) -- (0.7,4) node[midway, above] {\( \vec{A} \)};
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\section*{\problemtitle{$\mathcal{P}${\small{16}} \, Cono Mach}}
+Quando un oggetto supera la velocità del suono, le onde sonore che genera non riescono a superarlo: si accumulano dietro di lui e si concentrano lungo una superficie conica detta cono di Mach, che rappresenta l’inviluppo delle onde d’urto emesse nei vari istanti del moto. Sia $v = \SI{1020.0}{\meter\per\second}$ la velocità di un aereo in regime di volo supersonico e $c = \SI{299.53}{\meter\per\second}$ la velocità del suono all'altitudine di crociera del velivolo. Quanto vale l'angolo totale di apertura del cono di Mach generato dall'aereo? \\
+
+\textit{Unità di misura: $\si{\degree}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{17}} \, Non tirare la corda...}}
+
+Un punto materiale di massa \( m = \SI{13}{\gram} \) è posto su un piano orizzontale liscio ed è collegato, tramite una fune ideale di lunghezza iniziale \( l_0 = \SI{49}{\centi\meter} \), a un perno fisso. Il corpo viene messo in rotazione con velocità angolare iniziale \( \omega_0 = \SI{150}{\radian\per\second} \), in modo che la fune si avvolga progressivamente attorno al perno, mantenendosi sempre tesa. Se la fune si spezza quando la tensione supera il valore massimo \( T_{\text{max}} = \SI{1.73}{\kilo\newton} \), a che distanza dal perno avviene la rottura? \\
+\textit{Si supponga che il centro della rotazione sia costantemente il perno.} \\
+
+\textit{Unità di misura: $\si{\meter}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{18}} \, Fuga dalla sbarra}}
+Una sbarra di estremi $A$ e $B$ ha lunghezza $L = \SI{20}{\centi\meter}$ ed è caratterizzata da densità lineare costante $\lambda = \SI{7.0}{\kilo\gram\per\meter}$. Un punto materiale di massa $m = \SI{15}{\gram}$ si trova sulla direzione dell'asta, risente della sua attrazione gravitazionale e viene mantenuto a una distanza $d = \SI{1}{\centi\meter}$ dall'estremo $B$. Al punto viene impartita una velocità iniziale $v_0$ in direzione parallela a quella della sbarra. Qual è il minimo valore di $v_0$ per cui il punto riesce ad allontanarsi indefinitamente dall'asta? \\
+
+
+\textit{Unità di misura: $\si{\meter\per\second}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{19}} \, Piccola principessa}}
+
+La principessa Arina vive sull’asteroide sferico \textit{B-612 bis}, nella galassia di Andromeda. Un giorno, scrutando il cielo con il suo telescopio, nota una struttura spaziale che non aveva mai visto: attorno al suo piccolo mondo è apparso un anello sottile, circolare, di massa \( M = \SI{5.3e13}{\kilogram} \), raggio \( R = \SI{20}{\kilo\meter} \) e densità uniforme. L’asteroide ha raggio \( r \ll R \) ed è inizialmente fermo nel centro dell’anello. Per avviare un’esplorazione spaziale, Arina lancia un piccolo razzo lungo l’asse dell’anello e, successivamente, l'asteroide comincia a oscillare lungo l’asse del sistema. Assumendo che l’anello rimanga fisso e che il moto dell’asteroide avvenga unicamente sotto l’azione della forza gravitazionale esercitata dalla strana struttura, quanto vale il periodo \( T \) delle piccole oscillazioni attorno alla posizione di equilibrio? \\
+
+\textit{Unità di misura: $\si{\hour}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{20}} \, Ferma porta}}
+
+\begin{minipage}[c]{0.75\textwidth}
+Una porta di massa $M = \SI{35}{\kilo\gram}$ e lunghezza $L = \SI{3}{\meter}$ si chiude automaticamente per mezzo di un meccanismo che imprime in corrispondenza della cerniera un momento torcente orario costante di modulo $\tau = \SI{2.8}{\newton\meter}$. La porta non è in contatto con il pavimento su cui è invece appoggiato un perno di massa $m = \SI{1.0}{\kilo\gram}$. Il coefficiente di attristo statico fra perno e pavimento vale $\mu = 0.4$. Qual è la minima distanza $d$ tra perno e cerniera a cui si può posizionare il ferma porta per avere la certezza che la porta non si chiuda? \\
+
+\textit{Unità di misura: $\si{\meter}$. Precisione richiesta: 0.5\%.}
+
+
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.25\textwidth}
+\center
+\begin{tikzpicture}[scale=1.5]
+
+% Parametri
+\def\L{3}    % altezza porta
+\def\W{0.2}  % spessore porta
+\def\d{1.0}  % distanza punto materiale dal perno
+\def\radius{0.3} % raggio freccia momento
+
+% Porta verticale, perno in basso all'estremo sinistro
+\coordinate (O) at (0,0);
+\coordinate (A) at (0.5,\L);
+\draw[thick, fill=gray!20] (O) rectangle (\W,\L);
+ \node at (-\W/2-0.1, \L/2) {\small $M$};
+ \node at (-\radius-0.05, -\radius/2) { $\tau$};
+% Perno centrato all'estremo inferiore
+\coordinate (C) at (\W/2,0.09);
+\draw[thick] (C) circle (0.06) ;
+
+% Punto materiale fuori dalla porta (a destra)
+\coordinate (P) at (\W+0.1, 2);
+\filldraw[black] (P) circle (0.055) node[right]{\small $m$};
+
+% Freccia circolare centrata sul perno
+\draw[->,thick] (C) ++(\radius,0) arc[start angle=360,end angle=120,radius=\radius];
+
+
+\draw[<->] (\W+0.1, 0) -- (\W+0.1, 2-0.055) node[midway, right] {\( d \)};
+
+\draw[<->] (\W+0.1+0.4, 0) -- (\W+0.1+0.4, \L) node[midway, right] {\( L \)};
+
+
+\end{tikzpicture}
+\end{minipage}
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{21}} \, Rimbalzo in avanti }}
+Una sfera omogenea e isotropa di massa $m = \SI{2.3}{\gram}$ e raggio $r = \SI{5.2}{\milli\meter}$ viene lasciata cadere quando il suo centro di massa si trova a quota $h = \SI{20}{\centi\meter}$ rispetto al piano del pavimento. Al momento del rilascio, la velocità del CDM è nulla; viene invece impartita al corpo una velocità angolare, uniforme, di modulo $\omega_0 = \SI{12.2}{\radian\per\second}$ parallela al pavimento. 
+Se l’urto con il piano è perfettamente elastico e durante la collisione non avvengono deformazioni o scorrimenti rispetto al punto di contatto, quanto vale lo spostamento orizzontale del centro di massa della sfera tra il primo e il secondo rimbalzo? \\
+ 
+\textit{Unità di misura: $\si{\meter}$. Precisione richiesta: 0.5\%.}
+
+
+
+\sectionpage{TERMODINAMICA}
+\phantomsection
+\addcontentsline{toc}{section}{Termodinamica}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ Termodinamica specifica }}
+Data una qualsiasi trasformazione termodinamica, conoscendo il genere di gas ideale coinvolto, è sempre possibile stabilire il calore specifico $c$ ad essa associato. Siano quindi $A$ e $B$ rispettivamente lo stato iniziale e finale di una trasformazione termodinamica reversibile che coinvolge un gas perfetto biatomico tale per cui $TV^2 = k$, con $k$ costante positiva. Quanto vale $c$? \\
+
+\textit{Unità di misura: $\si{\joule\per\mole\per\kelvin}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Carnot... irreversibile }}
+Un motore termico opera secondo un ciclo di Carnot tra due sorgenti alle temperature $T_1 = \SI{600}{\kelvin}$ e $T_2 = \SI{350}{\kelvin}$ con un una mole di gas perfetto. A differenza del ciclo ideale, entrambe le trasformazioni isoterme avvengono in modo irreversibile: durante l'espansione, il sistema assorbe calore $Q_1 = \SI{1200}{\joule}$ mentre durante la compressione, la pressione del gas viene triplicata. Se le trasformazioni adiabatiche sono considerabili reversibili, quanto vale la variazione di entropia dell'universo per ogni ciclo completo? \\
+
+\textit{Unità di misura: $\si{\joule\per\kelvin}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Che calor!}}
+La fisica sperimentale Raffaella osserva una mole di un gas biatomico comportarsi in modo assai particolare. Infatti il gas, che parte da uno stato A con temperatura $T_A = \SI{150}{\kelvin}$ ed entropia $S_A = \SI{30}{\joule \per \kelvin}$, segue una trasformazione in cui la temperatura varia come $T = \ln^2({S})$
+ed arriva ad uno stato B in cui si ha $T_B = \SI{270}{\kelvin}$ e 
+$S_B = \SI{250}{\joule \per \kelvin}$. Quanto vale il lavoro prodotto durante la trasformazione?\\
+
+\textit{Unità di misura: $\si{\joule}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \ Il demone di Maxwell}}
+Un recipiente isolato è diviso in due camere uguali $A$ e $B$ da una parete con un minuscolo foro, inizialmente chiuso da un otturatore. Le due camere contengono ciascuna $n = 1$ moli di gas ideale monoatomico alla temperatura $T_0 = \SI{250}{\kelvin}$. Si ipotizzi che un dispositivo intelligente, chiamato “demone" da Maxwell, possa osservare le molecole vicino al foro senza perturbare il sistema e aprire l'otturatore quando una molecola veloce ($v > \langle v \rangle$) si avvicina da $A$ per farla passare a $B$ e quando una molecola lenta ($v < \langle v \rangle$) si avvicina da $B$ per farla passare a $A$. Dopo lungo tempo si instaura una differenza di temperatura $\Delta T = \SI{3.8}{\kelvin}$ fra le due camere. Il demone sembra aver creato un gradiente di temperatura a costo 0... Se si utilizzasse una macchina termica reversibile che sfrutta la differenza di temperatura instaurata, quanto lavoro si potrebbe teoricamente estrarre? \\
+
+\textit{Unità di misura: $\si{\joule}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} Triangolo Termodinamico}}
+Un gas ideale monoatomico, nel diagramma VT, compie
+un ciclo ABCA rappresentato da un triangolo rettangolo,
+come in figura . Sapendo che $T_B = 3T_A$, calcolare il rendimento del ciclo.
+
+\begin{center}
+\begin{tikzpicture}[scale=2, >=Stealth]
+  % Assi
+  \draw[->, thick] (0,0) -- (3,0) node[below] {$V$};
+  \draw[->, thick] (0,0) -- (0,3) node[left] {$T$};
+
+  % Punti del triangolo
+  \coordinate (A) at (0.5,0.5);   % in basso a sinistra
+  \coordinate (B) at (2,2);       % in alto a destra (sulla bisettrice)
+  \coordinate (C) at (2,0.5);     % in basso a destra
+
+  % Ciclo termodinamico A -> B -> C -> A
+  \draw[very thick, black, ->] (A) -- node[above, sloped] {} (B);
+  \draw[very thick, black, ->] (B) -- node[right] {} (C);
+  \draw[very thick, black, ->] (C) -- node[below] {} (A);
+
+  % Punti
+  \fill[black] (A) circle (1.2pt) node[below left] {A};
+  \fill[black] (B) circle (1.2pt) node[above left] {B};
+  \fill[black] (C) circle (1.2pt) node[below right] {C};
+
+  % Bisettrice (tratteggiata)
+  \draw[dashed, gray] (0.5,0.5) -- (2.0,2.0) node[above right]{};
+
+  % Proiezioni sull'asse T
+  \draw[dashed, black] (A) -- (0,0.5) node[left] {$T_A$};
+  \draw[dashed, black] (B) -- (0,2) node[left] {$3 T_A$};
+  \draw[dashed, black] (C) -- (0,0.5); % stessa altezza di A
+
+  % Punti sulle proiezioni
+  \fill[black] (0,0.5) circle (1pt);
+  \fill[black] (0,2) circle (1pt);
+
+\end{tikzpicture}
+\end{center}
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{6}} \ Implosione}}
+Un recipiente adiabatico e rigido è diviso in due scompartimenti, ciascuno di volume $V_0 = 1.5 \times 10^{-2} \, \text{m}^3$ da un setto fisso. Inizialmente il primo scomparto contiene $n = 2.00$ moli di azoto alla temperatura $T_0 = 300 \, \text{K}$. Nel secondo scomparto è fatto il vuoto. Il setto viene rimosso improvvisamente e il gas si espande per riempire l'intero volume del recipiente. Dopo molto tempo, viene fornito calore $Q = 750 \, \text{J}$ al sistema, tramite una sorgente posta internamente al recipiente. Qual è la temperatura finale $T_f$ del gas dopo il riscaldamento? \\
+
+\textit{Unità di misura: $\si{\kelvin}$. Precisione richiesta: 0.5\%.}
+
+
+
+\sectionpage{ELETTROMAGNETISMO}
+\phantomsection
+\addcontentsline{toc}{section}{Elettromagnetismo}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ How's made? Una sfera carica}}
+Si vuole costruire una sfera di raggio \( r = \SI{1.98e-8}{\meter} \) e carica totale \( Q = \SI{1.60e-17}{\coulomb} \), distribuendo la carica uniformemente all'interno del suo volume. Quanto vale il lavoro totale necessario per assemblarla? \\
+
+\textit{Unità di misura: $\si{\electronvolt}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Doppio campo}}
+Un condensatore di capacità $C = \SI{2.8}{\farad}$ a facce piane parallele di superficie $S = \SI{1.8}{\centi\meter\squared} $ è immerso nel campo gravitazionale terrestre ed è connesso in serie a una resistenza \( R = \SI{50}{\milli\ohm} \), formando un circuito RC. Il circuito è alimentato da un generatore che fornisce una forza elettromotrice costante pari a \( \mathcal{E} = \SI{8}{\volt} \). Si assuma che il condensatore abbia raggiunto la condizione di saturazione e che ad un dato istante $t_0$ venga aperto un interruttore, dando inizio al processo di scarica del condensatore. Una particella puntiforme di carica \( q = \SI{13}{\micro\coulomb} \) e massa \( m = \SI{91}{\femto\gram} \) è situata nello spazio tra le due armature, a distanza molto grande da entrambe. Dopo quanto tempo da \( t_0 \) la particella si trova in equilibrio statico? \\
+
+\begin{center}
+\begin{circuitikz}[american voltages]
+  % Nodo sinistra
+  \draw
+  (0,0) to[battery, l_=$\mathcal{E}$] (0,3)
+        to[R, l_=$R$] (3,3)
+        to[short] (5,3)
+        to[C, l_=$C$] (5,0)
+               to[short] (4,0)
+          to[switch] (2,0)
+        to[short] (0,0);
+
+  % Piastre del condensatore (orizzontali, personalizzate)
+
+
+  % Carica puntiforme
+  \filldraw[black] (5.0,1.5) circle (0.025);
+\node at (5.3, 1.5) [font=\tiny] {$q$,$m$};
+  \draw[->, thick] (2.5,1.5) -- (2.5,0.9) node[right] {\( \vec{g} \)};
+\end{circuitikz}
+\end{center}
+
+\textit{Unità di misura: $\si{\second}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Mariarosa e i protoni}}
+\begin{minipage}[c]{0.6\textwidth}
+Mariarosa, promettente studentessa di fisica, ha condotto diversi esperimenti molto interessanti inerenti il moto di particelle elettricamente cariche immerse in campi di vari generi. Durante uno di questi, analizza un protone che entra in una regione di campo magnetico uniforme $B = \SI{19.3}{\milli\tesla}$, come in figura; la velocità $v = \SI{1.27e3}{\meter\per\second}$ della particella forma un angolo $\phi = \frac{17}{31}\pi$ con l'orizzontale, che corrisponde alla frontiera della zona di campo. Quanto spazio percorre il protone nel suo moto all'interno della regione? \\
+
+\textit{Unità di misura: $\si{\meter}$. Precisione richiesta: 0.5\%.}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.35\textwidth}
+\begin{center}
+\begin{tikzpicture}
+
+\coordinate (M) at (-1.3,0) node at (-1.3,0.2) {$q,m$};
+\coordinate (R) at (-1.1, -1);
+\coordinate (B) at (0, -2);
+\coordinate (S) at (0, -1);
+
+
+\draw[thick] (-2.5, -1) -- (2.5, -1);
+\fill[gray!10] (-2.5, -1) rectangle (2.5, -1-2); % ombra
+\fill (M) circle(0.05);
+
+\fill (B) circle(0.05);
+%\fill (R) circle(0.05);
+\draw[->, thick] (M) -- (R) node at (-1.5,-0.5) {\( \vec{v} \)};
+%\node[above right] at (P) {\( P \)};
+\draw[thick] (B) circle (0.2);
+\draw[thick] (B) ++(-0.14,-0.14) -- ++(0.28,0.28);
+\draw[thick] (B) ++(-0.14,0.14) -- ++(0.28,-0.28);
+\node at (0.4, -1.98) {\( \vec{B} \)};
+\pic["$\phi$", draw=black, angle radius=0.4cm, angle eccentricity=1.7] {angle=S--R--M};
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \ Sir Cleims}}
+
+Intorno alla metà dell'800 Sir Cleims, insieme al suo amico Maxwell, si dilettava in laboratorio a spostare cariche qua e là per analizzare il loro comportamento e, dunque,  decise di creare la seguente configurazione: fissò due cariche puntiformi $q=\SI{1e-15}{\coulomb}$ a distanza $2a$ con $a=\SI{1}{\meter}$ e dispose una carica di prova, anch'essa puntiforme, su un piano normale posto nel punto medio della congiungente che lega le due cariche. Qual è il raggio R della circonferenza giacente su detto piano sulla quale  la forza agente sulla particella di prova ha la massima intensità?\\
+
+\textit{Unità di misura: $\si{\meter}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} \ Sfera bucata}}
+
+All’interno di una sfera isotropa, con densità di carica uniforme $\rho=\SI{1e-10}{\coulomb\per\meter\cubed}$, viene ricavato un foro sferico, il cui centro è situato a distanza $r=\SI{0.5}{\meter}$ dal centro. Quanto vale il modulo del campo elettrico all'interno del foro?\\
+
+\textit{Unità di misura: $\si{\newton\per\coulomb}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{6}} \, Matrimoney Carico}}
+Il Guercio desidera fare la proposta di “matrimoney" alla sua amata, per cui si reca in una gioielleria ad acquistare l'anello più lussuoso presente nel listino del negozio. Una volta comprata la fede, decide di agire la sera stessa. Riesce a portare a termine la sua missione e la sua amata prova ad indossare l'anello. Una volta infilato però, sente una scossa che si propaga lungo tutta la mano. Dunque sull'anello  è presente una carica. Si assuma che sull'anello, di raggio $R=\SI{0.01}{\meter}$ e spessore trascurabile, sia distribuita una carica $q=\SI{1e-10}{\coulomb}$. Vincolato un elettrone a muoversi lungo l'asse dell'anello, qual è il periodo delle piccole oscillazioni al centro della fede?\\  
+
+\textit{Unità di misura: $\si{\second}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{7}} \, Le palle ... girano!}}
+Un guscio sferico conduttore e isolato è mantenuto al potenziale costante di $V = \SI{250}{\milli\volt}$ rispetto all'infinto da un generatore. Il corpo viene posto in rotazione attorno ad un suo diametro con velocità angolare costante $\omega = \SI{22}{\radian\per\second}$. Quanto vale, in modulo, il campo magnetico nel centro della sfera? \\
+
+\textit{Unità di misura: $\si{\tesla}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{8}}\ Gira la spira}}
+\begin{minipage}[c]{0.6\textwidth}
+Una spira quadrata di lato $l= \SI{ 5e-2}{\meter}$ è inizialmente posta parallelamente al piano $xz$ con centro coincidente con l'origine degli assi. La spira è fissata in modo che possa ruotare intorno all'asse $z$. Nella regione coincidente con lo spazio tridimensionale delle ascisse positive è presente un campo magnetico costante di modulo $B= \SI{5e-1}{\tesla}$ con verso concorde con l'asse $y$. Ad un certo istante la spira inizia a ruotare con velocità angolare $\vec{\omega} = -\omega \hat{z}$, il cui modulo vale $\omega = \SI{ 0.3}{\radian \per \second}$. Quanto vale in modulo la corrente che scorre nel filo all'istante $t = \SI{2}{\second}$ noto che il filo ha una resistenza $R = \SI{200}{\ohm}$? \\
+
+\textit{Unità di misura: $\si{\ampere}$. Precisione richiesta: 0.5\%.}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.35\textwidth}
+\begin{center}
+\begin{tikzpicture}
+
+\fill[gray!10] (1,2.5) rectangle (3.5, -2.5); % ombra
+\draw[->, thick] (1, -2.5) -- (1, 2.5) node at (0.7,2.5) {\( y \)};
+\draw[thick]
+(0.1,-1.1) -- (1.9,1.1);
+\draw[->, thick] (-1.5, 0) -- (3.5, 0) node at (3.5,-0.3) {\( x \)};
+\draw[->, thick] (2.20, -0.5) -- (2.20, 0.5) node at (2.20, -0.8) {\( \vec{B} \)};
+\draw[->, thick] (2.80, -0.5) -- (2.80, 0.5);
+\draw[->, thick] (1.60, -0.5) -- (1.60, 0.5);
+\draw[thick] (1,0) circle (0.2) node at (0.7, 0.3) {\( z \)};
+\fill (1,0) circle(0.05);
+\draw [->, thick] (1,1) arc (90:42:0.8) node at (1.4,1.17) {\( \omega \)};
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\section*{\problemtitle{$\mathcal{P}${\small{9}} \, Condensatore cilindrico}}
+
+Un condensatore a forma di guscio cilindrico, posto nel vuoto, ha un interno raggio $a=\SI{0.1}{\meter}$ e raggio esterno $3a$. Esso ha una carica tale per cui l'energia potenziale elettrostatica del sistema è $U=\SI{1}{\joule}$. Inoltre è isolato e ha un'altezza $h\gg a$. Da questa configurazione iniziale, tramite una forza esterna, si cerca di dilatare l'armatura esterna di 1/10 rispetto al suo raggio iniziale. Qual è il lavoro compiuto dalle forze elettrostatiche?\\
+
+\textit{Unità di misura: $\si{\joule}$. Precisione richiesta: 0.5\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{10}} \, Non in serie, non in parallelo}}
+
+Un circuito è costituito da infiniti rami, posti in parallelo fra i nodi $A$ e $B$, l'i-esimo dei quali è contraddistinto dalla serie di un generatore di tensione ideale $\mathcal{E} = \SI{1}{\volt}$ e di una resistenza $R_i$. Quanto vale la tensione misurata ai capi del parallelo, $V_{AB}$? 
+
+
+\begin{center}
+\begin{circuitikz}[american]
+    \draw (0,0) node[above left] {A} to[short, *-] (0,0); % Nodo A
+    \draw (0,-4) node[below left] {B} to[short, *-] (0,-4); % Nodo B
+
+    % Prima maglia (n=1) - COMPONENTI INVERTITI
+    \draw (0,0) to[R, l={$R_1$}] (0,-2.5) % Resistenza R1
+              to[V, l={$\mathcal{E}$}] (0,-4); % Generatore V1
+
+    % Seconda maglia (n=2) - COMPONENTI INVERTITI
+    \draw (2.5,0) to[R, l={$R_2$}] (2.5,-2.5) % Resistenza R2
+              to[V, l={$\mathcal{E}$}] (2.5,-4); % Generatore V2
+
+    % Terza maglia (n=3) - COMPONENTI INVERTITI
+    \draw (5,0) to[R, l={$R_3$}] (5,-2.5) % Resistenza R3
+              to[V, l={$\mathcal{E}$}] (5,-4); % Generatore V3
+
+    % Quarta maglia (n=4) - COMPONENTI INVERTITI
+    \draw (7.5,0) to[R, l={$R_4$}] (7.5,-2.5) % Resistenza R4
+              to[V, l={$\mathcal{E}$}] (7.5,-4); % Generatore V4
+
+    % Collegamenti superiori e inferiori
+    \draw (0,0) -- (7.5,0);
+    \draw (0,-4) -- (7.5,-4);
+
+    % Puntini per indicare la continuazione
+    \draw[dotted, thick] (7.5,0) -- (9,0);
+    \draw[dotted, thick] (7.5,-4) -- (9,-4);
+    
+\end{circuitikz}
+\end{center}
+
+\textit{Unità di misura: $\si{\volt}$. Precisione richiesta: 0.5\%.}
+
+
+\sectionpage{FISICA MODERNA}
+\phantomsection
+\addcontentsline{toc}{section}{Fisica moderna}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \, Vetro ad hoc}}
+Mario vorrebbe ordinare per la sua nuova casa una finestra molto particolare. Un raggio di luce che attraversa la lastra di vetro di cui è costituita, di spessore $s = 1 \, \si{\centi\meter}$, subisce una variazione della velocità secondo la legge $v(x) = c \, (e-1)^{-\frac{x}{s}}$, con $x$ la distanza dalla parete di incidenza e $c$ la velocità della luce del vuoto. Questo materiale è però molto costoso. Mario decide quindi di sostituirlo con un vetro standard, con lo stesso spessore e indice di rifrazione costante $n$. Quanto deve valere $n$ perché l'effetto di deviazione della luce sia il medesimo per i due infissi?\\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \, Elettrodomestico fotoelettrico}}
+
+Il sistema di accensione di un particolare elettrodomestico è basato su una lastra di rame circolare di sezione $S = \SI{3.5}{\centi\meter\squared}$, contraddistinta da un potenziale di estrazione $\phi$, e su un laser collimato di frequenza $\nu = \SI{1.4e15}{\hertz} > \frac{\phi}{h}$, che viene indirizzato verso la lastra in modo tale da investirla completamente. Il dispositivo necessita di una corrente di eccitazione $I = \SI{100}{\micro\ampere}$ per essere messo in funzione. Quanto vale l'intensità del laser?\\
+
+\textit{Unità di misura: $\si{\watt\per\meter\squared}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \, Termodinamica di un buco nero}}
+
+Un buco nero di massa \( M = \SI{8.55e36}{\kilo\gram} \), inizialmente isolato, viene irradiato da un fascio collimato di radiazione termica, che trasporta una piccola massa \( m \ll M \) che viene completamente assorbita dal buco nero. Si supponga che l'intero processo avvenga in modo da mantenere il sistema isolato.
+Si sa che l’entropia di un buco nero è data dalla relazione di Bekenstein-Hawking:
+\[
+S_{\text{BH}} = \frac{4\pi k_B G M^2}{\hbar c}
+\]
+e si consideri che l'entropia della radiazione assorbita è pari a $S_{\text{rad}} = \frac{4}{3}  \frac{m}{T}$ dove $m$ è la massa della radiazione e $T$ la temperatura. Qual è il minimo valore di $T$ per cui sia fisicamente possibile l'assorbimento da parte del buco nero? \\
+
+\textit{Unità di misura: $\si{\kelvin}$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \, Un cane che si morde la coda}}
+Un cane corre seguendo una traiettoria circolare di raggio $R = \SI{0.67}{\meter}$. Modellizzando l'animale come un segmento di lunghezza $L = \SI{45}{\centi\meter}$, a che percentuale della velocità della luce deve correre per riuscire a mordersi la coda?  \\
+\textit{Si tratti il perimetro della circonferenza come fosse un segmento rettilineo.} \\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 0.5\%.}
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} \, Polaroid infinite}}
+Un fascio di luce polarizzata con intensità iniziale $I_0 = \SI{5.3}{\watt\per\meter\squared}$ attraversa una serie di $N$ filtri polarizzatori. Ogni filtro è ruotato di un angolo infinitesimo $d\theta = \frac{\theta_{\text{tot}}}{N}$ rispetto al filtro precedente, dove $\theta_{\text{tot}} = \frac{3}{5}\pi$ è l'angolo totale di rotazione tra il primo e l'ultimo filtro. Il piano di polarizzazione iniziale dell'onda e il primo filtro sono allineati. Nel limite per $N \rightarrow \infty$, quanto vale l'intensità del fascio all'uscita dall'ultimo filtro? \\
+
+\textit{Unità di misura: $\si{\watt\per\meter\squared}$. Precisione richiesta: 0.5\%.}
+
+
+
+\sectionpage{STIME DI FERMI}
+\phantomsection
+\addcontentsline{toc}{section}{Stime di Fermi}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ Up!}}
+
+Sia $N$ il numero di palloncini che servono per sollevare una villetta di due piani. Quanto vale $\log_{10}N$?\\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 2\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Dormire al fresco}}
+
+Quante bottiglie d'acqua congelate servono per abbassare la temperatura di una stanza di $\SI{1}{\degree}$?\\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 2\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Wimbledon}}
+
+Quanto tempo serve ad un giardiniere di Wimbledon munito di tosaerba per rendere il campo da gioco centrale uniforme?\\
+
+\textit{Unità di misura: $\si{\second}$. Precisione richiesta: 2\%.}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \ Binario 9 \textbf{\nicefrac{3}{4}} }}
+
+L'apprendista stregone Francesco è stato preso ad Hogwarts! Mentre prepara i bagagli pensa a quanto sarà incredibile raggiungere binario 9 $\nicefrac{3}{4}$ dove lo attende il treno che lo porterà alla fantomatica scuola. Non riesce ancora a credere come la magia gli permetterà di attraversare un muro. Il ragazzo sa che, in accordo all'approssimazione WKB, la probabilità che una particella di massa $m$ attraversi una barriera di potenziale spessa $d$ per effetto tunnel è pari a 
+\[
+P = \text{exp}\left(-2d\sqrt{\frac{2mU}{\hbar^2}}\right),
+\]
+con $U$ un parametro energetico che dipende dalla barriera e dall'energia della particella incidente. Sia $P_h$ la probabilità che un essere umano attraversi un muro di mattoni di spessore $d = \SI{50}{\centi\meter}$ e si assuma che il muro possa essere considerato come una barriera di potenziale caratterizzata da $U = \SI{1.3e-19}{\joule}$. Quanto vale $\log_{10}P$ ? \\
+
+\textit{Unità di misura: $adimensionale$. Precisione richiesta: 2\%.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\section*{\problemtitle{Tavola di Costanti fisiche}}
+
+\begin{center}
+\begin{tabular}{|>{\centering\arraybackslash}m{7,4cm}|>{\centering\arraybackslash}m{1,6cm}|>{\centering\arraybackslash}m{5cm}|}
+\hline
+\textbf{Nome} & \textbf{Simbolo} & \textbf{Valore} \\ \hline
+
+\rowcolor{gray!20}
+\multicolumn{3}{|c|}{\textbf{Costanti fisiche primarie [valori esatti per definizione]}} \\ \hline
+
+Velocità della luce nel vuoto & $c$ & $2.99792458 \times 10^8 \, \text{m s}^{-1}$ \\ \hline
+Carica elementare & $e$ & $1.602176634 \times 10^{-19} \, \text{C}$ \\ \hline
+Massa elettrone & $m_e$ & $9.10938291 \times 10^{-31} \, \text{kg}$ \\ \hline
+Costante di Planck & $h$ & $6.62607015 \times 10^{-34} \, \text{J s}$ \\ \hline
+Costante di Boltzmann & $k_B$ & $1.380649 \times 10^{-23} \, \text{J K}^{-1}$ \\ \hline
+Numero di Avogadro & $N_A$ & $6.02214076 \times 10^{23} \, \text{mol}^{-1}$ \\ \hline
+
+\rowcolor{gray!20}
+\multicolumn{3}{|c|}{\textbf{Altre costanti fisiche *}} \\ \hline
+
+Costante di gravitazione & $G$ & $6.674 \times 10^{-11} \, \text{m}^3 \, \text{kg}^{-1} \, \text{s}^{-2}$ \\ \hline
+Permeabilità magnetica del vuoto & $\mu_0$ & $4\pi \times 10^{-7} \, \text{N A}^{-2}$ \\ \hline
+Costante dielettrica del vuoto: $1/(\mu_0c^2)$ & $\varepsilon_0$ & $8.8542 \times 10^{-12} \, \text{F m}^{-1}$ \\ \hline
+Costante elettrostatica: $1/(4\pi \epsilon_0)$ & $k_\text{es}$ & $8.9876 \times 10^9 \, \text{F}^{-1} \, \text{m}$ \\ \hline
+Costante di Faraday: $N_A e$ & $F$ & $9.6485 \times 10^4 \, \text{C mol}^{-1}$ \\ \hline
+Costante di Stefan-Boltzmann & $\sigma$ & $5.6704 \times 10^{-8} \, \text{W m}^{-2} \, \text{K}^{-4}$ \\ \hline
+Raggio di Bohr & $a_0$ & $0.52917772 \times 10^{-10} \, \text{m}$ \\ \hline
+Massa del protone & $m_p$ & $1.67262 \times 10^{-27} \, \si{\kilo\gram} \newline 938.27 \, \text{MeV $c^{-2}$}$ \\ \hline
+Massa del neutrone & $m_n$ & $1.67493 \times 10^{-27} \, \si{\kilo\gram} \newline 939.55 \, \text{MeV $c^{-2}$}$ \\ \hline
+Massa del elettrone & $m_p$ & $9.1094 \times 10^{-31} \, \si{\kilo\gram} \newline 511.00 \, \text{keV $c^{-2}$}$ \\ \hline
+Unità di massa atomica & $u$ & $1.66054 \times 10^{-27} \, \text{kg}$ \\ \hline
+Costante universale dei gas & $R$ & $8.31446 \, \text{J mol}^{-1} \text{K}^{-1}$ \\ \hline
+
+\rowcolor{gray!20}
+\multicolumn{3}{|c|}{\textbf{Dati che possono essere necessari *}} \\ \hline
+
+Accelerazione di gravità al suolo & $g$ & $9.80665 \, \text{m s}^{-2}$ \\ \hline
+Massa della Terra & $M_\oplus$ & $5.972 \times 10^{24} \, \text{kg}$ \\ \hline
+Massa del Sole & $M_\odot$ & $1.988 \times 10^{30} \, \text{kg}$ \\ \hline
+Distanza media Terra-Sole & UA & $149.6 \times 10^9 \, \text{m}$ \\ \hline
+Raggio terrestre & $R_\oplus$ & $6.375 \times 10^6 \, \text{m}$ \\ \hline
+Raggio del Sole & $R_\odot$ & $6.957 \times 10^8 \, \text{m}$ \\ \hline
+Pressione atmosferica standard & $p_0$ & $1.01325 \times 10^5 \, \text{Pa}$ \\ \hline
+Temperatura standard dell'acqua ($0^\circ\text{C}$) & $T_0$ & $273.15 \, \text{K}$ \\ \hline
+Densità dell’acqua & $\rho_a$ & $1.000 \times 10^3 \, \text{kg m}^{-3}$ \\ \hline
+Calore specifico dell’acqua & $c_a$ & $4.182 \times 10^3 \, \text{Jkg}^{-1}\text{K}^{-1}$ \\ \hline
+Calore di vaporizzazione dell’acqua & $\lambda_v$ & $2.257 \times 10^6 \, \text{Jkg}^{-1}$ \\ \hline
+Densità del ghiaccio & $\rho_g$ & $0.917 \times 10^3 \, \text{kg m}^{-3}$ \\ \hline
+Calore latente di fusione del ghiaccio & $\lambda_f$ & $3.344 \times 10^5 \,\text{Jkg}^{-1}$ \\ \hline
+Densità dell'elio (STP) & $\rho_{\text{He}}$ & $1.785 \times 10^{-1} \,\text{kg m}^{-3}$ \\ \hline
+Densità dell'aria (STP) & $\rho_{\text{aria}}$ & $1.225  \,\text{kg m}^{-3}$ \\ \hline
+\end{tabular}
+\end{center}
+
+\centering
+\small{* Valori arrotondati, da considerare esatti nella soluzione dei problemi.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

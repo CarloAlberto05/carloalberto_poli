@@ -1,0 +1,1417 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{amsmath} 
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, margin=1in]{geometry} 
+\usepackage{amsfonts}
+\usepackage{xstring}  % per misurare la lunghezza del titolo
+\usepackage{calc} 
+\usepackage[table,xcdraw]{xcolor} 
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{xparse}
+\usepackage{nicefrac}
+\usepackage{enumitem} 
+\usepackage[italian]{babel}
+\usepackage{mathtools}
+\usepackage{lmodern}  % font con buona resa
+\usepackage{wrapfig}
+\usepackage{fancyhdr}  
+\usepackage{tocloft} 
+\usepackage{hyperref}   
+\usepackage{enumitem} 
+\usepackage{etoolbox} % per patchare la section
+\usepackage{siunitx}
+\usepackage{tocloft}      
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{multicol}
+\usepackage[bottom]{footmisc} % Sposta le note in fondo alla pagina
+\usepackage{fontawesome5}
+\usepackage{titlesec}
+\pagecolor{white}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array}
+\definecolor{lightgray}{gray}{0.9}
+\usepackage[table]{xcolor}
+\definecolor{headerGray}{RGB}{200,200,200}
+\definecolor{lightGray}{RGB}{240,240,240}
+\definecolor{headerBlue}{RGB}{200,220,255}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\usetikzlibrary{patterns.meta, arrows.meta}
+\usetikzlibrary{angles, quotes}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% === INSERISCI QUI LA TUA DATA PERSONALIZZATA ===
+\newcommand{\datagara}{2 ottobre 2025}
+
+% Intestazione e piè di pagina
+\fancyhead[C]{Coppa Ferraris — GaS — 2025-2026}
+\fancyfoot[C]{Pag. \thepage}
+
+\newcommand{\problemtitle}[1]{
+  \noindent
+  \textbf{\Large #1}\hspace{0.5em}
+  \raisebox{0.6ex}{\rule{\linewidth - \widthof{\textbf{\Large #1}} - 0.6em}{0.4pt}}%
+}
+
+
+% --- Macro per pagina di apertura sezione ---
+\fancypagestyle{sectionpage}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+    \fancyhead[C]{Coppa Ferraris — GaS — 2025-2026}
+    \fancyfoot[C]{Pag. \thepage}
+}
+
+% Modifica la macro \sectionpage nel preambolo
+\newcommand{\sectionpage}[1]{
+  \clearpage
+  \thispagestyle{sectionpage} % Usa lo stile personalizzato
+  \vspace*{\fill}
+  \begin{center}
+    \Huge\bfseries #1
+  \end{center}
+  \vspace*{\fill}
+  \clearpage
+}
+
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=cyan,
+    pdftitle={Dispensa di Fisica},
+    pdfauthor={Coppa Ferraris}
+}
+
+\renewcommand{\cftsecfont}{\color{black}}
+\renewcommand{\cftsecpagefont}{\color{black}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\definecolor{titlecolor}{RGB}{50,90,140}
+\definecolor{subtitlecolor}{RGB}{90,90,90}
+\definecolor{accentcolor}{RGB}{180,45,50}
+
+
+\fancypagestyle{plain}{ % Sovrascrive lo stile plain usato da tableofcontents
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+    \fancyhead[C]{Coppa Ferraris — GaS — 2025-2026}
+    \fancyfoot[C]{Pag. \thepage}
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    % Logo universitario (opzionale, rimuovi il commento se hai un logo)
+    % \includegraphics[width=0.3\textwidth]{logo_universita.png}\\[1.5cm]
+    
+    % Linea decorativa superiore
+    \rule{\textwidth}{0.8pt}\\[1cm]
+    
+    % Titolo principale
+    {\fontsize{28}{32}\selectfont\bfseries
+        Problemi di Fisica\\[0.5cm]
+    }
+    
+    % Sottotitolo
+    {\fontsize{14}{26}\selectfont
+        Soluzione degli esercizi\\[1cm]
+    }
+    
+    % Linea decorativa centrale
+    \rule{\textwidth}{0.4pt}\\[2cm]
+    
+    % Autori
+
+    % Istituzione
+    {\large
+        \textsc{GaS - Coppa Ferraris}\\[2.4cm]
+
+    }
+    
+    % Edizione
+    {\large
+        \textcolor{subtitlecolor}{Edizione \textsc{Estate 2025}}
+    }
+    
+    % Linea decorativa inferiore
+    \vfill
+    \rule{\textwidth}{1pt}
+    
+\end{titlepage}
+
+
+\tableofcontents
+\thispagestyle{plain}
+\newpage
+
+
+\sectionpage{MECCANICA}
+\phantomsection
+\addcontentsline{toc}{section}{Meccanica}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ Rotolone}}
+ 
+\textbf{\boldmath{$1^{\circ}$} metodo} \\
+L'energia meccanica della sfera deve conservarsi nel suo moto di puro rotolamento. Scelto come zero dell'energia potenziale la posizione iniziale di equilibrio, detto $\theta$ l'angolo fra la congiungente dei centri della sfera e della guida con la verticale e chiamato $I_O$ il momento d'inerzia del corpo per un asse passante per il punto di contatto con la guida, si può scrivere l'energia meccanica
+\[
+E = K + U = \frac{1}{2}I_O \omega^2 + mg(R-r)(1-\cos\theta). \tag{1.0}
+\]
+Date le le piccole oscillazioni ($\theta \rightarrow 0$) si può approssimare il coseno con la sua espansione di McLaurin al secondo ordine ($\cos \theta \approx 1 - \frac{\theta^2}{2}$). L'energia potenziale quindi risulta:
+\[
+U = mg(R-r)\left(1-\left(1-\frac{\theta^2}{2}\right)\right) = mg(R-r)\frac{\theta^2}{2}. \tag{1.1}
+\]
+Si riscrive l'energia cinetica sfruttando il teorema di Huygens-Steiner per ricavare il momento d'inerzia della sfera rispetto al punto di contatto 
+\[
+K = \frac{1}{2}\left(\frac{2}{5}mr^2 + mr^2\right)\omega^2 = \frac{7}{10}mr^2 \omega^2 = \frac{7}{10}mv^2, \tag{1.2}
+\]
+dove $v = \dot{x}$ è la velocità del centro di massa della sfera. L'energia meccanica, quindi
+\[
+E = \frac{7}{10}m\dot{x}^2 + mg(R-r)\frac{\theta^2}{2}; \tag{1.3}
+\]
+si ha che, detto $x$ il piccolo spostamento rispetto alla posizione di equilibrio, $\theta = \frac{x}{R-r}$ 
+\[
+E = \frac{7}{10}m\dot{x}^2 + \frac{1}{2}mg\frac{x^2}{R-r}. \tag{1.4} \label{en_mec}
+\]
+
+\noindent
+\textbf{\boldmath{$\rightarrow \, 1^{\circ}$} strada} \\
+L'espressione trovata per l'energia meccanica è quella di un oscillatore armonico. Si fa ora una similitudine con il caso di una molla di costante elastica $k$ con agganciata una massa $M$ che descrive oscillazioni armoniche. L'energia meccanica del sistema massa-molla è
+\[
+E_{\text{molla}} = \frac{1}{2}Mv^2 + \frac{1}{2}kx^2.  \tag{1.5}
+\] 
+Uguagliando i termini di energia cinetica e potenziale delle due formulazioni energetiche, risulta che 
+\[
+M = \frac{7}{5}m \hspace{1cm} k = \frac{mg}{R-r}. \tag{1.6}
+\]
+Il periodo delle piccole oscillazioni del sistema massa-molla vale $T = 2\pi \sqrt{\frac{m}{k}}$, quindi  
+\[
+T = 2\pi \sqrt{\frac{7(R-r)}{5g}}. \tag{1.7}
+\]
+
+\noindent
+\textbf{\boldmath{$\rightarrow \, 2^{\circ}$} strada} \\
+Data la conservazione dell'energia meccanica, serve che $\dot{E} = 0$:
+\[
+\frac{7}{5}m\dot{x}\ddot{x} + mg\dot{x}\frac{x}{R-r} = 0 \tag{1.8}
+\]
+\[
+ \ddot{x} = -x\frac{5g}{7(R-r)}. \tag{1.9} \label{moto_arm}
+\]
+Questa è l'equazione caratteristica di un oscillatore armonico di pulsazione $\omega = \sqrt{\frac{5g}{7(R-r)}}$. Il periodo risulta  
+\[
+T = 2\pi \sqrt{\frac{7(R-r)}{5g}}. \tag{1.10}
+\]
+
+\noindent
+\textbf{\boldmath{$2^{\circ}$} metodo} \\
+Analizzando dinamicamente il sistema, si ha che le forza agenti sulla sfera durante il suo moto sono il peso applicato nel centro di massa del corpo, la reazione vincolare della guida e la forza di attrito statico applicate al punto di contatto con la guida. Scelto quest'ultimo come polo per il calcolo dei momenti, la seconda equazione cardinale si scrive
+\[
+I_O\alpha = -mgr\sin\theta, \tag{1.11}
+\] 
+dove il segno meno davanti al momento della forza peso è dovuto al fatto che nel sistema analizzato il peso è una forza di richiamo. Nell'approssimazione delle piccole oscillazioni vale che $\sin \theta \approx \theta$.
+\[
+\frac{7}{5}mr^2 \alpha = -mgr\theta; \tag{1.12}
+\] 
+vale inoltre che $\theta = \frac{x}{R-r}$ 
+\[
+\frac{7}{5}\ddot{x} = -g\frac{x}{R-r} \tag{1.13}
+\]
+\[
+\rightarrow \ddot{x} = -x\frac{5g}{7(R-r)} \tag{1.14}
+\]
+che è proprio la \ref{moto_arm}. Il periodo quindi
+\[
+T = 2\pi \sqrt{\frac{7(R-r)}{5g}}, \tag{1.15}
+\]
+come ottenuto in precedenza. \\
+
+\textit{Risposta attesa:} \boxed{1.6101 \, $\si{\second}$} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Via col vento}}
+
+Scegliendo un sistema di riferimento solidale alla foglia (e quindi non inerziale), la risultante delle forze si scrive:
+\[
+\mathbf{F_{\text{ris}}} = \mathbf{P} + \mathbf{N} + \mathbf{F_{\text{a,s}}} + \mathbf{F_{\text{app}}}, \tag{2.0}
+\] 
+con $\mathbf{P}$ la forza peso, $\mathbf{N}$ la reazione vincolare del parabrezza, $\mathbf{F_{\text{a,s}}}$ la forza di attrito statico e $\mathbf{F_{\text{app}}} = -m\mathbf{A}$  ($\mathbf{A}$ accelerazione del sistema) la forza fittizia che, nel caso in esame, tende a far salire la foglia lungo il vetro; la forza di attrito statico deve essere dunque diretta verso l'asfalto. Preso un sistema con un asse parallelo e uno perpendicolare al piano si scrive
+\[
+\begin{cases}
+ma_x = mA \cos\theta - F_{\text{a,s}} - mg\sin\theta \\
+ma_y = N - mg \cos\theta - mA\sin\theta = 0
+\end{cases}
+.
+\tag{2.1}
+\]
+Imponendo la statica lungo entrambe le direzioni
+\[
+\begin{cases}
+F_{\text{a,s}} = m(A_{\text{max}} \cos\theta  - g\sin\theta) \\
+N = m(A_{\text{max}}\sin\theta + g \cos\theta)
+\end{cases}
+\tag{2.2}
+\]
+e risolvendo per $A_{\text{max}}$ con la condizione $F_{\text{a,s}} \leq N\mu_s $, risulta
+\[
+m(A_{\text{max}} \cos\theta  - g\sin\theta) \leq m(A_{\text{max}}\sin\theta + g \cos\theta)\mu_s \tag{2.3}
+\]
+\[
+A_{\text{max}} \leq g\frac{\sin\theta + \mu_s \cos\theta}{\cos\theta - \mu_s \sin\theta}. \tag{2.4}
+\]
+
+\textit{Risposta attesa:} \boxed{8.6184 \, $\si{\meter\per\second\squared}$} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Simmetria portami via}}
+
+Le uniche forze agenti sulla lastra sono la forza peso $\mathbf{P}$ e la reazione vincolare della superficie $\mathbf{N}$, applicate rispettivamente nel centro di massa del corpo e in uno dei punti di contatto con il piano. Non si sa a priori quale sia il punto di applicazione di $\mathbf{N}$ quindi si scrivono le due equazioni cardinali, scegliendo come polo per la seconda il centro di massa del corpo:
+\[
+\begin{cases}
+m\mathbf{a} = \mathbf{P} + \mathbf{N} \\
+I {\boldsymbol{\alpha}} = \mathbf{r} \times \mathbf{N}
+\end{cases}
+.
+\tag{3.0}
+\]
+Condizione sufficiente e necessaria per l'equilibrio è che la risultante ed il momento risultante siano nulli. 
+Dalla seconda equazione cardinale si evince che per avere momento nullo serve che i vettori $\mathbf{P}$ e $\mathbf{N}$ siano paralleli. Dal momento che il punto di applicazione della reazione vincolare è necessariamente interno alla base di appoggio della lastra, serve che la proiezione del centro di massa sul piano di appoggio cada entro la base del corpo. Scelto quindi un sistema di assi parallelo e ortogonale al piano con origine nel vertice sinistro della base di appoggio, si deve imporre la condizione
+\[
+x_{\text{cmd}} \leq l. \tag{3.1} \label{condizione}
+\]
+
+Data la densità uniforme, per motivi di simmetria, il centro di massa della lastra deve coincidere con il suo centro geometrico
+\[
+CDM \equiv C = \frac{1}{4} \sum_{i} \mathbf{r_i}. \tag{3.2}
+\]
+dove $\mathbf{r_i}$ è l'i-esimo vettore posizione dei vertici del corpo. Mediando le ascisse dei vertici della lastra di ottiene $C_x$:
+\[
+C_x = \frac{1}{4} \sum_{i} \mathbf{r_{i_x}} = \frac{1}{4}\left[(0)+(l)+\left(\frac{h}{\tan\theta}\right)+\left(l+\frac{h}{\tan\theta}\right)\right] = \frac{1}{2}\left(l+\frac{h}{\tan\theta}\right). \tag{3.3}
+\] 
+Imponendo la \ref{condizione} si ottiene
+\[
+\frac{1}{2}\left(l+\frac{h}{\tan\theta}\right) \leq l \tag{3.4}
+\]
+\[
+h \leq l\tan\theta. \tag{3.5}
+\]
+
+\textit{Risposta attesa:} \boxed{5.7126 \times 10^{-1} \, $\si{\meter}$} \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \ Prima di fermarsi}}
+Nel suo moto, l'energia meccanica del punto materiale non si conserva per via del lavoro delle forze di attrito non conservative. Una volta innescato il moto, “l'altezza massima" successiva si trova sfruttando il teorema dell'energia meccanica:
+\[
+E_f - E_0 = W_{\text{attrito}}  \tag{4.0}
+\]
+\[
+mgh_1 - mgh = -mg\cos\gamma\frac{h}{\sin \gamma} \mu_1 -mg\cos\phi  \frac{h_1}{\sin \phi} \mu_2 = -mg(h\mu_1\cot\gamma + h_1 \mu_2 \cot\phi). \tag{4.1}
+\]
+Risolvendo per $h_1$ si ottiene
+\[
+h_1 = h \frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}. \tag{4.2}
+\]
+Procedendo allo stesso modo si ricava che $h_2$ deve essere
+\[
+h_2 = h_1 \frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma} = h \frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}\frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma}. \tag{4.3}
+\]
+Si ricava iterativamente una relazione ricorsiva per $h_n$
+\[
+\left\{
+\begin{aligned}
+& \text{$n$ pari} \rightarrow h_{n} = h \left(\frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}\frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma}\right)^{\frac{n}{2}} \\
+& \text{$n$ dispari} \rightarrow h_{n} = h \left(\frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}\right)^{\frac{n+1}{2}} \left(\frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma}\right)^{\frac{n-1}{2}}
+\end{aligned}
+\right.
+.
+\tag{4.4}
+\]
+Imponendo $h_n \leq \frac{1}{1000}h$ si risolve sia per il caso $n$ pari sia per quello dispari: \\
+
+\noindent
+\textbf{$\bullet \, \boldsymbol{$n$}$ pari}
+\[
+h \left(\frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}\frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma}\right)^{\frac{n_p}{2}} \leq  \frac{1}{1000}h \tag{4.5}
+\]
+\[
+ \frac{n_p}{2}\ln{\left(\frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}\frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma}\right)} \leq -\ln{1000} \tag{4.6}
+\]
+\[
+n_p \geq \frac{2 \ln{1000}}{\ln{\left(\frac{1+\mu_2\cot\phi}{1-\mu_1\cot\gamma}\frac{1+\mu_1\cot\gamma}{1-\mu_2\cot\phi}\right)}}. \tag{4.7}
+\]
+Il primo $n$ pari a soddisfare la disuguaglianza è $n = 14$. \\
+\\
+\noindent
+\textbf{$\bullet \, \boldsymbol{$n$}$ dispari}
+\[
+h \left(\frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}\right)^{\frac{n_d+1}{2}} \left(\frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma}\right)^{\frac{n_d-1}{2}} \leq \frac{1}{1000}h \tag{4.8}
+\]
+\[
+\frac{n_d+1}{2}\ln{\left(\frac{1-\mu_1\cot\gamma}{1+\mu_2\cot\phi}\right)} + \frac{n_d-1}{2}\ln{\left(\frac{1-\mu_2\cot\phi}{1+\mu_1\cot\gamma}\right)} \leq -\ln{1000} \tag{4.9}
+\]
+\[
+n_d \geq \frac{2 \ln{1000}-\ln{\frac{1-\mu_2^2\cot^2\phi}{1-\mu_1^2\cot^2\gamma}}}{\ln{\left(\frac{1+\mu_2\cot\phi}{1-\mu_1\cot\gamma}\frac{1+\mu_1\cot\gamma}{1-\mu_2\cot\phi}\right)}}. \tag{4.10}
+\]
+Il primo $n$ dispari a soddisfare la disuguaglianza è $n = 13$. \\
+\\
+Il risultato cercato è dunque il minore $n_d$ tale per cui $h_n \leq 0.1 \% \, h$. \\
+
+\textit{Risposta attesa:} \boxed{1.3000 \times 10^{1}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} \ Curva ellittica}}
+Scegliendo un sistema di riferimento inerziale e imponendo che l'auto non slitti, si ha che la risultante delle forze agenti  in direzione radiale è data dalla sola forza di attrito statico, mentre perpendicolarmente all'asfalto, agiscono la forza peso e la reazione vincolare:
+\[
+\begin{cases}
+m\boldsymbol{a_c} = \mathbf{F_\text{as}} \\
+m\boldsymbol{a_y} = \mathbf{P} + \mathbf{N} 
+\end{cases}
+\rightarrow
+\begin{cases}
+m\frac{v^2}{R} = F_\text{as} \leq N\mu_s \\
+N = mg
+\end{cases}
+\tag{5.0}
+\]
+\[
+\mu_s \geq \frac{v^2}{gR}.
+\tag{5.1}
+\label{mus}
+\]
+Serve dunque calcolare il raggio di curvatura istantaneo nel punto $(0,b)$. Si procede innanzitutto scrivendo l'equazione che descrive la curva
+\[
+\frac{y^2}{b^2} + \frac{x^2}{a^2} = 1.
+\tag{5.2}
+\]
+Si vuole ora scrivere la legge oraria di un moto qualsiasi che segue questa traiettoria. Si impone, ad esempio, che la velocità lungo l'asse $x$ sia costante:
+\[
+\left\{
+\begin{aligned}
+& x = vt \\
+& y = \pm \, b\sqrt{1-\frac{x^2}{a^2}} = \pm \, b\sqrt{1-\frac{(vt)^2}{a^2}}
+\end{aligned}
+\right.
+.
+\tag{5.3}
+\label{eqmoto}
+\]
+Derivando due volte la posizione rispetto al tempo si ottiene l'accelerazione
+\[
+\left\{
+\begin{aligned}
+& \ddot{x} = 0 \\
+& \ddot{y} = \pm \, v^2 \frac{ab}{(a^2-(vt)^2)^{\frac{3}{2}}}
+\end{aligned}
+\right.
+.
+\tag{5.4}
+\]
+In coordinate intrinseche, detta $s$ la coordinata curvilinea, l'accelerazione si scrive 
+\[
+\mathbf{a} = \ddot{s} \hat{e}_r - \frac{\dot{s}^2}{R} \hat{e}_n
+\tag{5.5}
+\]
+con $\dot{s}$ la velocità scalare definita come $\dot{s} = v = \sqrt{v_x^2+v_y^2}$. \\
+Tramite analisi dimensionale si evince che il fattore moltiplicativo di $v^2$ nell'espressione di $\ddot{y}$ ha le dimensioni di $[L^{-1}]$: è dunque l'inverso del raggio di curvatura istantaneo e l'accelerazione nel moto descritto dalla  \ref{eqmoto} è puramente centripeta (manca il termine $\ddot{s}$). 
+\[
+R(x) = \frac{(a^2-(vt)^2)^{\frac{3}{2}}}{ab} = \frac{(a^2-x^2)^{\frac{3}{2}}}{ab}. \tag{5.6}
+\]
+Il raggio di curvatura nel punto $(0,b)$, quindi
+\[
+R = \frac{a^2}{b} \tag{5.7}
+\]
+e sostituendo nella \ref{mus} si ottiene 
+\[
+\mu_s \geq \frac{bv^2}{ga^2}. \tag{5.8}
+\]
+
+\textit{Risposta attesa:} \boxed{1.0197 \times 10^{-1}} \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{6}} \ Sbarra oscillante}}
+Si vuole determinare l’ampiezza massima dell’oscillazione del sistema utilizzando il principio di conservazione dell’energia meccanica, valido dopo l’urto. A tal fine, è necessario determinare la velocità angolare del sistema subito dopo l’impatto. \\
+Durante l’urto, la quantità di moto non si conserva a causa delle forze impulsive esercitate dal vincolo (il perno) sulla sbarra. Tuttavia, il momento angolare del sistema rispetto al perno si conserva, poiché il momento risultante delle forze impulsive rispetto a tale punto è nullo. \\
+Si indichi con \( I_s \) il momento d’inerzia della sbarra rispetto a un asse perpendicolare ad essa e passante per il suo centro di massa, allora
+\[
+mv\frac{L}{4} = \left(m\left(\frac{L}{4}\right)^2 + I_s\right)\omega \tag{6.0}
+\]
+\[
+ \omega = \frac{mv\frac{L}{4}}{\left(m\left(\frac{L}{4}\right)^2 + \frac{1}{12}ML^2\right)} = \frac{3mv}{L\left(3m+M\right)}. \tag{6.1}
+\]
+L'energia deve conservarsi. Scegliendo come istante iniziale il momento successivo all'impatto e finale il punto di inversione del moto oscillatorio, si ha
+\[
+E_0 = \frac{1}{2}\left(m\left(\frac{L}{4}\right)^2 + \frac{1}{12}ML^2\right)\omega^2 = E_f = \frac{1}{2}kx^2. \tag{6.2}
+\]
+L'allungamento massimo
+\[
+x = \omega \sqrt{\frac{m\left(\frac{L}{4}\right)^2 + \frac{1}{12}ML^2}{k}} = \omega \frac{L}{2}\sqrt{\frac{3m+M}{3k}} = \frac{3mv}{2\sqrt{3k(3m+M)}}. \tag{6.3}
+\]
+Date le piccole oscillazioni, vale la relazione $x = \frac{L}{2}\theta$:
+\[
+\theta_{\text{max}} = \frac{3mv}{L\sqrt{3k(3m+M)}}. \tag{6.4}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{2.8571e-1}{\radian}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{7}} \ Gira la trottola}}
+La velocità di precessione può essere calcolata ragionando sui modi possibili per scrivere il momento angolare.
+Per la risoluzione poniamo un sistema di coordinate cilidrice dove l'asse z (versore $\hat{k}$) coincide con l'asse verticale, mentre i versori direttori delle coordinate polari, $\hat{\lambda}$ e $\hat{\mu}$, sono rispettivamente paralleli uno al raggio vettore che congiunge il punto di contatto al centro di massa del cono e l'altro parallelo alla velocità tangenziale dell'asse del cono mentre ruota attorno all'asse verticale.\\
+Ricordiamo ora che, preso come polo di rotazione il punto di contatto (fermo), la derivata del momento angolare coincide con il momento delle forze esterne, costituite in questo caso dalla unica forza peso:
+\[
+\frac{d\mathbf{L}}{dt} = \mathbf{R}_{cm} \times M\mathbf{g} = R_{cm}(\hat{\lambda}) \times Mg(-\hat{k}) = \frac{2}{3}hMg\sin\alpha (\hat{\mu}) \tag{7.0}
+\]
+Ma la derivata rispetto al tempo di un vettore che ruota ma non cambia modulo può essere calcolata tramite la formula di Poisson:
+\[
+    \frac{d\mathbf{L}}{dt} = \Omega(\hat{k}) \times L(\hat{\lambda}) = \Omega L \sin\alpha(\hat{\mu}) \tag{7.1}
+\]
+Ora calcoliamo $L = I\omega = \frac{3}{10}M r^2 \omega$.\\
+Possiamo quindi eguagliare i moduli dei due vettori ricavati poiché sono paralleli e concordi:
+\[
+\frac{2}{3}hMg\sin\alpha = \Omega L \sin\alpha \tag{7.2}
+\]
+\[
+\frac{2}{3}hMg = \Omega \frac{3}{10}M\omega r^2  \rightarrow \Omega =\frac{20hg}{9\omega r^2 } \tag{7.3}
+\]
+
+
+\textit{Risposta attesa:} \boxed{\SI{5.4444e0}{\radian\per\second}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{8}} \ Iceberg}}
+L'iceberg è soggetto alla forza peso e alla forza di Archimede:
+\[
+\mathbf{F_{\text{ris}}} = \mathbf{P_{\text{g}}} + \mathbf{F_{\text{arc}}}. \tag{8.0}
+\]
+Data la statica si può riscrivere la relazione in forma scalare
+\[
+m_{g}g = \rho_{g} V_{\text{tot}} g = \rho_{a} V_{\text{immerso}}g \tag{8.1}
+\]
+\[
+\rightarrow \frac{V_{\text{immerso}}}{V_{\text{tot}}} = \frac{\rho_g}{\rho_a}. \tag{8.2}
+\]
+Vale inoltre che $V_{\text{tot}} = V_{\text{immerso}} + V_{\text{emerso}}$
+\[
+\frac{V_{\text{tot}} - V_{\text{emerso}}}{V_{\text{tot}}} = 1 - \frac{V_{\text{emerso}}}{V_{\text{tot}}} = \frac{\rho_g}{\rho_a}; \tag{8.3}
+\]
+la frazione cercata, dunque
+\[
+\frac{V_{\text{emerso}}}{V_{\text{tot}}} = 1 - \frac{\rho_g}{\rho_a}. \tag{8.4}
+\]
+
+\textit{Risposta attesa:} \boxed{8.3000 \times 10^{-2}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{9}} \ Andare d'accordo}}
+
+Scelto come positivo il verso di $\mathbf{F}$ e imposto che l'attrito e la forza siano discordi, la prima e la seconda equazione cardinale (rispetto al CDM) si scrivono 
+\[
+\begin{cases}
+ma = F - F_{\text{as}} \\
+I\alpha = \tau + F_{\text{as}}R \rightarrow \frac{1}{2}ma = \frac{\tau}{R} + F_{\text{as}}
+\end{cases}
+.
+\tag{9.0}
+\] 
+Sottraendo le due equazioni membro a membro e riarrangiando i termini si ottiene:
+\[
+ 3F_{\text{as}} = F - \frac{2\tau}{R}. \tag{9.1}
+\]
+Perché la forza di attrito sia discorde rispetto $\mathbf{F}$ serve che sia positiva nel sistema delle equazioni cardinali. Quindi:
+\[
+F > \frac{2\tau}{R}. \tag{9.2}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{7.0588e1}{\newton}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{10}} \, Piramide in rotazione}}
+
+Ai fini della risoluzione del problema è necessario il calcolo del momento d'inerzia di una piramide in rotazione attorno al suo asse di simmetria $I_p$. Detto $V$ il volume della piramide:
+\[
+\rho = \frac{m_p}{V} = \frac{3m_p}{hl^2}. \tag{10.0}
+\]
+Scegliendo un sistema di assi che vede il vertice della piramide coincidente con l'origine e il suo asse di simmetria parallelo a quello delle ordinate, si ha che i lati obliqui sono descritti dalle rette $y = \frac{2h}{l}x$ e dalla sua simmetrica rispetto all'asse $y$. La piramide può essere pensata come l'unione di lastre quadrate di spessore infinitesimo, superficie $S = (2x)^2$ e massa $dm = \rho S dy = \rho (2x)^2 dy = \rho \left(\frac{ly}{h}\right)^2dy = \frac{3my^2}{h^3}dy$.
+Serve quindi che l'infinitesimo di momento d'inerzia della piramide $I_p$ sia uguale a quello della lastra quadrata infinitesima $I_q$
+\[
+dI_p = I_q. \tag{10.1}
+\]
+Il momento d'inerzia di una lastra quadrata isotropa (infinitesima) di lato $a$ e massa $m$ (densità $\sigma = \frac{m}{l^2}$) in rotazione attorno ad un asse ad essa perpendicolare e passante per il suo centro può essere calcolato modellizzando la lastra come un insieme di aste di lunghezza $a$ e massa $m = \sigma a dr = \frac{m}{a}dr$, dove $dr$ è lo spessore infinitesimo. Ogni asta contribuisce al momento d'inerzia totale con il termine d'inerzia rispetto al centro di massa e quello di Huygens-Steiner:
+\[
+I_q = \int_{-\frac{a}{2}}^{\frac{a}{2}} \frac{m}{a} (\frac{1}{12}a^2 + r^2) dr = \frac{1}{6}ma^2 \tag{10.2}
+\] 
+Sfruttando questo risultato per valutare il momento d'inerzia della piramide, si ha
+\[
+dI_p = \frac{1}{6} dmS  = \frac{1}{6} \frac{3m_py^2}{h^3}dy (\frac{ly}{h})^2 = \frac{m_pl^2y^4}{2h^5}dy \tag{10.3}
+\]
+\[
+ I_p = \int_{0}^{h} \frac{m_pl^2y^4}{2h^5}dy = \frac{1}{10}m_pl^2. \tag{10.4}
+\]
+Si può adesso imporre la conservazione del momento angolare durante l'urto per ricavare la velocità angolare finale del sistema. Detto il momento d'inerzia del disco $I_d = \frac{1}{2}m_dr^2 = \frac{1}{16}m_pl^2$:
+\[
+I_p\omega_0 = \frac{1}{10}m_pl^2\omega_0 = (I_p + I_d)\omega_f = \frac{13}{80}m_pl^2\omega_f \tag{10.5}
+\]
+\[
+\omega_f = \frac{8}{13}\omega_0. \tag{10.6}
+\]
+La variazione di energia cinetica della piramide, quindi
+\[
+\Delta K = \frac{1}{2}I_p\omega_f^2 - \frac{1}{2}I_p\omega_0^2 = \frac{1}{20}m_pl^2\left(\left(\frac{8}{13}\omega_0\right)^2- \omega_0^2\right) = -\frac{21}{676}m_pl^2\omega_0^2. \tag{10.7}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{-1.0960e-3}{\joule}} \, \textit{Errore massimo consentito: 0.5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{11}} \ Tempo di un bagno}}
+L'equilibrio viene raggiunto una volta che il volume d'acqua uscente per unità di tempo dal lavandino è uguale a quello entrante. Si procede quindi ad uguagliare la portata di riempimento del rubinetto e quella di svuotamento dello scarico.
+Il lavandino può riempire la vasca in un tempo $T_2$ e ha portata costante pari a 
+\[
+Q_{\text{in}} = \frac{V}{T_2} = \frac{AH}{T_2}, \tag{11.0}
+\]
+con $A$ la sezione del lavandino e $H$ la sua altezza. Lo scarico funziona per gravità: la velocità d'uscita dell'acqua, e quindi la portata, non sono costanti. Dato il contesto del problema ha senso assumere che la dimensione dello scarico $S$ sia molto minore della sezione del lavandino $S \ll A$. Sfruttando l'approssimazione di Torricelli, si ha che la velocità di uscita dell'acqua è direttamente proporzionale alla radice quadrata dell'altezza $h$ del liquido nel contenitore
+\[
+v \propto \sqrt{h} \rightarrow Q_{\text{out}}(h) = Sv(h) = C\sqrt{h}, \tag{11.1}
+\]
+dove $C$ è una costante che si può determinare imponendo il tempo di svuotamento a $h = H$:
+\[
+Q_{\text{out}}(H) = C\sqrt{H} = \frac{V}{T_1} = \frac{AH}{T_1} \tag{11.2}
+\]
+\[
+\rightarrow C = \frac{A\sqrt{H}}{T_1}. \tag{11.3}
+\]
+Si utilizza quindi la condizione di equilibrio
+\[
+Q_{\text{in}} = \frac{AH}{T_2} = Q_{\text{out}}(h) = \frac{A\sqrt{H}}{T_1}\sqrt{h} \tag{11.4}
+\]
+\[
+h = H\left(\frac{T_1}{T_2}\right)^2. \tag{11.5}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{4.4443e-2}{\meter}} \, \textit{Errore massimo consentito: 0.5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{12}} \, Al punto giusto}}
+Scegliendo come polo il punto di appoggio del corpo sulla superficie di appoggio che, data l'isotropia, è sulla verticale su cui giace centro di massa, la seconda equazione cardinale si scrive:
+\[
+I_C\boldsymbol{\alpha} = \mathbf{R} \times \frac{\mathbf{J}}{\Delta t}, \tag{12.0}
+\]
+dove $I_C$ rappresenta il momento d'inerzia del corpo rispetto al punto di contatto e può essere valutato con il teorema di Huygens-Steiner $I_C = I_{\text{CDM}}+MR^2 = (1+\beta)MR^2$. La notazione vettoriale può essere semplificata a una scalare dato il parallelismo fra il vettore impulso e la superficie di appoggio e scegliendo un asse $z$ concorde in verso al vettore accelerazione angolare
+\[
+I_C\alpha = I_C \frac{\Delta\omega}{\Delta t} = h \frac{J}{\Delta t}. \tag{12.1}
+\] 
+Il corpo si trova inizialmente in quiete, dunque $\omega_0 = v_0 = 0$
+\[
+I_C\omega = hJ. \tag{12.2}
+\]
+Dalla definizione di impulso si ha che 
+\[
+J = \Delta p = Mv_{\text{CDM}} \tag{12.3}
+\]
+e, sapendo che la condizione di rotolamento vuole che $v_{\text{CDM}} = \omega R$, si ha che 
+\[
+v_{\text{CDM}} = \frac{J}{M} = \omega R = \frac{hRJ}{I_C} = \frac{hRJ}{(1+\beta)MR^2} \tag{12.4}
+\]
+\[
+\beta = \frac{h}{R} - 1 . \tag{12.5}
+\]
+
+\textit{Risposta attesa:} \boxed{8.5714\times 10^{-1}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{13}} \ Gio il calciatore}}
+Prima dell'urto la palla possiede una quantità di moto $|| \vec{p}|| = v_0M$. Durante l'urto viene applicato un impulso di cui possiamo calcolare il modulo tramite il teorema dell'impulso notando che all'istante successivo all'urto la palla non possiede più moti traslatori:
+\[ J = \Delta p = Mv_0 \tag{13.0}
+\]
+Noto l'impulso possiamo usare il momento dell'impulso per calcolare
+la variazione del momento angolare:
+\[\mathbf{R} \times \mathbf{J} = \Delta \mathbf{L} \tag{13.1}
+\]
+dove $\vec{R}$ è il raggio vettore che congiunge il polo di rotazione (centro di massa) al punto di applicazione dell'impulso.
+Possiamo procedere ora con le quantità scalari:
+\[d v_0  M = I \omega = \frac{2}{5}Mr^2 \omega \tag{13.2}
+\]
+\[\omega = \frac{5  \, d v_0}{2 \, r^2} \tag{13.3} \]
+
+\textit{Risposta attesa:} \boxed{\SI{1.0914e2}{\radian\per\second}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{14}} \, Acqua non inerziale}}
+In un fluido in equilibrio, le superfici isobariche sono ortogonali al campo di accelerazione totale. Essendo la superficie libera del fluido una superficie isobarica, si disporrà come descritto. Nel sistema di riferimento non inerziale del treno, oltre alla forza peso, si registra una forza apparente di verso opposto a quello del vettore accelerazione del convoglio. L'accelerazione totale è quindi la somma vettoriale dell'accelerazione di gravità e di quella del treno:
+\[
+\mathbf{a} =  -\mathbf{A} + \mathbf{g} =
+\begin{pmatrix}
+-A \\
+g
+\end{pmatrix}.
+\tag{14.0}
+\]
+Se la superficie libera deve essere perpendicolare a $\mathbf{a}$, da semplici considerazioni geometriche si ottiene 
+\[
+\theta = \arctan{\left(\frac{A}{g}\right)}. \tag{14.1}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{3.1321e-1}{\radian}} \, \textit{Errore massimo consentito: 0.5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{15}} \ Cono di Mach}}
+In un tempo $\Delta t$, l'aereo si muove di uno spazio pari a $v\Delta t$. Si supponga che all'istante $t_0$ sia emessa un'onda sonora. Nello stesso intervallo $\Delta t$ questa percorre una distanza $c\Delta t$. Il fronte d’onda conico è l’inviluppo dei fronti d’onda del suono emesso nei vari punti della traiettoria, perciò esso sarà raggiunto ortogonalmente dalle onde sonore. Si ha dunque un triangolo rettangolo che ha per ipotenusa lo spazio percorso dall'aereo e come cateto minore lo spazio percorso dal suono. Sia $\frac{\theta}{2}$ l'angolo di semiapertuta del cono:
+\[
+v \sin\left(\frac{\theta}{2}\right) = c. \tag{15.0}
+\]
+\[
+\theta = 2\arcsin\left(\frac{c}{v}\right).\tag{15.1}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{3.4154e1}{\degree}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{16}} \, Non tirare la corda...}}
+L'unica forza agente sul punto materiale, a parte peso e reazione vincolare che si bilanciano e producono un momento nullo, è la tensione della fune. Essendo questa, nel caso del problema analizzato, una forza centrale, produce anch'essa momento nullo. Il momento angolare del sistema deve conservarsi:
+\[
+m l_0^2  \omega_0= ml^2\omega(l) \rightarrow \omega(l) = \omega_0 \left(\frac{l_0}{l}\right)^2, \tag{16.0}
+\]
+con $l \leq l_0$. La risultante delle forze agenti in direzione radiale sul corpo si scrive
+\[
+ml\omega(l)^2 = \frac{m( \omega_0l_0)^2}{l} = T. \tag{16.1}
+\]
+Risolvendo per $l$ imponendo la tensione massima sopportabile dalla fune si ottiene:
+\[
+l = \frac{m(\omega_0 l_0)^2}{T_{\text{max}}}. \tag{16.2}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{4.1304e-2}{\meter}} \, \textit{Errore massimo consentito: 0.5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{17}} \, Fuga dalla sbarra}}
+Si valuta innanzitutto il campo gravitazionale generato dalla sbarra. Scegliendo un sistema di assi con origine nel centro della sbarra e asse $x$ parallelo alla stessa, si ha che un elemento infinitesimo di massa dell'asta genera di un campo $d\mathbf{g} = -\frac{Gdm}{s^2}\hat{x} = -\frac{Gdx\lambda}{s(x)^2}\hat{x}$, dove $s(x)$ è la distanza fra la posizione dell'infinitesimo di massa e quella del punto in cui si valuta il campo, detta $x_0$. Sommando tutti i contributi si ottiene 
+\[
+\mathbf{g} = \int_{-\frac{L}{2}}^{\frac{L}{2}} -\frac{G\lambda}{s(x)^2}\hat{x}dx = -G\int_{-\frac{L}{2}}^{\frac{L}{2}} \frac{\lambda dx}{(x-x_0)^2}\hat{x} = \frac{4G\lambda L}{L^2-4x_0^2}\hat{x}. \tag{17.0}
+\]
+Il campo gravitazionale è conservativo, quindi esiste una funzione scalare $V(x_0)$ (il potenziale gravitazionale) che soddisfa la relazione 
+\[
+\mathbf{g} = -\nabla V(x_0). \tag{17.1}
+\]
+Dal momento che, nel caso studiato, interessa unicamente la componente di campo in direzione $x$, la relazione si semplifica a
+\[
+\mathbf{g} = -\frac{dV(x_0)}{dx}\hat{x} \tag{17.2}
+\]
+che è un'equazione differenziale a variabili separabili. Scegliendo lo zero del potenziale a infinito e integrando si ottiene
+\[
+V(x_0) = \int_{x_0}^{\infty} \frac{4G\lambda L}{L^2-4z^2} dz = G\lambda \ln\left(\frac{2x_0+L}{2x_0-L}\right). \tag{17.3}
+\]
+L'energia potenziale gravitazionale del punto materiale, quindi
+\[
+U = -mV\left(\frac{L}{2}+d\right) = -G\lambda m \ln\left(1+\frac{L}{d}\right). \tag{17.4}
+\]
+La velocità minima che permette al punto di sfuggire indefinitamente dalla sbarra si ottiene sfruttando la conservazione dell'energia meccanica:
+\[
+\frac{1}{2}mv^2 -G\lambda m \ln\left(1+\frac{L}{d}\right) = 0 \tag{17.5}
+\]
+\[
+v = \sqrt{2G\lambda  \ln\left(1+\frac{L}{d}\right)}. \tag{17.6}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{5.3336e-5}{\meter\per\second}} \, \textit{Errore massimo consentito: 0.5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{18}} \, Piccola principessa}}
+Il campo gravitazionale prodotto dall'anello sul suo asse può essere trovato in vari modi: \\
+
+\noindent
+\textbf{\boldmath{$1^{\circ}$} metodo} \\
+L'infinitesimo di massa dell'anello si scrive come
+\[
+dm = \lambda dl \tag{18.0}
+\]
+dove $\lambda = \frac{M}{2\pi R}$ è la densità dell'anello. Per motivi di simmetria, il campo deve essere diretto unicamente lungo l'asse dell'anello (l'asse $z$). Il contributo al campo valutato in punto $z_0$ di ogni elemento infinitesimo risulta
+\[
+d\mathbf{g}_{\hat{e}_i}= -\frac{Gdm}{R^2+z_0^2}\hat{e}_i = -\frac{G\lambda dl}{R^2+z_0^2}\hat{e}_i \tag{18.1}
+\]
+dove $\hat{e}_i$ è il versore della congiungente fra un generico punto sull'asse e l'i-esimo infinitesimo di massa. Si cerca la proiezione del vettore $d\mathbf{g}_{\hat{e}_i}$ sull'asse $z$ e si sommano tutti i contributi
+\[
+d\mathbf{g}_{\hat{e}_i} \cdot \hat{z} = -\frac{G\lambda dl}{R^2+z_0^2}\hat{e}_i \cdot \hat{z} = -\frac{G\lambda dl}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z} \tag{18.2}
+\]
+\[
+ \mathbf{g} = \int_0^{2\pi R} -\frac{G\lambda dl}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z} = -\frac{G\lambda 2\pi R}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z} = -\frac{GM}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z} \tag{18.3}
+\]
+
+\noindent
+\textbf{\boldmath{$2^{\circ}$} metodo} \\
+Detto $z_0$ un punto sull'asse, ogni elemento di massa $\Delta M_i$ dell'anello è equidistante da $z_0$: il contributo di ogni $\Delta M_i$ al campo gravitazionale è dunque il medesimo. Per motivi di simmetria, il campo è assiale. La proiezione dell'elemento di campo generato da un elemento di massa sull'asse $z$ si ottiene moltiplicando il $ \mathbf{g}_i$ per il coseno dell'angolo $\alpha$ compreso fra l'asse $z$ e la congiungete di $\Delta M_i$ e $z_0$ (per la geometria dell'asse di un anello, l'angolo in questione è lo stesso per ogni $\Delta M_i$):
+\[
+ \mathbf{g}_i = -\frac{G\Delta M_i}{R^2+z_0^2}\cos\alpha \hat{z} = -\frac{G\Delta M_i}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z}. \tag{18.4}
+\]
+Sommando tutti i contributi si ottiene
+\[
+\mathbf{g} = \sum_i  \mathbf{g}_i = \sum_i -\frac{G\Delta M_i}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z} = -\frac{GM}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z} \tag{18.5}
+\]
+La risultante sull'asteroide è unicamente data dalla forza gravitazionale generata dall'anello
+\[
+\mathbf{F} = m\mathbf{a} = m\mathbf{g} = -\frac{GMm}{(R^2+z_0^2)^{\frac{3}{2}}}z_0\hat{z}, \tag{18.6}
+\]
+da cui si ottiene l'equazione del moto dell'asteroide sull'asse
+\[
+ \ddot{z}_0 = -\frac{GM}{(R^2+z_0^2)^{\frac{3}{2}}}z_0.  \tag{18.7}
+\]
+Per piccole oscillazioni attorno alla posizione di equilibrio stabile ($z_0 \rightarrow 0$), vale l'approssimazione 
+\[
+-\frac{GM}{(R^2+z_0^2)^{\frac{3}{2}}}z_0 \approx -\frac{GM}{R^3}z_0 \tag{18.8}
+\]
+L'equazione del moto diventa dunque
+\[
+\ddot{z}_0 = -\frac{GM}{R^3}z_0, \tag{18.9}
+\]
+che è l'equazione caratteristica di un moto oscillatorio armonico di pulsazione $\omega = \sqrt{\frac{GM}{R^3}}$. Il periodo delle piccole oscillazioni, quindi
+\[
+T = \frac{2\pi}{\omega} = 2\pi \sqrt{\frac{R^3}{GM}}. \tag{18.10}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{8.3003e1}{\hour}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{19}} \, Ferma porta}}
+Perché la porta non si chiuda serve che il momento totale risultante sia nullo. Detto $I_p$ il momento d'inerzia della porta, la seconda equazione cardinale, scelto come polo la cerniera, risulta 
+\[
+I_p \alpha = \tau - F_{\text{as}}d. \tag{19.0}
+\]
+La forza normale impressa dal pavimento sul perno ferma porta deve essere, in modulo, uguale alla forza peso. Si impone la statica e si sfrutta la relazione $F_{\text{as}} \leq N\mu$, ottenendo
+\[
+\tau = F_{\text{as}}d \leq Nd\mu = mgd\mu \tag{19.1}
+\]
+\[
+d \geq \frac{\tau}{mg\mu}. \tag{19.2}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{7.1380e-1}{\meter}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{20}} \, Scopa spaziale is the new alabarda}}
+Dalla terza legge di Keplero, il periodo orbitale di Nereide vale:
+\[
+T = 2\pi \sqrt{\frac{a^3}{GM}}. \tag{20.0}
+\]
+Dalla seconda legge di Keplero, il raggio vettore spazza aree uguali in tempi uguali. Equivalentemente, la velocità areale $\xi = \frac{dA}{dt}$ di un corpo in orbita è costante. 
+\[
+\int_0^T \xi dt = \frac{dA}{dt}T   = A_{\text{tot}} \tag{20.1}
+\]
+e integrando si ottiene:
+\[
+A(t) = \frac{A_{\text{tot}}}{T}t, \tag{20.2}
+\]
+con $A_{\text{tot}} = \pi ab$ con $b = a\sqrt{1-\epsilon^2}$ l'area dell'ellisse che descrive l'orbita. Il valore della superficie spazzata in funzione del tempo risulta quindi essere pari a 
+\[
+A(t) = \frac{1}{2}\sqrt{GMa(1-\epsilon^2)}t. \tag{20.3}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{5.2708e11}{\kilo\meter\squared}} \, \textit{Errore massimo consentito: 0.5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{21}} \, Rimbalzo in avanti }}
+Essendo l'urto completamente elastico e non essendoci deformazioni, l'altezza massima raggiunta dalla pallina dopo il rimbalzo deve essere uguale a quella da cui parte. Il tempo di volo fra due rimbalzi, quindi
+\[
+T = 2\sqrt{\frac{2(h-r)}{g}}.
+\]
+Al momento dell'urto con il pavimento, dato l'attrito e la condizione di non slittamento, la pallina risente di un impulso applicato nel punto di contatto di modulo $J$. Si scelga ora un sistema di riferimento con origine nel centro della pallina, asse $z$ orientato \textit{verso l'alto}, asse $y$ entrante nel foglio e asse $x$ di conseguenza per generare una terna destrorsa. Dal teorema dell'impulso si ha 
+\[
+\vec{J} = \Delta \vec{p} = m(\vec{v}_{\text{CM}} - \vec{v}_{0,\text{CM}}) = m\vec{v}_{\text{CM}};
+\]
+\[
+\rightarrow J = mv_{\text{CM}}.
+\]
+La forza impulsiva genera momento rispetto al centro di massa del sistema in accordo al teorema dell'impulso angolare. Detto $I$ il momento d'inerzia della sfera rispetto al CDM,
+\[
+\Delta \vec{L} = I(\vec{\omega} - \vec{\omega}_0) = \vec{r} \times \vec{J}
+\]
+\[
+\rightarrow I(\omega -\omega_0) = -rJ.
+\]
+Si impone, infine, la condizione di non slittamento. La velocità del punto di contatto un istante dopo l'urto deve essere nulla:
+\[
+\vec{v}_{\text{C}} = \vec{0} = \vec{v}_{\text{CM}} + \vec{\omega} \times \vec{r}
+\]
+\[
+\rightarrow v_{\text{CM}} = wr.
+\]
+Risulta dunque un sistema di tre equazioni in tre incognite:
+\[
+\begin{cases}
+J = mv_{\text{CM}} \\
+I(\omega -\omega_0) = -rJ \\
+v_{\text{CM}} = wr
+\end{cases}
+\rightarrow
+\begin{cases}
+\omega =  \frac{2}{7}\omega_0 \\
+v_{\text{CM}} = \frac{2}{7}\omega_0r \\
+J = \frac{2}{7}m\omega_0r
+\end{cases}
+.
+\]
+Lo spazio percorso fra il primo rimbalzo e il successivo, quindi
+\[
+d = v_{\text{CM}}T =  \frac{4}{7}\omega_0r\sqrt{\frac{2(h-r)}{g}}.
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{7.2256e-3}{\meter}} \, \textit{Errore massimo consentito: 0.5\%}
+
+
+
+
+\sectionpage{TERMODINAMICA}
+\phantomsection
+\addcontentsline{toc}{section}{Termodinamica}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ Termodinamica specifica }}
+
+
+\textbf{\boldmath{$1^{\circ}$} metodo} \\
+Per definizione, il calore specifico di un gas in una trasformazione corrisponde al calore scambiato per unità di mole durante la trasformazione stessa rapportato alla variazione di temperatura fra stato finale ed iniziale. \\
+Siano dunque gli stati termodinamici $A$ e $B$ rispettivamente definiti dalle terne di variabili $(p_A, V_A, T_A)$ e $(p_B, V_B, T_B)$. Si vuole ricavare il calore scambiato dal gas durante la trasformazione. Il primo principio vuole che: 
+\[
+Q = \mathcal{L} + \Delta U. \tag{1.0} \label{eq:primo_principio}
+\]
+Sia la costante $k = T_AV_A^2$. L'elemento infinitesimo di lavoro scambiato nella trasformazione è $\delta \mathcal{L} = pdV$. Il fatto che la trasformazione sia reversibile permette di riscrivere questa relazione utilizzando la legge di stato:
+\[
+\delta \mathcal{L} = pdV = \frac{nRT}{V}dV = \frac{nRk}{V^3}dV. \tag{1.1}
+\] 
+Il lavoro totale, dunque 
+\[
+\mathcal{L} = \int_{V_A}^{V_B}  \frac{nRk}{V^3}dV = \frac{nRk}{2}\left(\frac{1}{V_A^2} - \frac{1}{V_B^2}\right) = \frac{nR}{2}(T_A-T_B). \tag{1.2}
+\]
+La variazione di energia interna è definita come $\Delta U = nc_V \Delta T$ per ogni trasformazione. 
+\[
+\Delta U = nc_V (T_B-T_A) = n\frac{5}{2}R(T_B-T_A). \tag{1.3}
+\]
+Imponendo $n=1$ e sommando i contributi di variazione di energia interna e lavoro lungo la trasformazione, divisi per la variazione di temperatura, si trova il calore specifico $c$.
+\[
+c = \frac{Q}{(T_B-T_A)n_{(=1)}} = \frac{1}{T_B-T_A}\left(\frac{R}{2}(T_A-T_B) + \frac{5}{2}R(T_B-T_A)\right) = 2R. \tag{1.4} \label{eq:2R}
+\]
+
+\noindent
+\textbf{\boldmath{$2^{\circ}$} metodo} \\
+Il calore specifico in una trasformazione termodinamica si scrive come
+\[
+c = \frac{\delta Q}{n dT}. \tag{1.5}
+\]
+Sfruttando il primo principio
+\[
+c = \frac{\delta \mathcal{L} + dU}{n dT} = \frac{pdV + nc_VdT}{n dT} = \frac{p}{n}\frac{dV}{dT} + c_V. \tag{1.6} \label{eq:c_v}
+\]
+Il fatto che la trasformazione sia reversibile permette di differenziare l'equazione che la descrive:
+\[
+d(TV^2) = d(k) = 0 \tag{1.7}
+\]
+\[
+V^2dT + 2VTdV = 0 \rightarrow \frac{dV}{dT} = -\frac{V}{2T}. \tag{1.8}
+\]
+Sostituendo nella \ref{eq:c_v} e utilizzando la legge di stato risulta
+\[
+c = -\frac{pV}{2Tn} + c_v = -\frac{R}{2} + \frac{5}{2}R = 2R. \tag{1.9}
+\]
+
+\textit{Risposta attesa:} \boxed{1.6629 \times 10^{1} \, $\si{\joule\per\mole\per\kelvin}$} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Carnot... irreversibile}}
+La variazione di entropia dell'universo è definita come somma della variazione di entropia del sistema e dell'ambiente:
+\[
+\Delta S_{\text{univ}} = \Delta S_{\text{sis}} + \Delta S_{\text{amb}}. \tag{2.0}
+\]
+Il sistema, nel caso analizzato, è proprio il gas. L'entropia è una funzione di stato quindi, trattandosi di un ciclo, si ha che 
+\[
+\Delta S_{\text{sis}} = \Delta S_{\text{gas}} = \SI{0}{\joule\per\kelvin}. \tag{2.1}
+\]
+La variazione di entropia dell'universo è quindi uguale variazione di entropia dell'ambiente e in particolare, nel problema studiato, a quella delle sorgenti a temperatura costante. \\
+Nell'espansione, il gas assorbe calore dalla sorgente a temperatura $T_1$, che quindi cede un calore pari a $-Q_1$. Il fatto che la sorgente sia a temperatura costante consente di scrivere
+\[
+\Delta S_1 = -\frac{Q_1}{T_1}. \tag{2.2}
+\]
+Nella compressione, poi, il gas subisce lavoro $\mathcal{L}$ dall'esterno. Il calore scambiato, in accordo al primo principio della termodinamica, deve essere uguale a $\mathcal{L}$.
+\[
+Q_2 = \mathcal{L} = nRT_2\ln{\frac{V_f}{V_i}} = nRT_2\ln{\frac{p_i}{p_f}} = -nRT_2\ln{3}. \tag{2.3}
+\]
+La sorgente a temperatura $T_2$ scambia quindi un calore pari a $-Q_2$ con il gas:
+\[
+\Delta S_2 = -\frac{Q_2}{T_2} = nR\ln{3}. \tag{2.4}
+\]
+La variazione di entropia dell'universo, quindi
+\[
+\Delta S_{\text{univ}} = \Delta S_{\text{amb}} = \Delta S_1 + \Delta S_2 = nR\ln{3} - \frac{Q_1}{T_1}. \tag{2.5}
+\]
+
+\textit{Risposta attesa:} \boxed{7.1344 \, $\si{\joule\per\kelvin}$} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Che calor}}
+Per risolvere il problema è necessario ricordare che in un piano $T-S$ l'area sottesa al grafico della trasformazione coincide con il calore scambiato.
+\[
+Q = \int^{S_B}_{S_A}\ln^2({S})\,dS \tag{3.0}
+\]
+da cui 
+\[
+Q = (S \ln^2(S)-2S \ln(S)-2S)|^{S_B}_{S_A} \tag{3.1}
+\]
+\[
+Q = S_B(\ln(S_B)-1)^2 - S_A(\ln(S_A)-1)^2+3(S_A-S_B) \tag{3.2}
+\]
+Si può quindi valutare la variazione di energia interna:
+\[
+\Delta U = nc_v(T_B-T_A) \tag{3.3}
+\]
+A questo punto è sufficiente utilizzare quanto ricavato invertendo il primo principio della termodinamica:
+\[
+\mathcal{L} = Q- \Delta U = S_B(\ln(S_B)-1)^2 - S_A(\ln(S_A)-1)^2+3(S_A-S_B) - \frac{5}{2}nR(T_B-T_A). \tag{3.4}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{-1.5215e4}{\joule} } \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \ Il demone di Maxwell}}
+Il quesito è apparentemente paradossale. Il demone sembra capace di produrre un gradiente di temperatura senza produrre lavoro, riducendo quindi “gratuitamente" l'entropia dell'universo. Nell'ipotesi in cui questo fosse fattibile, stabilitosi il gradiente di temperatura, si collegano le camere ad una macchina termica reversibile che sfrutta il $\Delta T$ per estrarre lavoro. Il rendimento della macchina 
+\[
+\eta = 1 - \frac{T-\Delta T}{T + \Delta T} = \frac{2\Delta T}{T+\Delta T}. 
+\]
+La macchina assorbe calore secondo il primo principio
+\[
+Q = \Delta U + \mathcal{L}.
+\]
+Il gas non produce lavoro quindi il calore assorbito è da attribuirsi esclusivamente alla variazione di energia interna
+\[
+Q = \Delta U = nc_v\Delta T = \frac{3}{2}nR\Delta T;
+\]
+il lavoro prodotto quindi
+\[
+\eta = \frac{\mathcal{L}}{Q} \rightarrow \mathcal{L} = Q\eta =  \frac{3nR\Delta T^2}{T+\Delta T}.
+\]
+Questo lavoro prodotto, in realtà, non è gratuito. Il demone infatti compie lavoro infinitesimo ogni volta che apre l'otturatore. La capacità di “vedere“ le molecole nella zona del foro costringe inoltre l'entropia della “mente“ del demone ad aumentare, assorbendo informazioni. La variazione di entropia totale risulta in ogni caso positiva, in ossequio al secondo principio. \\
+
+\textit{Risposta attesa:} \boxed{\SI{2.8383}{\joule} } \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} \ Implosione}}
+A seguito della rimozione del setto, il gas si espande senza fare o subire lavoro. Le pareti adiabatiche, inoltre, impediscono scambi di calore. Dal primo principio si evince che il processo irreversibile descritto è sia adiabatico sia isotermo. La temperatura, prima e dopo l'espansione, è dunque la medesima. Viene ceduto al gas un calore $Q$ in un processo isocoro. Dal primo principio:
+\[
+Q = \Delta U 
+\] 
+\[
+T_f = T_0 + \frac{Q}{nc_v} = T_0 + \frac{2Q}{5nR}.
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{3.1804e2}{\kelvin} } \, \textit{Errore massimo consentito: 0,5\%}
+
+
+
+
+\sectionpage{ELETTROMAGNETISMO}
+\phantomsection
+\addcontentsline{toc}{section}{Elettromagnetismo}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ How's made? Una sfera carica}}
+Il metodo di costruzione della sfera non può influenzare il risultato finale essendo la forza elettrostatica conservativa. Si supponga quindi di costruire la sfera per gusci successivi, ciascuno compreso fra $r$ e $r+dr$. Se si è formata la sfera di raggio $r$, il lavoro per portare da distanza infinita a distanza $r$ dal centro la carica $dq$ che si distribuisce nel guscio tra $r$ e $r+dr$ è dato da
+\[
+\delta \mathcal{L} = -dU = \frac{q(r)dq}{4\pi \epsilon_0 r}. \tag{1.0}
+\]
+Essendo la densità di carica uniforme, vale che $q(r) = Q \frac{r^3}{R^3}$, da cui
+\[
+dq = \frac{Q}{R^3}d(r^3) = \frac{3Qr^2}{R^3}dr. \tag{1.1}
+\]
+Pertanto si ottiene
+\[
+\delta \mathcal{L} = \frac{3Q^2}{4\pi \epsilon_0 R^6}r^4dr \tag{1.2}
+\]
+\[
+\rightarrow \mathcal{L} = \int_0^R \delta \mathcal{L} = \int_0^R \frac{3Q^2}{4\pi \epsilon_0 R^6}r^4dr  = \frac{3Q^2}{20 \pi \epsilon_0 R}. \tag{1.3}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{4.3517e2}{\electronvolt}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Doppio campo}}
+La particella nel condensatore è sottoposta a due forze: il peso $\mathbf{P}$ e la forza elettrica $\mathbf{F_{\text{C}}}$. Per avere l'equilibrio serve che 
+\[
+\mathbf{P} + \mathbf{F_{\text{C}}} = \vec{0} \tag{2.0}
+\]
+\[
+mg = F_{\text{C}} = qE. \tag{2.1}
+\]
+L'unica incognita nella condizione di equilibrio è il campo elettrico generato dal condensatore. Serve quindi trovare un'espressione che lo descriva. Una volta aperto l'interruttore, il generatore viene scollegato dal circuito; il condensatore, tuttavia, ha immagazzinata una differenza di potenziale. Questo produce una corrente che scorre nel circuito, la cui intensità diminuisce esponenzialmente nel tempo (così come per la ddp ai capi del condensatore). Si scrive quindi la seconda legge di Kirchhoff sul circuito:
+\[
+\frac{q}{C} + RI = \frac{q}{C} + R\dot{q} = 0. \tag{2.2}
+\]
+Questa è un'equazione differenziale a variabili separabili
+\[
+\frac{dq}{dt} = -\frac{q}{RC} \rightarrow \int_{q_0}^{q(t)} \frac{dq}{q} = -\int_{t_0 = 0}^{t} \frac{dt}{RC} \tag{2.3}
+\]
+\[
+q(t) = q_0e^{-\frac{t}{RC}}. \tag{2.4}
+\]
+La carica presente al tempo $t_0$ sulle armature del condensatore è la carica di saturazione (cioè quella raggiunta quando la ddp ai suoi capi è uguale a $\mathcal{E}$). Una volta raggiunta $q_0$, dunque, non scorre corrente nel circuito:
+\[
+\frac{q_0}{C} = \mathcal{E} \rightarrow q_0 = \mathcal{E}C. \tag{2.5}
+\]
+Risulta quindi che 
+\[
+q(t) = \mathcal{E}Ce^{-\frac{t}{RC}}; \tag{2.6}
+\]
+la densità di carica sulle armature
+\[
+\sigma(t) = \frac{q(t)}{S} = \frac{\mathcal{E}Ce^{-\frac{t}{RC}}}{S} \tag{2.7}
+\]
+e il campo elettrico
+\[
+E(t) = \frac{\sigma(t)}{\epsilon_0} = \frac{\mathcal{E}Ce^{-\frac{t}{RC}}}{S\epsilon_0}. \tag{2.8}
+\]
+Imponendo la condizione di equilibrio statico si ottiene:
+\[
+mg = qE(t) = q\frac{\mathcal{E}Ce^{-\frac{t}{RC}}}{S\epsilon_0} \tag{2.9}
+\]
+\[
+t = \ln{\left(\frac{q\mathcal{E}C}{mgS\epsilon_0}\right)}RC. \tag{2.10}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{7.5146}{\second}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Mariarosa e i protoni}}
+Nel suo moto, il vettore velocità della particella si mantiene perpendicolare al vettore campo magnetico. Stante la forza di Lorentz, il moto del protone risulta circolare. Il raggio della circonferenza descritta si può ricavare scrivendo la risultante delle forze in direzione radiale: 
+\[
+m\frac{v^2}{R}=qvB
+\]
+\[
+\rightarrow R=\frac{mv}{qB}.
+\]
+Dal momento che l'angolo di incidenza della particella rispetto alla regione di campo non è retto, la traiettoria percorsa corrisponde ad una corda di una circonferenza di raggio $R$. Da semplici considerazioni geometriche si ottiene che l'angolo al centro sotteso dalla corda è pari a 
+\[
+\alpha=\pi-2\left(\phi-\frac{\pi}{2}\right)=2(\pi-\phi).
+\]
+La lunghezza della corda, e dunque lo spazio percorso dal protone nella regione di campo magnetico, risulta essere:
+\[
+L=\alpha R=2(\pi-\phi)\frac{mv}{qB}.
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{1.9493e-3}{\meter}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} \ Sfera bucata}}
+
+La situazione può essere schematizzata nel seguente modo: una sfera piena carica con densità $ \rho$
+centrata nell'origine degli assi, alla quale viene sovrapposta una sfera con centro in \textbf{r} e con densità $- \rho$. Dopo di che, si prende un punto interno al foro  con distanza dal centro della sfera positiva $\mathbf{r_1}=(a,b,0)$ e dalla sfera negativa $\mathbf{r_2}=(a',b',0)$ e si applica il principio di sovrapposizione. La sfera con carica positiva genera un campo elettrico che può essere ricavato usando il teorema di Gauss.
+
+\[
+4\pi r_1^2E_+=\frac{4\pi r_1^2\rho}{3 \epsilon_0} \implies E_+=\frac{\rho r_1}{3 \epsilon_0}
+\]
+
+\noindent  Da ciò ne deriva che 
+
+\[
+\mathbf{E_+}=\frac{\rho r_1}{3\epsilon_0}\hat{r_1}
+\]
+
+\noindent Applico lo stesso ragionamento al campo generato dalla sfera di carica negativa, per cui 
+
+\[
+4\pi r_2^2E_-=-\frac{4\pi r_2^2\rho}{3 \epsilon_0} \implies E_-=-\frac{\rho r_2}{3 \epsilon_0}
+\]
+
+\noindent Dunque
+
+\[
+\mathbf{E_-}=-\frac{\rho r_2}{3 \epsilon_0}\hat{r_2}
+\]
+
+\noindent Come già è stato precedentemente detto, applichiamo il principio di sovrapposizione. Geometricamente risulta che $b=b'$ e $ r=a+a'$. Per cui risulta che 
+
+\[
+\mathbf{E_{tot}}=\mathbf{E_+} + \mathbf{E_-}=\frac{\rho}{3\epsilon_0}(a+a',b-b',0)=\frac{\rho}{3\epsilon_0}\mathbf{r}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{1.8824}{\newton\per\coulomb}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{7}} \, Le palle ... girano!}}
+Serve preliminarmente trovare un modo per esprimere il campo magnetico generato da una spira circolare di raggio $R$ percorsa da una corrente $i_s$ sul suo asse. È nota la legge di Ampere-Laplace:
+\[
+B = \frac{\mu_0 i_s}{4\pi} \int_\gamma \frac{|\vec{dl} \times \hat{r}|}{r^2}
+\]
+dove $r$ rappresenta la distanza fra l'infinitesimo di filo $dl$ e il punto dell'asse dove si calcola $B$. Scegliendo di prendere l'asse della spira coincidente con Svolgendo il prodotto vettoriale e valutando che, per simmetria, il campo sull'asse deve essere puramente assiale, si ottiene
+\[
+B = \frac{\mu_0 i_s}{4\pi} \int_\gamma \frac{\cos\theta }{R^2 + z^2} dl
+\]
+dove $\theta$ rappresenta l'angolo compreso fra $B$ e l'asse della spira. Si ottiene quindi che $\cos \theta = \frac{R}{\sqrt{R^2 +z^2}}$, da cui
+\[
+B = \frac{\mu_0 i_s R^2}{2(R^2+z^2)^{\frac{3}{2}}}.
+\]
+Nel problema proposto, la carica distribuita sulla sfera si ottiene dalla relazione del potenziale elettrostatico
+\[
+Q = 4\pi\epsilon_0 VR
+\]
+e la conseguente densità di carica superficiale 
+\[
+\sigma = \frac{Q}{S} = \frac{\epsilon_0 V}{R}.
+\]
+Detto $\alpha$ l'angolo compreso fra un raggio e il diametro attorno cui avviene la rotazione, si vuole ricondurre la sfera a un insieme di spire di spessore $Rd\phi$, raggio $R\cos\phi$ e spessore $dS = 2 \pi R^2 \cos \phi d\phi$, in cui fluisce una corrente 
+\[
+i = \frac{Q}{\Delta t} = \frac{\sigma dS}{2\pi}\omega = \epsilon_0 \omega VR  \cos\phi d\phi.
+\]
+Ogni spira infinitesima contribuisce al campo al centro della sfera con un elemento 
+\[
+dB = \frac{\mu_0 i R^2\cos^2\phi}{2(R^2\cos^2\phi+R^2\sin^2\phi)^{\frac{3}{2}}} = \frac{\mu_0 i \cos^2 \phi}{2R} = \frac{1}{2}\mu_0 \epsilon_0 \omega V  \cos^3\phi d\phi.
+\]
+Il campo totale corrisponde alla somma di tutti i contributi 
+\[
+B = \frac{1}{2}\mu_0 \epsilon_0 \omega V \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}  \cos^3\phi d\phi = \frac{2}{3}\mu_0 \epsilon_0 \omega V = \frac{2\omega V}{3c^2}.
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{4.0797e-17}{\tesla}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+
+
+
+
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{10}} \ Circuito di San Candido}}
+
+In un condensatore a facce piane parallele si può dimostrare la relazione:
+\[q(t) = C(t) \ V(t)\]
+dove la capacità dipende solo da proprietà geometriche del condensatore e vale $C = \frac{\epsilon_0 A}{d}$.\\
+Nel nostro caso possiamo scrivere la distanza tra le armature in funzione della velocità di allontanamento
+$d = vt$ e riscrivere la capacità:
+\[C = \frac{\epsilon_0 A}{vt}\].
+
+\noindent
+A questo punto, nota l'espressione della differenza di potenziale  $\Delta V = \frac{V_0}{2} \ t^3$, si può scrivere la seguente relazione:
+\[ q(t) =  \frac{\epsilon_0 A}{vt} \frac{V_0}{2} \ t^3 =  \frac{\epsilon_0 A V_0}{2v}\ t^2.\]
+
+\noindent
+Si può ora ricordare che la corrente è definita come:
+\[ i(t) = \frac{d q(t)}{dt}.\]
+Derivando, quindi, l'espressione della carica in funzione del tempo ricavata poche righe sopra otteniamo:
+\[ i(t) = \frac{\epsilon_0 A V_0t}{v}.\]
+
+\noindent
+Ora la potenza dissipata dal bipolo resistivo si scrive come $P(t) = V(t)\ i(t)$, nella quale sostituendo la legge di Ohm macroscopica $V(t) = R \ i(t)$ si ottiene:
+\[P(t) = i^2(t) R,\]
+che unita all'espressione della corrente precedentemente ricavata si trova:
+\[P(t) = \left(\frac{\epsilon_0 A V_0t}{v}\right)^2.  \]
+
+\textit{Risposta attesa:} \boxed{\SI{5.8797 e-10}{\watt}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{11}} \, Non in serie, non in parallelo}}
+Si sceglie di porre lo zero del potenziale in corrispondenza del nodo B cosicché il calcolo della tensione ai capi del parallelo si riduca alla valutazione di $V_A$. Si osservi che la somma delle correnti entranti nel nodo $A$, per la prima legge di Kirchhoff, deve essere nulla. Chiamato $C_i$ il nodo fra la resistenza e il generatore sull'i-esimo ramo, la tensione ai capi di $R_i$ deve essere $V_{C_i}-V_A$ e, inoltre, si ha che $V_{C_i}-V_B = V_{C_i} = \mathcal{E}$. Verso il nodo A, attraverso ogni resistenza, fluisce dunque una corrente $i_i = \frac{V_{C_i}-V_A}{R_i} = \frac{\mathcal{E}-V_A}{R_i}$ per la legge di Ohm. Si ha dunque 
+\[
+0 = \sum_i  \frac{\mathcal{E}-V_A}{R_i} \rightarrow \mathcal{E} \sum_i \left(\frac{1}{R_i}\right) = V_A\sum_i \left(\frac{1}{R_i}\right)
+\]
+\[
+V_A = \mathcal{E}.
+\]
+Quanto ottenuto è generalizzabile nella forma del risultato del teorema di Millman secondo cui, in una rete composta da $n$ rami in parallelo costituiti dalla serie di un generatore di tensione $\mathcal{E}_i$ e di un resistore $R_i$, la $ddp$ ai capi del parallelo si ottiene come 
+\[
+V = \frac{\sum_{j = 1}^n \frac{\mathcal{E}_i}{R_i}}{\sum_{j = 1}^n \frac{1}{R_i}}.
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{1.0000}{\volt}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\sectionpage{FISICA MODERNA}
+\phantomsection
+\addcontentsline{toc}{section}{Fisica moderna}
+
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ Vetro ad hoc}}
+Per definizione, l'indice di rifrazione di un mezzo è il rapporto fra la velocità della luce nel vuoto $c$ e la velocità della luce nel mezzo $v$:
+\[
+n = \frac{c}{v}. \tag{1.0}
+\]
+Per il vetro speciale, vale che 
+\[
+n(x) = \frac{c}{c(e-1)^{-\frac{x}{s}}} = (e-1)^{\frac{x}{s}}. \tag{1.1}
+\]
+Un raggio di luce che incide con un angolo $\theta_0$ sul vetro subisce una deviazione angolare in accordo alla legge di Snell. Detto $n_0$ l'indice di rifrazione del mezzo in cui è immerso il vetro:
+\[
+n_0\sin\theta_0 = n(x)\sin\theta(x) \tag{1.2}
+\]
+\[
+\theta(x) = \arcsin (n_0\sin\theta_0(e-1)^{-\frac{x}{s}}) \tag{1.3}
+\]
+\[
+\Delta \theta = \theta(x) - \theta_0 = \arcsin (n_0\sin\theta_0(e-1)^{-\frac{x}{s}}) - \theta_0. \tag{1.4}
+\]
+La legge di Snell può essere applicata a strati non consecutivi con diverso indice di rifrazione. La variazione angolare totale si ottiene dunque valutando $\Delta\theta$ per $x = s$.
+\[
+\Delta\theta_{\text{tot}} = \arcsin (n_0\sin\theta_0(e-1)^{-1}) - \theta_0. \tag{1.5}
+\]
+Nel caso del vetro con indice di rifrazione costante $n$, la deviazione angolare si calcola 
+\[
+\Delta \theta_{\text{cost}} = \theta_f-\theta_0 = \arcsin(\frac{n_0}{n}\sin\theta_0) - \theta_0. \tag{1.6}
+\]
+Imponendo $\Delta \theta_{\text{cost}} = \Delta\theta_{\text{tot}}$ si ottiene
+\[
+n = e-1. \tag{1.7}
+\]
+\textit{Risposta attesa:} \boxed{1.7183} \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Elettrodomestico fotoelettrico}}
+La condizione $\nu > \frac{\phi}{h}$ è necessaria perché si inneschi l'emissione fotoelettrica. Nell'ipotesi di Einstein, ogni fotone eccita un singolo elettrone che, stante la condizione precedentemente esposta, viene emesso. Il numero di elettroni emessi dipende dal numero $n$ di fotoni incidenti e, pertanto, dall'intensità $\mathcal{I}$ del raggio laser
+\[
+d\mathcal{I} = \frac{dE}{Sdt} \rightarrow \mathcal{I} = \frac{nh\nu}{S\Delta t }. \tag{2.0}
+\]
+Si scrive la definizione di intensità di corrente,
+\[
+I = n\frac{e}{\Delta t} \rightarrow n = \frac{I}{e} \Delta t \tag{2.1}
+\]
+e, sostituendo nella relazione per l'intensità del raggio laser, si ottiene
+\[
+\mathcal{I} = \frac{I}{e} \Delta t \frac{h\nu}{S\Delta t } = \frac{Ih\nu}{eS}. \tag{2.2}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{1.6543}{\watt\per\meter\squared}} \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{3}} \ Termodinamica di un buco nero}}
+Essendo il sistema isolato, perché il processo sia fisicamente possibile serve che la variazione di entropia dell'universo termodinamico sia maggiore o uguale a zero: $\Delta S_{\text{univ}} \geq 0$ (secondo principio della termodinamica). L'entropia del buco nero è direttamente proporzionale al quadrato della sua massa dunque, assorbendo radiazione, deve aumentare. 
+\[
+S_{\text{BH}}(M) = \frac{4\pi k_B G M^2}{\hbar c} \rightarrow S_{\text{BH}}(M+m) = \frac{4\pi k_B G (M+m)^2}{\hbar c}
+\tag{3.0}
+\]
+\[
+\Delta S_{\text{BH}} = \frac{4\pi k_B G}{\hbar c}(2Mm+m^2) \approx \frac{8\pi k_B GMm}{\hbar c}. \tag{3.1}
+\]
+La variazione di entropia dell'universo è la somma della variazione di entropia del buco nero e della radiazione (per la quale, venendo completamente assorbita, vale che $\Delta S_{\text{rad}} = -S_{\text{rad}} = -\frac{4m}{3T}$)
+\[
+\Delta S_{\text{univ}} = \Delta S_{\text{BH}} + \Delta S_{\text{rad}} = \frac{8\pi k_B GMm}{\hbar c} - \frac{4m}{3T}. \tag{3.2}
+\]
+Imponendo $\Delta S_{\text{univ}} \geq 0$ si ottiene
+\[
+\frac{8\pi k_B GMm}{\hbar c} - \frac{4m}{3T} \geq 0 \tag{3.3}
+\]
+\[
+T \geq \frac{\hbar c}{6 \pi k_B G M}. \tag{3.4}
+\]
+
+\textit{Risposta attesa:} \boxed{\SI{2.1289e-31}{\kelvin}} \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \, Un cane che si morde la coda}}
+Per un osservatore nel sistema del cane, la lunghezza del percorso (la circonferenza) è contratta per effetto relativistico. Perché il cane riesca a mordersi la coda serve quindi che la lunghezza della circonferenza nel sistema del cane sia proprio uguale a quella dell'animale:
+\[
+\frac{2\pi R}{\gamma} = L \rightarrow 2\pi R \sqrt{1-\frac{v^2}{c^2}} = L \tag{4.0}
+\] 
+\[
+v = c \, \sqrt{1-\left(\frac{L}{2\pi R}\right)^2}. \tag{4.1}
+\]
+Il risultato si ottiene quindi calcolando il rapporto $\displaystyle \frac{v}{c}$ e moltiplicandolo per $ 100\%$
+\[
+\frac{v}{c} = \sqrt{1-\left(\frac{L}{2\pi R}\right)^2} . \tag{4.2}
+\]
+
+\textit{Risposta attesa:} \boxed{9.9427 \times 10^1} \, \textit{Errore massimo consentito: 0,5\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{5}} \, Polaroid infinite}}
+L'intensità di un fascio di luce all'uscita da un filtro polarizzatore segue al legge di Malus
+\[
+I = I_0 \cos^2 \theta. \tag{5.0} \label{malus}
+\]
+Se l'angolo d'inclinazione del filtro è infinitesimo, $d\theta$, si può riscrivere la \ref{malus} sfruttando l'espansione di McLaurin al secondo ordine del $\cos^2(\cdot)$:
+\[
+I = I_0 \cos^2 d\theta \approx I_0(1-(d\theta)^2). \tag{5.1}
+\]
+L'intensità del fascio decresce di un fattore $(1-(d\theta)^2)$ dopo il passaggio attraverso un filtro. L'intensità dopo aver attraversato l'n-esimo filtro, quindi
+\[
+I(N) = I_0(1-(d\theta)^2)^N = I_0\left(1-\left(\frac{\theta_{\text{tot}}}{N}\right)^2\right)^N. \tag{5.2}
+\]
+Nel limite per $N \rightarrow \infty$ si ottiene 
+\[
+I_f = \lim_{N \to \infty} I(N) = \lim_{N \to \infty} I_0\left(1-\left(\frac{\theta_{\text{tot}}}{N}\right)^2\right)^N = I_0. \tag{5.3}
+\]
+Si evince quindi che, per una rotazione infinitesimale e continua, ogni filtro perde solo una quantità infinitesima d'intensità di ordine superiore a $(d\theta)^2$ che, nel limite, si annulla; l'intensità della radiazione rimane costante. \\
+
+\textit{Risposta attesa:} \boxed{\SI{5.3000}{\watt\per\meter\squared}} \, \textit{Errore massimo consentito: 0,5\%}
+
+
+\sectionpage{STIME DI FERMI}
+\phantomsection
+\addcontentsline{toc}{section}{Stime di Fermi}
+
+\section*{\problemtitle{$\mathcal{P}${\small{1}} \ Up!}}
+
+Si vuole innanzitutto stimare la massa di una villetta di due piani. Si valuta la superficie media per ogni piano pari a 
+\[
+S = 100 \, \si{\meter\squared} \tag{1.0}
+\]
+e che la massa media di uno stabile in muratura si può calcolare come prodotto fra la superficie totale e una costante $\eta = 500 \, \si{\kilo\gram\per\meter\squared}$ specifica del genere di costruzione
+\[
+M = 2S \eta. \tag{1.1}
+\]
+Un palloncino è approssimativamente una sfera di diametro $d = 30 \, \si{\centi\meter}$ riempito di elio. Detta $m_p = 3 \, \si{\gram}$ la massa del palloncino, la risultante delle forze è la somma vettoriale della forza peso del palloncino, dell'elio e della forza di Archimede $\mathbf{F_{\text{arc}}}$:
+\[
+\mathbf{F_{\text{ris}}} = \mathbf{P_{\text{pall}}} + \mathbf{P_{\text{He}}} + \mathbf{F_{\text{arc}}} \tag{1.2}
+\]
+\[
+F_{\text{ris}} = g(V_p(\rho_{\text{aria}} - \rho_{\text{He}}) - m_p) = g(\frac{d^3\pi}{6}(\rho_{\text{aria}} - \rho_{\text{He}}) - m_p). \tag{1.3}
+\]
+Ogni palloncino può dunque contribuire con una forza di sollevamento pari a $F_{\text{ris}}$. Imponendo il sollevamento della villetta,
+\[
+Mg = NF_{\text{ris}} \rightarrow N = \frac{Mg}{F_{\text{ris}}} = \frac{12S\eta}{d^3\pi(\rho_{\text{aria}} - \rho_{\text{He}}) - 6m_p}. \tag{1.4}
+\]
+Il valore numerico cercato è il logaritmo in base 10 di $N$. \\
+
+\textit{Risposta attesa:} \boxed{6.9283} \, \textit{Errore massimo consentito: 2\%}
+
+\section*{\problemtitle{$\mathcal{P}${\small{2}} \ Dormire al fresco}}
+
+\section*{\problemtitle{$\mathcal{P}${\small{4}} \ Binario 9 \textbf{\nicefrac{3}{4}} }}
+L'approssimazione WKB restituisce la probabilità $P_i$ che una singola particella attraversi una barriera di potenziale. La probabilità che un corpo intero attraversi la barriera si può stimare considerandolo come un ammasso di molecole di acqua di peso molecolare $\mathcal{M} = 18u$. Detto $N$ il numero di particelle di cui è costituito il corpo, la probabilità ricercata sarà dunque uguale alla potenza N-esima della probabilità che una singola molecola succeda nell'attraversamento
+\[
+P_h = P_i^N.
+\]
+Un essere umano ha una massa media di circa $m = \SI{70}{\kilo\gram}$. Essendo composto pressoché in toto di molecole di acqua, il numero di particelle che lo compongono si ottiene come
+\[
+N = \frac{m}{\mathcal{M}}.
+\] 
+Si usa ora la WKB. La probabilità per una singola particella vale:
+\[
+P_i = \text{exp}\left(-2d\sqrt{\frac{2\mathcal{M}U}{\hbar^2}}\right).
+\]
+Il valore cercato, dunque 
+\[
+\log_{10}(P_h) = N\log_{10}(P_i) = N\log_{10}\left({\text{exp}\left(-2d\sqrt{\frac{2\mathcal{M}U}{\hbar^2}}\right)}\right) = -2md\sqrt{\frac{2U}{\mathcal{M}\hbar^2}} \log_{10}(e)
+\]
+
+\textit{Risposta attesa:} \boxed{-8.5022 \times 10^{38}} \, \textit{Errore massimo consentito: 2\%}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
