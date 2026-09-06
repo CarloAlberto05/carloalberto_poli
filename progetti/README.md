@@ -17,3 +17,5 @@ Il report è redatto in formato paper (template IEEE), coerentemente con lo stil
 Corso: Dispositivi Elettronici.
 
 Analisi ed elaborazione in MATLAB dei dati ottenuti da simulazioni di campioni di semiconduttore realizzate con il software PADRE. Il codice di simulazione (PADRE) non è incluso in quanto non di produzione propria; è riportata unicamente l'analisi e la visualizzazione dei risultati.
+
+*Nota: L'Analisi di campioni di semiconduttore si scompone in due differenti esperienze, l'Assignment 1 e l'Assignment 2.*
