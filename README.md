@@ -11,8 +11,8 @@ Raccolta di materiale prodotto durante il percorso di studi in Ingegneria Fisica
 
 ## Contenuti
 
+- **[Progetti](progetti/README.md)** — analisi dati con codice e report in LaTeX
 - **[Appunti di Fisica](appunti_di_fisica/README.md)** — dispense LaTeX di Meccanica Quantistica e Fisica II
 - **[Problemi di Fisica](problemi_di_fisica/README.md)** — problemi ed esercitazioni per le gare OliFis
-- **[Progetti](progetti/README.md)** — analisi dati con codice e report in LaTeX
 
 *Nota: Materiale nato come studio personale, poi rifinito anche in ottica di supporto alla didattica (tutoraggio). Segnalazioni di errori benvenute via issue.*
