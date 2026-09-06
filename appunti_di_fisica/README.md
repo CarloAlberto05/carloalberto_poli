@@ -1,6 +1,6 @@
 # Appunti di Fisica
 
-Dispense personali in LaTeX, scritte durante il percorso di Ingegneria Fisica al Politecnico di Torino. Organizzate per materia.
+Dispense personali in LaTeX, redatte durante il percorso di Ingegneria Fisica al Politecnico di Torino. Organizzate per materia.
 
 ## Struttura
 .
@@ -11,10 +11,11 @@ Dispense personali in LaTeX, scritte durante il percorso di Ingegneria Fisica al
 ## Meccanica Quantistica
 
 Corso: Quantum Physics — docente: Vittorio Penna, DISAT.
-Capitoli 1-8 completi, capitolo 9 (Momento Angolare) in corso.
+Capitoli 1-8 completi, capitolo 9 (Momento Angolare) e seguenti in corso.
 
 ## Fisica II
 
+Corso: Fisica II — docente: Candido Fabrizio Pirri, DISAT.
 Dispense complete, attualmente in fase di revisione.
 
 ## Compilazione
